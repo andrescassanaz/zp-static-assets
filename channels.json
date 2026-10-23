@@ -1,0 +1,109 @@
+{
+  "channels": [
+    {
+      "id": "viajeros-tv",
+      "number": 1,
+      "name": "Viajeros TV",
+      "playbackMode": "cycle",
+      "file": "channels/viajeros-tv.json"
+    },
+    {
+      "id": "piston",
+      "number": 2,
+      "name": "Piston",
+      "playbackMode": "cycle",
+      "file": "channels/piston.json"
+    },
+    {
+      "id": "cocineros",
+      "number": 3,
+      "name": "Cocineros",
+      "playbackMode": "cycle",
+      "file": "channels/cocineros.json"
+    },
+    {
+      "id": "automovilismo",
+      "number": 4,
+      "name": "Automovilismo",
+      "playbackMode": "cycle",
+      "file": "channels/automovilismo.json"
+    },
+    {
+      "id": "tn",
+      "number": 5,
+      "name": "TN",
+      "playbackMode": "live",
+      "file": "channels/tn.json"
+    },
+    {
+      "id": "cronica",
+      "number": 6,
+      "name": "Crónica",
+      "playbackMode": "live",
+      "file": "channels/cronica.json"
+    },
+    {
+      "id": "c5n",
+      "number": 7,
+      "name": "C5N",
+      "playbackMode": "live",
+      "file": "channels/c5n.json"
+    },
+    {
+      "id": "a24",
+      "number": 8,
+      "name": "A24",
+      "playbackMode": "live",
+      "file": "channels/a24.json"
+    },
+    {
+      "id": "ln-plus",
+      "number": 9,
+      "name": "LN+",
+      "playbackMode": "live",
+      "file": "channels/ln-plus.json"
+    },
+    {
+      "id": "el-nueve",
+      "number": 10,
+      "name": "El Nueve",
+      "playbackMode": "live",
+      "file": "channels/el-nueve.json"
+    },
+    {
+      "id": "america-noticias",
+      "number": 11,
+      "name": "América Noticias",
+      "playbackMode": "live",
+      "file": "channels/america-noticias.json"
+    },
+    {
+      "id": "telefe-noticias",
+      "number": 12,
+      "name": "Telefe Noticias",
+      "playbackMode": "live",
+      "file": "channels/telefe-noticias.json"
+    },
+    {
+      "id": "standup",
+      "number": 13,
+      "name": "StandUp",
+      "playbackMode": "cycle",
+      "file": "channels/standup.json"
+    },
+    {
+      "id": "documentales",
+      "number": 13,
+      "name": "Documentales",
+      "playbackMode": "cycle",
+      "file": "channels/documentales.json"
+    },
+    {
+      "id": "ultimos-cartuchos",
+      "number": 13,
+      "name": "Ultimos Cartuchos",
+      "playbackMode": "cycle",
+      "file": "channels/ultimos-cartuchos.json"
+    }
+  ]
+}

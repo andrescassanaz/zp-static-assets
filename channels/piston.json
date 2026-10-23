@@ -1,0 +1,29 @@
+{
+  "cycleStartsAt": "2026-10-22T00:00:00Z",
+  "videos": [
+    {
+      "youtubeVideoId": "TqHZQr5TN8k",
+      "durationSeconds": 1213
+    },
+    {
+      "youtubeVideoId": "t_KlGniHnFQ",
+      "durationSeconds": 3472
+    },
+    {
+      "youtubeVideoId": "vAHaYDreizs",
+      "durationSeconds": 693
+    },
+    {
+      "youtubeVideoId": "nLmgBr40GCE",
+      "durationSeconds": 1663
+    },
+    {
+      "youtubeVideoId": "yur8S2bsSro",
+      "durationSeconds": 950
+    },
+    {
+      "youtubeVideoId": "lJoEBLJP6yc",
+      "durationSeconds": 885
+    }
+  ]
+}
