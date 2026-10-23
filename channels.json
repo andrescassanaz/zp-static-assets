@@ -111,6 +111,22 @@
       "name": "Infantil",
       "playbackMode": "cycle",
       "file": "channels/infantil.json"
+    },
+    {
+      "id": "falopita",
+      "number": 17,
+      "name": "Falopita",
+      "playbackMode": "cycle",
+      "file": "channels/falopita.json"
+    },
+    {
+      "id": "capusotto",
+      "number": 18,
+      "name": "Capusotto",
+      "playbackMode": "cycle",
+      "file": "channels/capusotto.json"
     }
+
+
   ]
 }
