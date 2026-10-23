@@ -104,6 +104,13 @@
       "name": "Ultimos Cartuchos",
       "playbackMode": "cycle",
       "file": "channels/ultimos-cartuchos.json"
+    },
+    {
+      "id": "infantil",
+      "number": 16,
+      "name": "Infantil",
+      "playbackMode": "cycle",
+      "file": "channels/infantil.json"
     }
   ]
 }
