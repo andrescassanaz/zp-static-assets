@@ -93,14 +93,14 @@
     },
     {
       "id": "documentales",
-      "number": 13,
+      "number": 14,
       "name": "Documentales",
       "playbackMode": "cycle",
       "file": "channels/documentales.json"
     },
     {
       "id": "ultimos-cartuchos",
-      "number": 13,
+      "number": 15,
       "name": "Ultimos Cartuchos",
       "playbackMode": "cycle",
       "file": "channels/ultimos-cartuchos.json"
