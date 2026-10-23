@@ -8,11 +8,11 @@
       "file": "channels/viajeros-tv.json"
     },
     {
-      "id": "piston",
+      "id": "autos",
       "number": 2,
-      "name": "Piston",
+      "name": "Autos",
       "playbackMode": "cycle",
-      "file": "channels/piston.json"
+      "file": "channels/autos.json"
     },
     {
       "id": "cocineros",
