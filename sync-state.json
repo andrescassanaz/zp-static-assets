@@ -273,12 +273,25 @@
       "removedVideos": 0,
       "errors": [],
       "publication": "published"
+    },
+    "programacion": {
+      "at": "2026-10-24T06:16:20Z",
+      "mode": "daily",
+      "result": "success",
+      "sourcesScanned": 2,
+      "discoveredIds": 101,
+      "addedVideos": 60,
+      "filteredVideos": 41,
+      "checkedVideos": 0,
+      "removedVideos": 0,
+      "errors": [],
+      "publication": "published"
     }
   },
   "lastRun": {
-    "at": "2026-10-24T03:58:31Z",
+    "at": "2026-10-24T06:16:20Z",
     "mode": "daily",
-    "quotaUnits": 855,
+    "quotaUnits": 43,
     "result": "success",
     "errors": []
   }

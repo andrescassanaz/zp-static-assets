@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import calendar
 from contextlib import contextmanager
 from copy import deepcopy
 from datetime import datetime, timezone, timedelta
@@ -26,7 +27,7 @@ CHANNEL = re.compile(r"UC[A-Za-z0-9_-]{22}\Z")
 SLUG = re.compile(r"[a-z0-9][a-z0-9-]{0,63}\Z")
 DURATION = re.compile(r"P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?)?\Z")
 DEFAULT_RULES = {"minDurationSeconds": 420, "maxDurationSeconds": None,
-                 "music": False, "regionCodes": ["AR"]}
+                 "music": False, "regionCodes": ["AR"], "maxAgeMonths": None}
 
 
 class SyncError(Exception):
@@ -48,6 +49,32 @@ def date(value: str) -> datetime:
         return datetime.fromisoformat(value[:-1] + "+00:00")
     except (ValueError, TypeError):
         raise SyncError("Fecha UTC inválida; debe terminar en Z.") from None
+
+
+def publication_date(value) -> datetime | None:
+    """YouTube usa RFC 3339; normaliza también desplazamientos a UTC."""
+    if not isinstance(value, str):
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        return parsed.astimezone(timezone.utc) if parsed.tzinfo else None
+    except (ValueError, OverflowError):
+        return None
+
+
+def age_cutoff(now: datetime, months: int | None) -> datetime | None:
+    if months is None:
+        return None
+    month_index = (now.year - 1) * 12 + now.month - 1 - months
+    if month_index < 0:
+        return datetime.min.replace(tzinfo=timezone.utc)
+    year, month = divmod(month_index, 12)
+    year, month = year + 1, month + 1
+    return now.replace(year=year, month=month, day=min(now.day, calendar.monthrange(year, month)[1]))
+
+
+def within_window(published: datetime | None, cutoff: datetime | None, now: datetime) -> bool:
+    return cutoff is None or (published is not None and cutoff <= published <= now)
 
 
 def load(path: Path, default=None):
@@ -198,7 +225,14 @@ def read_config(root: Path):
             raise SyncError("Hay fuentes duplicadas en un canal.")
         if mode == "live" and refs and (len(refs) != 1 or source_type(refs[0])[0] != "video"):
             raise SyncError("Para live configurá únicamente el video de la emisión.")
+        update_mode = channel.get("updateMode", "append")
+        if not isinstance(update_mode, str) or update_mode not in {"append", "replace"}:
+            raise SyncError("updateMode debe ser append o replace.")
+        if update_mode == "replace" and not refs:
+            raise SyncError("updateMode=replace requiere al menos una fuente.")
         rules = {**DEFAULT_RULES, **config.get("defaults", {}), **channel.get("rules", {})}
+        if rules["maxAgeMonths"] is not None:
+            positive_int(rules["maxAgeMonths"], "maxAgeMonths")
         positive_int(rules["minDurationSeconds"], "minDurationSeconds", 0)
         maximum = rules["maxDurationSeconds"]
         if maximum is not None and positive_int(maximum, "maxDurationSeconds") <= rules["minDurationSeconds"]:
@@ -265,7 +299,7 @@ class YouTube:
         for start in range(0, len(missing), 50):
             batch = missing[start:start + 50]
             payload = self.get("videos", part="snippet,contentDetails,status,liveStreamingDetails", id=",".join(batch),
-                               fields="items(id,snippet(defaultAudioLanguage,liveBroadcastContent),contentDetails(duration,regionRestriction,contentRating),status(privacyStatus,uploadStatus,embeddable),liveStreamingDetails(actualStartTime,actualEndTime))")
+                               fields="items(id,snippet(publishedAt,defaultAudioLanguage,liveBroadcastContent),contentDetails(duration,regionRestriction,contentRating),status(privacyStatus,uploadStatus,embeddable),liveStreamingDetails(actualStartTime,actualEndTime))")
             found = {item.get("id"): item for item in payload["items"]}
             for identifier in batch:
                 self.video_cache[identifier] = found.get(identifier)
@@ -342,7 +376,8 @@ def anchor_update(old: dict, rows: list[dict], now: datetime) -> str:
     for row in rows:
         if row["youtubeVideoId"] == current:
             count += 1
-        if row["youtubeVideoId"] == current and count == occurrence:
+        if (row["youtubeVideoId"] == current and count == occurrence
+                and position - offset < row["durationSeconds"]):
             # Origen del ciclo viejo en curso + desplazamiento antes del programa.
             return stamp(origin + timedelta(seconds=(elapsed // total) * total + offset - before))
         before += row["durationSeconds"]
@@ -385,7 +420,7 @@ class Sync:
             raise SyncError("Ya existe un archivo sin entrada de índice; incorporalo manualmente antes de sincronizar.")
         return entry, path, load(path) if entry else None
 
-    def iter_source(self, source):
+    def iter_source(self, source, cutoff=None):
         """Recorre TODAS las páginas en cada ejecución; sin cursores persistentes."""
         kind, value = source_type(source)
         if kind == "video":
@@ -406,10 +441,18 @@ class Sync:
         seen_tokens = set()
         while True:
             page = self.api.get("playlistItems", part="contentDetails", playlistId=value, maxResults=50,
-                                fields="nextPageToken,items/contentDetails/videoId", **({"pageToken": token} if token else {}))
+                                fields="nextPageToken,items/contentDetails(videoId,videoPublishedAt)", **({"pageToken": token} if token else {}))
             ids = list(dict.fromkeys(item.get("contentDetails", {}).get("videoId", "") for item in page["items"]))
             if any(not isinstance(identifier, str) or not VIDEO.fullmatch(identifier) for identifier in ids):
                 raise SyncError("Página con IDs incompletos; no se incorporan sus videos.")
+            if cutoff is not None:
+                # La fecha de publicación del video es distinta de su alta en la
+                # playlist. Sin fecha, consultar videos.list antes de decidir.
+                ids = list(dict.fromkeys(
+                    item["contentDetails"]["videoId"] for item in page["items"]
+                    if (published := publication_date(item["contentDetails"].get("videoPublishedAt"))) is None
+                    or within_window(published, cutoff, self.now)
+                ))
             yield ids
             token = page.get("nextPageToken")
             if token is None:
@@ -422,20 +465,24 @@ class Sync:
         excluded = set(channel.get("excludedVideoIds", []))
         seen = {row["youtubeVideoId"] for row in rows} | excluded
         discovered = set()
+        rules = self.rules(channel)
+        cutoff = age_cutoff(self.now, rules["maxAgeMonths"])
         for source in channel["sources"]:
             stats["sourcesScanned"] += 1
             try:
-                for ids in self.iter_source(source):
+                for ids in self.iter_source(source, cutoff):
                     discovered.update(ids)
                     new_ids = [identifier for identifier in ids if identifier not in seen]
                     if not new_ids:
                         continue
-                    # Sólo IDs nuevos necesitan metadatos; la comparación se hace
-                    # contra el archivo existente y las otras fuentes del canal.
+                    # En replace, rows empieza vacío y se revalidan también los
+                    # videos que ya estaban publicados.
                     items = self.api.videos(new_ids)
                     for identifier in new_ids:
-                        status, _, metadata = assess(items[identifier], self.rules(channel), channel.get("playbackMode", "cycle"))
-                        if status == "approved":
+                        item = items[identifier]
+                        status, _, metadata = assess(item, rules, channel.get("playbackMode", "cycle"))
+                        published = publication_date(item.get("snippet", {}).get("publishedAt")) if item else None
+                        if status == "approved" and within_window(published, cutoff, self.now):
                             row = {"youtubeVideoId": identifier}
                             if channel.get("playbackMode", "cycle") == "cycle":
                                 row["durationSeconds"] = metadata["durationSeconds"]
@@ -459,14 +506,25 @@ class Sync:
             items = self.api.videos(batch)
             unavailable = {identifier for identifier in batch
                            if assess(items[identifier], self.rules(channel), channel.get("playbackMode", "cycle"))[0] == "unavailable"}
+            if channel.get("updateMode", "append") == "replace":
+                cutoff = age_cutoff(self.now, self.rules(channel)["maxAgeMonths"])
+                unavailable.update(identifier for identifier in batch if items[identifier] is not None and
+                                   not within_window(publication_date(items[identifier].get("snippet", {}).get("publishedAt")), cutoff, self.now))
             stats["checkedVideos"] += len(batch)
             previous_length = len(rows)
             rows[:] = [row for row in rows if row["youtubeVideoId"] not in unavailable]
             stats["removedVideos"] += previous_length - len(rows)
 
-    def publish(self, channel, entry, path, old, rows):
+    def publish(self, channel, entry, path, old, rows, allow_empty=False):
         mode = channel.get("playbackMode", "cycle")
         if not rows:
+            if allow_empty and entry:
+                # Un reemplazo completo sin resultados retira el canal del índice:
+                # Android no admite listas vacías y no debe mostrar material viejo.
+                self.index["channels"].remove(entry)
+                save(self.root / "channels.json", self.index)
+                path.unlink(missing_ok=True)
+                return "unpublished_empty"
             # Android no admite listas vacías. Mantener la última válida.
             return "held_empty" if old else "awaiting_valid_videos"
         if mode == "live":
@@ -500,6 +558,9 @@ class Sync:
             stats = {"at": self.when, "mode": mode, "result": "success", "sourcesScanned": 0,
                      "discoveredIds": 0, "addedVideos": 0, "filteredVideos": 0, "checkedVideos": 0,
                      "removedVideos": len(old["videos"]) - len(rows) if old else 0, "errors": []}
+            replace = channel.get("updateMode", "append") == "replace"
+            if replace and mode == "daily":
+                rows = []
             if exhausted:
                 stats.update(result="skipped", errors=["Sin cuota disponible; canal pendiente."])
             else:
@@ -515,7 +576,16 @@ class Sync:
                 if stats["errors"]:
                     stats["result"] = "partial"
             self.errors.extend(f"{channel['id']}: {error}" for error in stats["errors"])
-            stats["publication"] = self.publish(channel, entry, path, old, rows)
+            if replace and stats["result"] != "success":
+                stats["publication"] = "held_incomplete" if old else "awaiting_complete_refresh"
+                stats["addedVideos"] = stats["removedVideos"] = 0
+            else:
+                if replace and mode == "daily":
+                    old_ids = {row["youtubeVideoId"] for row in old["videos"]} if old else set()
+                    new_ids = {row["youtubeVideoId"] for row in rows}
+                    stats["addedVideos"] = len(new_ids - old_ids)
+                    stats["removedVideos"] = sum(row["youtubeVideoId"] not in new_ids for row in old["videos"]) if old else 0
+                stats["publication"] = self.publish(channel, entry, path, old, rows, allow_empty=replace)
             self.state["channels"][channel["id"]] = stats
         save(self.root / "channels.json", self.index)
         self.state["lastRun"] = {"at": self.when, "mode": mode, "quotaUnits": self.api.used,

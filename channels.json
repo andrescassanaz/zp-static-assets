@@ -146,6 +146,13 @@
       "name": "Rock Nacional",
       "playbackMode": "cycle",
       "file": "channels/rock-nacional.json"
+    },
+    {
+      "id": "programacion",
+      "number": 22,
+      "name": "Programación",
+      "playbackMode": "cycle",
+      "file": "channels/programacion.json"
     }
   ]
 }

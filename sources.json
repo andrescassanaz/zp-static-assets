@@ -5,6 +5,7 @@
     "minDurationSeconds": 420,
     "maxDurationSeconds": null,
     "music": false,
+    "maxAgeMonths": null,
     "regionCodes": [
       "AR"
     ]
@@ -195,6 +196,20 @@
       "rules": {
         "minDurationSeconds": 50,
         "music": true
+      }
+    },
+    {
+      "id": "programacion",
+      "name": "Programación",
+      "active": true,
+      "playbackMode": "cycle",
+      "updateMode": "replace",
+      "sources": [
+        "@midudev",
+        "@HolaMundoDev"
+      ],
+      "rules": {
+        "maxAgeMonths": 2
       }
     },
     {

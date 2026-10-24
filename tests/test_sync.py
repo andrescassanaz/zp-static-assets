@@ -255,7 +255,178 @@ class Integration(unittest.TestCase):
         self.assertEqual({"videos": [{"youtubeVideoId": A}]}, self.published())
 
 
+class Refresh(unittest.TestCase):
+    write_config = Integration.write_config
+    run_sync = Integration.run_sync
+    published = Integration.published
+    create_existing = Integration.create_existing
+
+    def setUp(self):
+        Integration.setUp(self)
+        self.channel = self.config["channels"][0]
+        self.channel.update(updateMode="replace", rules={"maxAgeMonths": 2})
+        self.write_config()
+
+    def test_replace_rebuilds_from_sources_and_revalidates_existing_ids(self):
+        self.create_existing()
+        self.channel["sources"] = [A, C, D]
+        self.write_config()
+        api = FakeAPI({A: video(), C: video(C), D: video(D, audio="en")})
+        result, _ = self.run_sync(api)
+        self.assertEqual(0, result)
+        self.assertEqual([A, C], [row["youtubeVideoId"] for row in self.published()["videos"]])
+        self.assertEqual("manual", self.published()["custom"])
+        self.assertEqual([[A], [C], [D]], [params["ids"] for resource, params in api.calls if resource == "videos"])
+        stats = sync.load(self.root / "sync-state.json")["channels"]["test"]
+        self.assertEqual(1, stats["addedVideos"])
+        self.assertEqual(1, stats["removedVideos"])
+
+    def test_window_includes_cutoff_but_rejects_older_future_and_unknown_dates(self):
+        self.channel["sources"] = ["PLabcdefghijklmnop"]
+        self.write_config()
+        cutoff = "2026-08-23T12:00:00Z"
+        for published, accepted in [(cutoff, True), ("2026-08-23T11:59:59Z", False),
+                                    ("2026-10-23T12:00:00Z", True), ("2026-10-23T12:00:01Z", False),
+                                    (None, False), ("bad", False), ("2026-10-20", False),
+                                    ("2026-08-23T09:00:00-03:00", True)]:
+            with self.subTest(published=published):
+                item = video()
+                item["snippet"]["publishedAt"] = published
+                api = FakeAPI({A: item}, {("PLabcdefghijklmnop", None): page([A])})
+                result, _ = self.run_sync(api)
+                self.assertEqual(0, result)
+                self.assertEqual(accepted, (self.root / "channels/test.json").exists())
+
+    def test_append_window_only_filters_incoming_videos(self):
+        self.create_existing((B,), (900,))
+        self.channel["updateMode"] = "append"
+        self.write_config()
+        item = video()
+        item["snippet"]["publishedAt"] = "2026-08-01T00:00:00Z"
+        self.run_sync(FakeAPI({A: item}))
+        self.assertEqual([B], [row["youtubeVideoId"] for row in self.published()["videos"]])
+
+    def test_age_window_inherited_from_defaults_and_overridden_with_null(self):
+        self.channel.pop("rules")
+        self.config["defaults"] = {"maxAgeMonths": 2}
+        self.write_config()
+        item = video()
+        item["snippet"]["publishedAt"] = "2026-01-01T00:00:00Z"
+        self.run_sync(FakeAPI({A: item}))
+        self.assertFalse((self.root / "channels/test.json").exists())
+        self.channel["rules"] = {"maxAgeMonths": None}
+        self.write_config()
+        self.run_sync(FakeAPI({A: item}))
+        self.assertEqual(A, self.published()["videos"][0]["youtubeVideoId"])
+
+    def test_window_moves_on_next_run_and_expires_previously_accepted_video(self):
+        self.run_sync(FakeAPI({A: video()}))
+        self.assertTrue((self.root / "channels/test.json").exists())
+        self.run_sync(FakeAPI({A: video()}), now=datetime(2027, 1, 1, tzinfo=timezone.utc))
+        self.assertFalse((self.root / "channels/test.json").exists())
+        self.assertEqual([], sync.load(self.root / "channels.json")["channels"])
+        self.run_sync(FakeAPI({A: video()}))
+        self.assertTrue((self.root / "channels/test.json").exists())
+
+    def test_old_playlist_dates_skip_metadata_without_stopping_unordered_pages(self):
+        source = "PLabcdefghijklmnop"
+        self.channel["sources"] = [source]
+        self.write_config()
+        old_page = page([A], "p2")
+        old_page["items"][0]["contentDetails"].update(videoPublishedAt="2026-01-01T00:00:00Z")
+        api = FakeAPI({B: video(B)}, {(source, None): old_page, (source, "p2"): page([B])})
+        self.run_sync(api)
+        self.assertEqual([[B]], [params["ids"] for resource, params in api.calls if resource == "videos"])
+        self.assertEqual([B], [row["youtubeVideoId"] for row in self.published()["videos"]])
+
+    def test_replace_failure_on_later_page_preserves_complete_old_file(self):
+        self.create_existing()
+        before = (self.root / "channels/test.json").read_bytes()
+        self.channel["sources"] = ["@autor", D]
+        self.write_config()
+        api = FakeAPI({C: video(C), D: video(D)}, {("UUuploads", None): page([C], "p2")}, fail="p2")
+        result, _ = self.run_sync(api)
+        self.assertEqual(2, result)
+        self.assertEqual(before, (self.root / "channels/test.json").read_bytes())
+        self.assertEqual("held_incomplete", sync.load(self.root / "sync-state.json")["channels"]["test"]["publication"])
+
+    def test_replace_quota_failure_and_failed_first_run_do_not_publish_partial(self):
+        for existing in (False, True):
+            with self.subTest(existing=existing):
+                if existing:
+                    self.create_existing()
+                result, _ = self.run_sync(FakeAPI(fail=sync.QuotaError("Sin cuota")))
+                self.assertEqual(2, result)
+                self.assertEqual(existing, (self.root / "channels/test.json").exists())
+
+    def test_replace_without_window_replaces_all_history_and_noop_keeps_bytes(self):
+        self.create_existing()
+        self.channel["rules"]["maxAgeMonths"] = None
+        self.write_config()
+        item = video()
+        item["snippet"].pop("publishedAt")
+        self.run_sync(FakeAPI({A: item}))
+        path = self.root / "channels/test.json"
+        before = (path.read_bytes(), path.stat().st_mtime_ns)
+        self.run_sync(FakeAPI({A: item}), now=NOW + timedelta(days=1))
+        self.assertEqual(before, (path.read_bytes(), path.stat().st_mtime_ns))
+
+    def test_replace_maintenance_removes_expired_videos(self):
+        self.create_existing()
+        old_item = video()
+        old_item["snippet"]["publishedAt"] = "2026-01-01T00:00:00Z"
+        self.run_sync(FakeAPI({A: old_item, B: video(B)}), mode="maintenance")
+        self.assertEqual([B], [row["youtubeVideoId"] for row in self.published()["videos"]])
+
+    def test_replace_deduplicates_sources_and_honors_exclusions(self):
+        source = "PLabcdefghijklmnop"
+        self.channel.update(sources=[A, source], excludedVideoIds=[B])
+        self.write_config()
+        api = FakeAPI({A: video(), B: video(B), C: video(C)}, {(source, None): page([A, B, C, C])})
+        self.run_sync(api)
+        self.assertEqual([A, C], [row["youtubeVideoId"] for row in self.published()["videos"]])
+        self.assertEqual([[A], [C]], [params["ids"] for resource, params in api.calls if resource == "videos"])
+
+    def test_replace_metadata_error_after_verified_source_preserves_old(self):
+        self.create_existing()
+        before = self.published()
+        self.channel["sources"] = [C, D]
+        self.write_config()
+        class MetadataFailure(FakeAPI):
+            def videos(self, ids):
+                if D in ids:
+                    raise sync.SyncError("Metadatos incompletos")
+                return super().videos(ids)
+        result, _ = self.run_sync(MetadataFailure({C: video(C)}))
+        self.assertEqual(2, result)
+        self.assertEqual(before, self.published())
+
+    def test_invalid_options_rejected_before_api_calls(self):
+        for options in [{"updateMode": "erase"}, {"updateMode": None}, {"updateMode": []},
+                        {"rules": {"maxAgeMonths": 0}}, {"rules": {"maxAgeMonths": -1}},
+                        {"rules": {"maxAgeMonths": 1.5}}, {"rules": {"maxAgeMonths": True}},
+                        {"rules": {"maxAgeMonths": "2"}}, {"sources": []}]:
+            with self.subTest(options=options):
+                before = deepcopy(self.channel)
+                self.channel.update(options)
+                self.write_config()
+                with self.assertRaises(sync.SyncError):
+                    self.run_sync(FakeAPI())
+                self.channel.clear()
+                self.channel.update(before)
+
+
 class Validation(unittest.TestCase):
+    def test_calendar_month_cutoff_clamps_day_and_preserves_utc_time(self):
+        for instant, months, expected in [
+            ("2026-10-24T12:34:56Z", 2, "2026-08-24T12:34:56Z"),
+            ("2026-03-31T12:34:56Z", 1, "2026-02-28T12:34:56Z"),
+            ("2024-03-31T12:34:56Z", 1, "2024-02-29T12:34:56Z"),
+            ("2026-01-31T12:34:56Z", 2, "2025-11-30T12:34:56Z")]:
+            with self.subTest(instant=instant):
+                self.assertEqual(expected, sync.stamp(sync.age_cutoff(sync.date(instant), months)))
+        self.assertIsNone(sync.age_cutoff(NOW, None))
+
     def test_mixed_source_types(self):
         cases = {"UC" + "x" * 22: "channel", "@nombre": "handle", "PLabcdefghijk": "playlist", A: "video",
                  "playlist:short": "playlist", "video:" + B: "video"}
@@ -305,6 +476,13 @@ class Validation(unittest.TestCase):
             {"youtubeVideoId": A, "durationSeconds": 600}, {"youtubeVideoId": B, "durationSeconds": 900}]}
         anchor = sync.anchor_update(old, old["videos"][1:], NOW)
         self.assertEqual(100, int((NOW - sync.date(anchor)).total_seconds()) % 900)
+
+    def test_shortened_current_program_aligns_next_at_old_natural_end(self):
+        old = {"cycleStartsAt": sync.stamp(NOW - timedelta(seconds=550)), "videos": [
+            {"youtubeVideoId": A, "durationSeconds": 600}, {"youtubeVideoId": B, "durationSeconds": 900}]}
+        rows = [{"youtubeVideoId": A, "durationSeconds": 500}, old["videos"][1]]
+        anchor = sync.anchor_update(old, rows, NOW)
+        self.assertEqual(NOW + timedelta(seconds=50), sync.date(anchor) + timedelta(seconds=500))
 
     def test_utc_dates_require_complete_timestamp_and_preserve_fraction(self):
         for value in ["2026-10-23Z", "2026-10-23T00:00:00+00:00", "invalidZ", None]:
