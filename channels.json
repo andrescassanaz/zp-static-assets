@@ -1,11 +1,11 @@
 {
   "channels": [
     {
-      "id": "viajeros-tv",
+      "id": "viajes",
       "number": 1,
-      "name": "Viajeros TV",
+      "name": "Viajes",
       "playbackMode": "cycle",
-      "file": "channels/viajeros-tv.json"
+      "file": "channels/viajes.json"
     },
     {
       "id": "autos",
@@ -15,11 +15,11 @@
       "file": "channels/autos.json"
     },
     {
-      "id": "cocineros",
+      "id": "comida",
       "number": 3,
-      "name": "Cocineros",
+      "name": "Comida",
       "playbackMode": "cycle",
-      "file": "channels/cocineros.json"
+      "file": "channels/comida.json"
     },
     {
       "id": "automovilismo",
@@ -125,7 +125,15 @@
       "name": "Capusotto",
       "playbackMode": "cycle",
       "file": "channels/capusotto.json"
+    },
+    {
+      "id": "historia",
+      "number": 19,
+      "name": "Historia",
+      "playbackMode": "cycle",
+      "file": "channels/historia.json"
     }
+
 
 
   ]

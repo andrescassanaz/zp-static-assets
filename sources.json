@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "quotaBudget": 2500,
+  "defaults": {
+    "minDurationSeconds": 420,
+    "maxDurationSeconds": null,
+    "music": false,
+    "regionCodes": [
+      "AR"
+    ]
+  },
+  "channels": [
+    {
+      "id": "viajes",
+      "name": "Viajes",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    },
+    {
+      "id": "autos",
+      "name": "Autos",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    },
+    {
+      "id": "comida",
+      "name": "Comida",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": [
+        "@paulinacocina",
+        "@MarcosDiCesare",
+        "@LocosXelAsadoOficial",
+        "PLNmiVFA6YxeX8KsYBSml3RVDQlzOjGpPO",
+        "PLb4Y1rF-xrMTpSx8CM_IByQPXlFWYoGBN",
+        "PLvQQTTvZqMb4ySiWmai7xcFMl2670M4CW",
+        "PLKquGwKzE9TjM9I4bdGQXkcuwAhZGdrqm",
+        "PL8yDHRMKtx8zRHq5zp6P6lDYBngmkyDKl",
+        "PL8yDHRMKtx8znw20rDI4enMSXwISPBYEl",
+        "PL8yDHRMKtx8zDmaQ07Lk1jaPsM3IVGI-9",
+        "PL8yDHRMKtx8wjFpDA0VSFsoGzmw0NUG1k",
+        "PL8yDHRMKtx8y4QgYidUY4cFNN-X7TwrkY",
+        "PL8yDHRMKtx8xzWYu0Y8sTOuKFtO8LeOPT",
+        "PL8yDHRMKtx8yCl6pUKjC0HXHV17mU8ic1",
+        "PL8yDHRMKtx8yXM1_aGeVv0VQRLLXDH7gf",
+        "@TenedorLibreOK",
+        "@isabelvermal",
+        "@cukit",
+        "@cucinare",
+        "@lacapitalcocina"
+      ]
+    },
+    {
+      "id": "automovilismo",
+      "name": "Automovilismo",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    },
+    {
+      "id": "tn",
+      "name": "TN",
+      "active": true,
+      "playbackMode": "live",
+      "sources": []
+    },
+    {
+      "id": "cronica",
+      "name": "Crónica",
+      "active": true,
+      "playbackMode": "live",
+      "sources": []
+    },
+    {
+      "id": "c5n",
+      "name": "C5N",
+      "active": true,
+      "playbackMode": "live",
+      "sources": []
+    },
+    {
+      "id": "a24",
+      "name": "A24",
+      "active": true,
+      "playbackMode": "live",
+      "sources": []
+    },
+    {
+      "id": "ln-plus",
+      "name": "LN+",
+      "active": true,
+      "playbackMode": "live",
+      "sources": []
+    },
+    {
+      "id": "el-nueve",
+      "name": "El Nueve",
+      "active": true,
+      "playbackMode": "live",
+      "sources": []
+    },
+    {
+      "id": "america-noticias",
+      "name": "América Noticias",
+      "active": true,
+      "playbackMode": "live",
+      "sources": []
+    },
+    {
+      "id": "telefe-noticias",
+      "name": "Telefe Noticias",
+      "active": true,
+      "playbackMode": "live",
+      "sources": []
+    },
+    {
+      "id": "standup",
+      "name": "StandUp",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    },
+    {
+      "id": "documentales",
+      "name": "Documentales",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    },
+    {
+      "id": "ultimos-cartuchos",
+      "name": "Ultimos Cartuchos",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    },
+    {
+      "id": "infantil",
+      "name": "Infantil",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    },
+    {
+      "id": "falopita",
+      "name": "Falopita",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    },
+    {
+      "id": "capusotto",
+      "name": "Capusotto",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    },
+    {
+      "id": "historia",
+      "name": "Historia",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    }
+  ]
+}
