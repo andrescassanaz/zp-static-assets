@@ -9,7 +9,6 @@ on:
     branches: [main]
     paths:
       - sources.json
-      - catalog/**
       - channels.json
       - channels/**
       - scripts/**
@@ -49,7 +48,7 @@ jobs:
           python-version: '3.12'
       - name: Pruebas sin API ni secretos
         run: python -m unittest discover -s tests -v
-      - name: Validar configuración y catálogo
+      - name: Validar configuración y listas
         run: python scripts/sync.py --mode validate
       - name: Sincronizar
         id: sync
@@ -72,11 +71,11 @@ jobs:
       - name: Guardar cambios y avance parcial
         shell: bash
         run: |
-          git add -- channels.json channels/ catalog/ sync-state.json
+          git add -- channels.json channels/ sync-state.json
           if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git commit -m 'chore: sincronizar catálogo de YouTube'
+            git commit -m 'chore: actualizar videos de canales'
             # Si alguien publicó mientras se consultaba YouTube, no sobrescribir
             # su curaduría mediante force-push ni un rebase de assets generados.
             git push origin HEAD:main

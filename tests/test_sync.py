@@ -65,7 +65,7 @@ class Integration(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
         sync.save(self.root / "channels.json", {"channels": []})
-        self.config = {"version": 1, "quotaBudget": 100, "maxPagesPerSource": 2,
+        self.config = {"version": 1, "quotaBudget": 100,
                        "channels": [{"id": "test", "name": "Prueba", "sources": [A]}]}
         self.write_config()
 
@@ -73,38 +73,35 @@ class Integration(unittest.TestCase):
         sync.save(self.root / "sources.json", self.config)
 
     def run_sync(self, api=None, mode="daily", now=NOW):
-        engine = sync.Sync(self.root, api, now)
-        result = engine.run(mode)
-        return result, engine
+        engine = sync.Sync(self.root, api or FakeAPI(), now)
+        return engine.run(mode), engine
 
     def published(self):
         return sync.load(self.root / "channels/test.json")
 
-    def records(self):
-        return sync.load(self.root / "catalog/test.json")["videos"]
-
-    def create_existing(self, ids=(A, B), durations=(600, 900), origin=None):
-        origin = origin or NOW - timedelta(seconds=3700)
+    def create_existing(self, ids=(A, B), durations=(600, 900)):
         sync.save(self.root / "channels.json", {"extra": "manual", "channels": [{"id": "test", "number": 7,
                   "name": "Nombre manual", "playbackMode": "cycle", "file": "channels/test.json", "logo": "manual"}]})
-        sync.save(self.root / "channels/test.json", {"cycleStartsAt": sync.stamp(origin), "custom": "manual",
+        sync.save(self.root / "channels/test.json", {"cycleStartsAt": sync.stamp(NOW - timedelta(seconds=3700)), "custom": "manual",
                   "videos": [{"youtubeVideoId": identifier, "durationSeconds": seconds, "note": "manual"}
                              for identifier, seconds in zip(ids, durations)]})
-        self.run_sync(mode="bootstrap")
 
-    def test_create_channel_and_compatible_json(self):
+    def test_create_channel_and_compatible_json_without_catalog(self):
         result, _ = self.run_sync(FakeAPI({A: video()}))
         self.assertEqual(0, result)
         self.assertEqual({"cycleStartsAt": sync.stamp(NOW), "videos": [{"youtubeVideoId": A, "durationSeconds": 600}]}, self.published())
         entry = sync.load(self.root / "channels.json")["channels"][0]
         self.assertEqual({"id": "test", "name": "Prueba", "number": 1, "file": "channels/test.json", "playbackMode": "cycle"}, entry)
-        self.assertEqual("approved", self.records()[A]["status"])
+        self.assertFalse((self.root / "catalog").exists())
+        state = sync.load(self.root / "sync-state.json")
+        self.assertNotIn("knownIds", str(state))
+        self.assertNotIn("publishedIds", str(state))
+        self.assertNotIn("pageToken", str(state))
 
-    def test_new_channel_not_published_without_approved_videos(self):
+    def test_channel_not_published_without_valid_videos(self):
         self.run_sync(FakeAPI({A: video(audio=None)}))
         self.assertFalse((self.root / "channels/test.json").exists())
         self.assertEqual([], sync.load(self.root / "channels.json")["channels"])
-        self.assertEqual("pending", self.records()[A]["status"])
 
     def test_noop_keeps_public_bytes_and_mtime(self):
         self.run_sync(FakeAPI({A: video()}))
@@ -130,114 +127,96 @@ class Integration(unittest.TestCase):
         self.assertEqual(7, entry["number"])
         self.assertEqual("manual", entry["logo"])
 
-    def test_manual_removal_never_reimported(self):
+    def test_full_upload_history_even_when_first_page_already_exists(self):
         self.create_existing()
-        playlist = self.published()
-        playlist["videos"] = playlist["videos"][1:]
-        sync.save(self.root / "channels/test.json", playlist)
+        self.config["channels"][0]["sources"] = ["@autor"]
+        self.write_config()
+        pages = {("UUuploads", None): page([A], "p2"), ("UUuploads", "p2"): page([B], "p3"), ("UUuploads", "p3"): page([C])}
+        api = FakeAPI({C: video(C)}, pages)
+        self.run_sync(api)
+        self.assertEqual([None, "p2", "p3"], [params.get("pageToken") for resource, params in api.calls if resource == "playlistItems"])
+        self.assertEqual([[C]], [params["ids"] for resource, params in api.calls if resource == "videos"])
+        self.assertEqual([A, B, C], [row["youtubeVideoId"] for row in self.published()["videos"]])
+
+    def test_full_playlist_scanned_again_and_tail_insertion_found(self):
+        source = "PLabcdefghijklmnop"
+        self.config["channels"][0]["sources"] = [source]
+        self.write_config()
+        self.run_sync(FakeAPI({A: video(), B: video(B)}, {(source, None): page([A], "p2"), (source, "p2"): page([B])}))
+        pages = {(source, None): page([A], "p2"), (source, "p2"): page([B], "p3"), (source, "p3"): page([C], "p4"), (source, "p4"): page([D])}
+        api = FakeAPI({C: video(C), D: video(D)}, pages)
+        self.run_sync(api, now=NOW + timedelta(days=1))
+        self.assertEqual([None, "p2", "p3", "p4"], [params.get("pageToken") for resource, params in api.calls if resource == "playlistItems"])
+        self.assertEqual([A, B, C, D], [row["youtubeVideoId"] for row in self.published()["videos"]])
+        self.assertEqual([[C], [D]], [params["ids"] for resource, params in api.calls if resource == "videos"])
+
+    def test_duplicate_across_sources_and_pages_queried_once(self):
+        source = "PLabcdefghijklmnop"
+        self.config["channels"][0]["sources"] = [A, source]
+        self.write_config()
+        api = FakeAPI({A: video(), B: video(B)}, {(source, None): page([A, A, B], "p2"), (source, "p2"): page([A, B])})
+        self.run_sync(api)
+        self.assertEqual([[A], [B]], [params["ids"] for resource, params in api.calls if resource == "videos"])
+        self.assertEqual([A, B], [row["youtubeVideoId"] for row in self.published()["videos"]])
+
+    def test_existing_repeated_rows_are_preserved(self):
+        self.create_existing((A, A), (600, 600))
+        before = self.published()
+        self.run_sync(FakeAPI())
+        self.assertEqual(before, self.published())
+
+    def test_exclusion_blocks_readdition_and_removes_existing_id(self):
+        self.create_existing()
+        self.config["channels"][0]["excludedVideoIds"] = [A]
+        self.write_config()
+        api = FakeAPI({A: video()})
+        self.run_sync(api)
+        self.assertEqual([B], [row["youtubeVideoId"] for row in self.published()["videos"]])
+        self.assertEqual([], api.calls)
+
+    def test_deleted_id_without_exclusion_is_compared_as_new(self):
+        self.create_existing((B,), (900,))
         self.run_sync(FakeAPI({A: video()}))
-        self.assertEqual([B], [row["youtubeVideoId"] for row in self.published()["videos"]])
-        self.assertTrue(self.records()[A]["manualRemoval"])
-        self.assertEqual("rejected", self.records()[A]["status"])
+        self.assertEqual([B, A], [row["youtubeVideoId"] for row in self.published()["videos"]])
 
-    def test_explicit_rejection_and_notes_survive_maintenance(self):
-        self.create_existing()
-        catalog = sync.load(self.root / "catalog/test.json")
-        catalog["videos"][A].update(manualDecision="rejected", note="No corresponde")
-        sync.save(self.root / "catalog/test.json", catalog)
-        self.run_sync(FakeAPI({A: video(), B: video(B)}), mode="maintenance")
-        self.assertEqual("No corresponde", self.records()[A]["note"])
-        self.assertEqual([B], [row["youtubeVideoId"] for row in self.published()["videos"]])
+    def test_invalid_exclusion_fails_before_any_calls(self):
+        self.config["channels"][0]["excludedVideoIds"] = ["invalid"]
+        self.write_config()
+        with self.assertRaises(sync.SyncError):
+            self.run_sync(FakeAPI())
 
-    def test_missing_becomes_unavailable_and_recovers(self):
+    def test_missing_video_removed_during_maintenance(self):
         self.create_existing()
         self.run_sync(FakeAPI({B: video(B)}), mode="maintenance")
-        self.assertEqual("unavailable", self.records()[A]["status"])
-        # Una baja automática NO se convierte en baja manual en la ejecución siguiente.
-        self.run_sync(FakeAPI({A: video()}), now=NOW + timedelta(days=1))
-        self.assertEqual([B, A], [row["youtubeVideoId"] for row in self.published()["videos"]])
-        self.assertNotIn("manualRemoval", self.records()[A])
+        self.assertEqual([B], [row["youtubeVideoId"] for row in self.published()["videos"]])
 
     def test_all_unavailable_holds_last_nonempty_programming(self):
         self.create_existing()
         before = self.published()
         self.run_sync(FakeAPI(), mode="maintenance")
         self.assertEqual(before, self.published())
-        self.assertEqual("unavailable", self.records()[A]["status"])
         state = sync.load(self.root / "sync-state.json")
         self.assertEqual("held_empty", state["channels"]["test"]["publication"])
 
-    def test_pending_reevaluated_without_rescanning_source(self):
-        self.run_sync(FakeAPI({A: video(audio=None)}))
-        self.run_sync(FakeAPI({A: video()}), now=NOW + timedelta(days=1))
-        self.assertEqual("approved", self.records()[A]["status"])
-        self.assertTrue((self.root / "channels/test.json").exists())
-
-    def test_manual_approval_cannot_bypass_missing_language(self):
-        self.run_sync(FakeAPI({A: video(audio=None)}))
-        catalog = sync.load(self.root / "catalog/test.json")
-        catalog["videos"][A].update(status="approved", manualDecision="approved")
-        sync.save(self.root / "catalog/test.json", catalog)
-        self.run_sync(FakeAPI(), now=NOW + timedelta(days=1))
-        self.assertFalse((self.root / "channels/test.json").exists())
-
-    def test_manual_hold_remains_pending(self):
-        self.run_sync(FakeAPI({A: video(audio=None)}))
-        catalog = sync.load(self.root / "catalog/test.json")
-        catalog["videos"][A]["manualDecision"] = "pending"
-        sync.save(self.root / "catalog/test.json", catalog)
-        self.run_sync(FakeAPI({A: video()}), now=NOW + timedelta(days=1))
-        self.assertEqual("pending", self.records()[A]["status"])
-        self.assertFalse((self.root / "channels/test.json").exists())
-
-    def test_uploads_stops_on_known_page_and_resolves_handle_once(self):
-        self.config["channels"][0]["sources"] = ["@autor"]
-        self.write_config()
-        self.run_sync(FakeAPI({A: video()}, {("UUuploads", None): page([A])}))
-        api = FakeAPI({B: video(B)}, {("UUuploads", None): page([B], "old"), ("UUuploads", "old"): page([A], "history")})
-        self.run_sync(api, now=NOW + timedelta(days=1))
-        self.assertEqual(["playlistItems", "videos", "playlistItems"], [resource for resource, _ in api.calls])
+    def test_existing_duration_and_language_not_rewritten(self):
+        self.create_existing()
+        self.run_sync(FakeAPI({A: video(seconds=750), B: video(B, audio=None)}), mode="maintenance")
+        self.assertEqual(600, self.published()["videos"][0]["durationSeconds"])
         self.assertEqual([A, B], [row["youtubeVideoId"] for row in self.published()["videos"]])
 
-    def test_backfill_resumes_without_fetching_old_metadata(self):
-        self.config["channels"][0]["sources"] = ["@autor"]
-        self.write_config()
-        pages = {("UUuploads", None): page([A], "p2"), ("UUuploads", "p2"): page([B], "p3"), ("UUuploads", "p3"): page([C])}
-        self.run_sync(FakeAPI({A: video(), B: video(B)}, pages))
-        api = FakeAPI({C: video(C)}, pages)
-        self.run_sync(api, now=NOW + timedelta(days=1))
-        self.assertEqual([None, "p3"], [params.get("pageToken") for resource, params in api.calls if resource == "playlistItems"])
-        self.assertEqual([[C]], [params["ids"] for resource, params in api.calls if resource == "videos"])
-
-    def test_large_new_upload_burst_resumes_even_when_initialized(self):
-        self.config["channels"][0]["sources"] = ["@autor"]
-        self.write_config()
-        self.run_sync(FakeAPI({A: video()}, {("UUuploads", None): page([A])}))
-        pages = {("UUuploads", None): page([B], "p2"), ("UUuploads", "p2"): page([C], "p3"), ("UUuploads", "p3"): page([D])}
-        self.run_sync(FakeAPI({B: video(B), C: video(C)}, pages), now=NOW + timedelta(days=1))
-        self.run_sync(FakeAPI({D: video(D)}, pages), now=NOW + timedelta(days=2))
-        self.assertIn(D, self.records())
-
-    def test_playlist_tail_insertion_is_found_despite_known_head(self):
-        source = "PLabcdefghijklmnop"
-        self.config["channels"][0]["sources"] = [source]
-        self.write_config()
-        self.run_sync(FakeAPI({A: video(), B: video(B)}, {(source, None): page([A], "p2"), (source, "p2"): page([B])}))
-        pages = {(source, None): page([A], "p2"), (source, "p2"): page([B], "p3"), (source, "p3"): page([C])}
-        self.run_sync(FakeAPI({}, pages), now=NOW + timedelta(days=1))
-        self.run_sync(FakeAPI({C: video(C)}, pages), now=NOW + timedelta(days=2))
-        self.assertIn(C, self.records())
-
-    def test_failed_page_does_not_advance_cursor(self):
-        self.config["channels"][0]["sources"] = ["@autor"]
-        self.write_config()
-        pages = {("UUuploads", None): page([A], "p2")}
-        result, _ = self.run_sync(FakeAPI({A: video()}, pages, fail="p2"))
-        self.assertEqual(2, result)
-        state = sync.load(self.root / "sync-state.json")["channels"]["test"]["sources"]["@autor"]
-        self.assertEqual("p2", state["backfillToken"])
-        self.assertEqual([A], state["knownIds"])
+    def test_pending_metadata_is_retried_from_sources_next_run(self):
+        self.run_sync(FakeAPI({A: video(audio=None)}))
+        self.assertFalse((self.root / "channels/test.json").exists())
+        self.run_sync(FakeAPI({A: video()}), now=NOW + timedelta(days=1))
         self.assertEqual(A, self.published()["videos"][0]["youtubeVideoId"])
+
+    def test_source_failure_keeps_verified_pages_and_other_sources_work(self):
+        self.config["channels"][0]["sources"] = ["@autor", B]
+        self.write_config()
+        api = FakeAPI({A: video(), B: video(B)}, {("UUuploads", None): page([A], "p2")}, fail="p2")
+        result, _ = self.run_sync(api)
+        self.assertEqual(2, result)
+        self.assertEqual([A, B], [row["youtubeVideoId"] for row in self.published()["videos"]])
 
     def test_quota_error_preserves_existing_programming(self):
         self.create_existing()
@@ -245,24 +224,13 @@ class Integration(unittest.TestCase):
         result, _ = self.run_sync(FakeAPI(fail=sync.QuotaError("Presupuesto agotado")), mode="maintenance")
         self.assertEqual(2, result)
         self.assertEqual(before, self.published())
-        self.assertEqual("approved", self.records()[A]["status"])
 
-    def test_failed_metadata_request_does_not_register_video_as_known(self):
+    def test_metadata_failure_does_not_append_unverified_id(self):
+        self.create_existing((B,), (900,))
+        before = self.published()
         result, _ = self.run_sync(FakeAPI(fail=sync.SyncError("Error de red")))
         self.assertEqual(2, result)
-        self.assertEqual({}, self.records())
-        state = sync.load(self.root / "sync-state.json")["channels"]["test"]["sources"][A]
-        self.assertNotIn("knownIds", state)
-
-    def test_duplicate_across_sources_queried_once(self):
-        source = "PLabcdefghijklmnop"
-        self.config["channels"][0]["sources"] = [A, source]
-        self.write_config()
-        api = FakeAPI({A: video()}, {(source, None): page([A])})
-        self.run_sync(api)
-        self.assertEqual(1, sum(resource == "videos" for resource, _ in api.calls))
-        self.assertEqual([A, source], self.records()[A]["sources"])
-        self.assertEqual(1, len(self.published()["videos"]))
+        self.assertEqual(before, self.published())
 
     def test_inactive_channel_untouched(self):
         self.config["channels"][0]["active"] = False
@@ -270,7 +238,7 @@ class Integration(unittest.TestCase):
         api = FakeAPI()
         self.run_sync(api)
         self.assertEqual([], api.calls)
-        self.assertFalse((self.root / "catalog/test.json").exists())
+        self.assertFalse((self.root / "channels/test.json").exists())
 
     def test_duplicate_explicit_number_rejected(self):
         self.config["channels"][0]["number"] = 1
@@ -278,23 +246,6 @@ class Integration(unittest.TestCase):
         self.write_config()
         with self.assertRaises(sync.SyncError):
             sync.Sync(self.root, None)
-
-    def test_invalid_catalog_fails_before_calls_or_mutation(self):
-        self.create_existing()
-        path = self.root / "catalog/test.json"
-        catalog = sync.load(path)
-        catalog["videos"][A]["status"] = "aprobado"
-        sync.save(path, catalog)
-        api = FakeAPI()
-        with self.assertRaises(sync.SyncError):
-            self.run_sync(api)
-        self.assertEqual([], api.calls)
-
-    def test_legacy_duration_not_overwritten_by_metadata(self):
-        self.create_existing()
-        self.run_sync(FakeAPI({A: video(seconds=750), B: video(B, audio=None)}), mode="maintenance")
-        self.assertEqual(600, self.published()["videos"][0]["durationSeconds"])
-        self.assertEqual("approved", self.records()[B]["status"])
 
     def test_live_creation_compatible(self):
         self.config["channels"][0]["playbackMode"] = "live"

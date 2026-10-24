@@ -10,7 +10,6 @@ on:
       - sources.json
       - channels.json
       - channels/**
-      - catalog/**
       - .github/workflows/**
 
 permissions:

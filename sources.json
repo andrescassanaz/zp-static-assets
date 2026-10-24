@@ -1,7 +1,6 @@
 {
   "version": 1,
   "quotaBudget": 2500,
-  "maxPagesPerSource": 20,
   "defaults": {
     "minDurationSeconds": 420,
     "maxDurationSeconds": null,
