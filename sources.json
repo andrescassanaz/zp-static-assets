@@ -163,6 +163,39 @@
       "active": true,
       "playbackMode": "cycle",
       "sources": []
+    },
+    {
+      "id": "gaming",
+      "name": "Gaming",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": [
+        "@newgameplusok",
+        "@TiempodeVideojuegos",
+        "@facu_peralta",
+        "@ElBarDelVicio",
+        "@ShuxTeam",
+        "@cinematixfilms",
+        "@ElBandicoot"
+      ],
+      "rules": {
+        "minDurationSeconds": 240,
+        "music": false
+      }
+    },
+    {
+      "id": "rock-nacional",
+      "name": "Rock Nacional",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": [
+        "PLgiRfgm9s8bx9Rf9-yaPkGL1eiGIMkrO8",
+        "PLu-6KovYENmuiguSOnW0AxC5fISe5zwJV"
+      ],
+      "rules": {
+        "minDurationSeconds": 50,
+        "music": true
+      }
     }
   ]
 }
