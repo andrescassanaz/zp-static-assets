@@ -196,6 +196,30 @@
         "minDurationSeconds": 50,
         "music": true
       }
+    },
+    {
+      "id": "entrevistas",
+      "name": "Entrevistas",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": [
+        "PLpc3AmLBvqhSytALloNPzZ5wBWcj4f-ks",
+        "PLaw1K4GjZVeOZvCiwxqBvHjUwnKFd8Jw3",
+        "@terapiapicante",
+        "PLMwrzCltp4MiLtuLHGsrcnnQotsz2rfZP",
+        "PLMwrzCltp4MiThVCrQJQNAxzU4Klv61jQ",
+        "PLMwrzCltp4MgYbmp4X3xW774r9TB2jCZi",
+        "PLMwrzCltp4Mgt2qmijwRr1rdbQLSYhJDW",
+        "PLrYeaDpClt33OD3orEdZ2GUBqG03z5a2U",
+        "@LaFabricaDelPodcast",
+        "PLyiXsPYtPBcNTw1PL4gmQyd4dspSC3qt9",
+        "PLXQRjCkgvGB2_5_xWWnyps0UncY2ZC_SI",
+        "PLl5jUNg2Ta8XGcqXUmi0lm_H-lNTcMw_2"
+      ],
+      "rules": {
+        "minDurationSeconds": 600,
+        "music": false
+      }
     }
   ]
 }
