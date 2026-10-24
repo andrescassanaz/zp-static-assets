@@ -148,8 +148,15 @@
       "file": "channels/rock-nacional.json"
     },
     {
-      "id": "programacion",
+      "id": "entrevistas",
       "number": 22,
+      "name": "Entrevistas",
+      "playbackMode": "cycle",
+      "file": "channels/entrevistas.json"
+    },
+    {
+      "id": "programacion",
+      "number": 23,
       "name": "Programación",
       "playbackMode": "cycle",
       "file": "channels/programacion.json"
