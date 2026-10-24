@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "quotaBudget": 2500,
+  "maxPagesPerSource": 20,
+  "defaults": {
+    "minDurationSeconds": 420,
+    "maxDurationSeconds": null,
+    "music": false,
+    "regionCodes": [
+      "AR"
+    ]
+  },
+  "channels": [
+    {
+      "id": "viajes",
+      "name": "Viajes",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    },
+    {
+      "id": "autos",
+      "name": "Autos",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    },
+    {
+      "id": "comida",
+      "name": "Comida",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    },
+    {
+      "id": "automovilismo",
+      "name": "Automovilismo",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    },
+    {
+      "id": "tn",
+      "name": "TN",
+      "active": true,
+      "playbackMode": "live",
+      "sources": []
+    },
+    {
+      "id": "cronica",
+      "name": "Crónica",
+      "active": true,
+      "playbackMode": "live",
+      "sources": []
+    },
+    {
+      "id": "c5n",
+      "name": "C5N",
+      "active": true,
+      "playbackMode": "live",
+      "sources": []
+    },
+    {
+      "id": "a24",
+      "name": "A24",
+      "active": true,
+      "playbackMode": "live",
+      "sources": []
+    },
+    {
+      "id": "ln-plus",
+      "name": "LN+",
+      "active": true,
+      "playbackMode": "live",
+      "sources": []
+    },
+    {
+      "id": "el-nueve",
+      "name": "El Nueve",
+      "active": true,
+      "playbackMode": "live",
+      "sources": []
+    },
+    {
+      "id": "america-noticias",
+      "name": "América Noticias",
+      "active": true,
+      "playbackMode": "live",
+      "sources": []
+    },
+    {
+      "id": "telefe-noticias",
+      "name": "Telefe Noticias",
+      "active": true,
+      "playbackMode": "live",
+      "sources": []
+    },
+    {
+      "id": "standup",
+      "name": "StandUp",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    },
+    {
+      "id": "documentales",
+      "name": "Documentales",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    },
+    {
+      "id": "ultimos-cartuchos",
+      "name": "Ultimos Cartuchos",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    },
+    {
+      "id": "infantil",
+      "name": "Infantil",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    },
+    {
+      "id": "falopita",
+      "name": "Falopita",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    },
+    {
+      "id": "capusotto",
+      "name": "Capusotto",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    },
+    {
+      "id": "historia",
+      "name": "Historia",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": []
+    }
+  ]
+}

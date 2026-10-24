@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "channelId": "a24",
+  "videos": {
+    "ArKbAx1K-2U": {
+      "status": "approved",
+      "reason": "legacy_preserved",
+      "legacy": true,
+      "firstSeenAt": "2026-10-24T01:44:46Z",
+      "sources": []
+    }
+  }
+}
