@@ -146,6 +146,13 @@
       "name": "Rock Nacional",
       "playbackMode": "cycle",
       "file": "channels/rock-nacional.json"
+    },
+    {
+      "id": "entrevistas",
+      "number": 22,
+      "name": "Entrevistas",
+      "playbackMode": "cycle",
+      "file": "channels/entrevistas.json"
     }
   ]
 }
