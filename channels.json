@@ -160,6 +160,48 @@
       "name": "Rock Nacional",
       "playbackMode": "cycle",
       "file": "channels/rock-nacional.json"
+    },
+    {
+      "id": "comida",
+      "number": 24,
+      "name": "Comida",
+      "playbackMode": "cycle",
+      "file": "channels/comida.json"
+    },
+    {
+      "id": "deportes",
+      "number": 25,
+      "name": "Deportes",
+      "playbackMode": "cycle",
+      "file": "channels/deportes.json"
+    },
+    {
+      "id": "nba",
+      "number": 26,
+      "name": "Basquet",
+      "playbackMode": "cycle",
+      "file": "channels/nba.json"
+    },
+    {
+      "id": "musica-90",
+      "number": 27,
+      "name": "Musica 90'",
+      "playbackMode": "cycle",
+      "file": "channels/musica-90.json"
+    },
+    {
+      "id": "musica-80",
+      "number": 28,
+      "name": "Musica 80'",
+      "playbackMode": "cycle",
+      "file": "channels/musica-80.json"
+    },
+    {
+      "id": "musica-2000",
+      "number": 29,
+      "name": "Musica 2000'",
+      "playbackMode": "cycle",
+      "file": "channels/musica-2000.json"
     }
   ]
 }
