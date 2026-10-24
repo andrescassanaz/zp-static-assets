@@ -67,7 +67,7 @@ Cada fuente ocupa un elemento independiente:
 
 No admite URLs completas. `playbackMode: live` requiere una única fuente de video individual; no inventa sustitutos cuando termina una emisión. Su JSON contiene un solo ID, sin duración ni origen de ciclo.
 
-`comida` ya tiene las 20 fuentes confirmadas del archivo de referencia `Script extraer IDs/canales.txt`: 8 handles y 12 playlists. Los demás canales conservan sus listas y el mantenimiento semanal; completar sus fuentes para habilitar descubrimiento.
+`cocina` ya tiene las 20 fuentes confirmadas del archivo de referencia `Script extraer IDs/canales.txt`: 8 handles y 12 playlists. Los demás canales conservan sus listas y el mantenimiento semanal; completar sus fuentes para habilitar descubrimiento.
 
 ## Antigüedad y reemplazo
 
@@ -75,7 +75,7 @@ Cada canal de `sources.json` puede configurar estas dos opciones independientes:
 
 | Campo | Valores y comportamiento |
 | --- | --- |
-| `rules.maxAgeMonths` | Entero positivo: admite publicaciones desde esa cantidad de meses calendario antes del inicio de la ejecución, hasta ese inicio, ambos inclusive. `null` u omitido: sin límite de antigüedad. También puede definirse en `defaults`. |
+| `rules.maxAgeDays` | Entero positivo: admite publicaciones desde esa cantidad de días de 24 horas antes del inicio de la ejecución, hasta ese inicio, ambos inclusive. `null` u omitido: sin límite de antigüedad. También puede definirse en `defaults`. |
 | `updateMode` | `"append"` u omitido: suma contenido nuevo y conserva el existente. `"replace"`: reconstruye toda la lista a partir de las fuentes y las reglas actuales; requiere al menos una fuente. |
 
 `programacion` ya está configurado así:
@@ -89,12 +89,12 @@ Cada canal de `sources.json` puede configurar estas dos opciones independientes:
   "updateMode": "replace",
   "sources": ["@midudev", "@HolaMundoDev"],
   "rules": {
-    "maxAgeMonths": 2
+    "maxAgeDays": 60
   }
 }
 ```
 
-Una ejecución el `2026-10-24T12:00:00Z` admite videos publicados desde `2026-08-24T12:00:00Z`. Se mantiene la hora UTC y, si el mes de destino no tiene ese día, se usa su último día (31 de marzo menos un mes da 28 o 29 de febrero). La ventana se recalcula en cada ejecución; no equivale a un número fijo de días. Se usa la fecha de publicación del video, no la fecha en que se agregó a una playlist. Con ventana activa, las fechas ausentes, inválidas o futuras no se admiten.
+Cada día equivale a 24 horas y la ventana se recalcula en cada ejecución, conservando la hora UTC. Por ejemplo, con `maxAgeDays: 2`, una ejecución el `2026-10-24T17:08:00Z` admite videos publicados desde `2026-10-22T17:08:00Z` hasta ese inicio, ambos inclusive: las últimas 48 horas. En Argentina, corresponde al intervalo entre el 22 y el 24 de octubre a las 14:08. Se usa la fecha de publicación del video, no la fecha en que se agregó a una playlist. Con ventana activa, las fechas ausentes, inválidas o futuras no se admiten.
 
 Se siguen recorriendo todas las páginas para encontrar videos recientes aunque la playlist esté desordenada. Cuando `contentDetails.videoPublishedAt` indica que un video está fuera de la ventana, se omite su consulta de metadatos; si falta esa fecha, se consulta `videos.list` y se comprueba `snippet.publishedAt`. Ver [fechas de los elementos de una playlist](https://developers.google.com/youtube/data/reference/rest/v3/playlistItems#contentDetails.videoPublishedAt).
 
@@ -164,7 +164,7 @@ Actions ejecuta:
 
 ```text
 python scripts/sync.py --mode daily
-python scripts/sync.py --mode daily --channel comida
+python scripts/sync.py --mode daily --channel cocina
 python scripts/sync.py --mode daily --channel programacion
 python scripts/sync.py --mode maintenance
 ```

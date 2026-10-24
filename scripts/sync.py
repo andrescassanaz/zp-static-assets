@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import calendar
 from contextlib import contextmanager
 from copy import deepcopy
 from datetime import datetime, timezone, timedelta
@@ -27,7 +26,7 @@ CHANNEL = re.compile(r"UC[A-Za-z0-9_-]{22}\Z")
 SLUG = re.compile(r"[a-z0-9][a-z0-9-]{0,63}\Z")
 DURATION = re.compile(r"P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?)?\Z")
 DEFAULT_RULES = {"minDurationSeconds": 420, "maxDurationSeconds": None,
-                 "music": False, "regionCodes": ["AR"], "maxAgeMonths": None}
+                 "music": False, "regionCodes": ["AR"], "maxAgeDays": None}
 
 
 class SyncError(Exception):
@@ -62,15 +61,13 @@ def publication_date(value) -> datetime | None:
         return None
 
 
-def age_cutoff(now: datetime, months: int | None) -> datetime | None:
-    if months is None:
+def age_cutoff(now: datetime, days: int | None) -> datetime | None:
+    if days is None:
         return None
-    month_index = (now.year - 1) * 12 + now.month - 1 - months
-    if month_index < 0:
+    try:
+        return now - timedelta(days=days)
+    except OverflowError:
         return datetime.min.replace(tzinfo=timezone.utc)
-    year, month = divmod(month_index, 12)
-    year, month = year + 1, month + 1
-    return now.replace(year=year, month=month, day=min(now.day, calendar.monthrange(year, month)[1]))
 
 
 def within_window(published: datetime | None, cutoff: datetime | None, now: datetime) -> bool:
@@ -231,8 +228,8 @@ def read_config(root: Path):
         if update_mode == "replace" and not refs:
             raise SyncError("updateMode=replace requiere al menos una fuente.")
         rules = {**DEFAULT_RULES, **config.get("defaults", {}), **channel.get("rules", {})}
-        if rules["maxAgeMonths"] is not None:
-            positive_int(rules["maxAgeMonths"], "maxAgeMonths")
+        if rules["maxAgeDays"] is not None:
+            positive_int(rules["maxAgeDays"], "maxAgeDays")
         positive_int(rules["minDurationSeconds"], "minDurationSeconds", 0)
         maximum = rules["maxDurationSeconds"]
         if maximum is not None and positive_int(maximum, "maxDurationSeconds") <= rules["minDurationSeconds"]:
@@ -466,7 +463,7 @@ class Sync:
         seen = {row["youtubeVideoId"] for row in rows} | excluded
         discovered = set()
         rules = self.rules(channel)
-        cutoff = age_cutoff(self.now, rules["maxAgeMonths"])
+        cutoff = age_cutoff(self.now, rules["maxAgeDays"])
         for source in channel["sources"]:
             stats["sourcesScanned"] += 1
             try:
@@ -507,7 +504,7 @@ class Sync:
             unavailable = {identifier for identifier in batch
                            if assess(items[identifier], self.rules(channel), channel.get("playbackMode", "cycle"))[0] == "unavailable"}
             if channel.get("updateMode", "append") == "replace":
-                cutoff = age_cutoff(self.now, self.rules(channel)["maxAgeMonths"])
+                cutoff = age_cutoff(self.now, self.rules(channel)["maxAgeDays"])
                 unavailable.update(identifier for identifier in batch if items[identifier] is not None and
                                    not within_window(publication_date(items[identifier].get("snippet", {}).get("publishedAt")), cutoff, self.now))
             stats["checkedVideos"] += len(batch)

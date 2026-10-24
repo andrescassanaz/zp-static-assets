@@ -264,7 +264,7 @@ class Refresh(unittest.TestCase):
     def setUp(self):
         Integration.setUp(self)
         self.channel = self.config["channels"][0]
-        self.channel.update(updateMode="replace", rules={"maxAgeMonths": 2})
+        self.channel.update(updateMode="replace", rules={"maxAgeDays": 60})
         self.write_config()
 
     def test_replace_rebuilds_from_sources_and_revalidates_existing_ids(self):
@@ -283,17 +283,19 @@ class Refresh(unittest.TestCase):
 
     def test_window_includes_cutoff_but_rejects_older_future_and_unknown_dates(self):
         self.channel["sources"] = ["PLabcdefghijklmnop"]
+        self.channel["rules"]["maxAgeDays"] = 2
         self.write_config()
-        cutoff = "2026-08-23T12:00:00Z"
-        for published, accepted in [(cutoff, True), ("2026-08-23T11:59:59Z", False),
-                                    ("2026-10-23T12:00:00Z", True), ("2026-10-23T12:00:01Z", False),
+        now = sync.date("2026-10-24T17:08:00Z")
+        cutoff = "2026-10-22T17:08:00Z"
+        for published, accepted in [(cutoff, True), ("2026-10-22T17:07:59Z", False),
+                                    ("2026-10-24T17:08:00Z", True), ("2026-10-24T17:08:01Z", False),
                                     (None, False), ("bad", False), ("2026-10-20", False),
-                                    ("2026-08-23T09:00:00-03:00", True)]:
+                                    ("2026-10-22T14:08:00-03:00", True)]:
             with self.subTest(published=published):
                 item = video()
                 item["snippet"]["publishedAt"] = published
                 api = FakeAPI({A: item}, {("PLabcdefghijklmnop", None): page([A])})
-                result, _ = self.run_sync(api)
+                result, _ = self.run_sync(api, now=now)
                 self.assertEqual(0, result)
                 self.assertEqual(accepted, (self.root / "channels/test.json").exists())
 
@@ -308,13 +310,13 @@ class Refresh(unittest.TestCase):
 
     def test_age_window_inherited_from_defaults_and_overridden_with_null(self):
         self.channel.pop("rules")
-        self.config["defaults"] = {"maxAgeMonths": 2}
+        self.config["defaults"] = {"maxAgeDays": 60}
         self.write_config()
         item = video()
         item["snippet"]["publishedAt"] = "2026-01-01T00:00:00Z"
         self.run_sync(FakeAPI({A: item}))
         self.assertFalse((self.root / "channels/test.json").exists())
-        self.channel["rules"] = {"maxAgeMonths": None}
+        self.channel["rules"] = {"maxAgeDays": None}
         self.write_config()
         self.run_sync(FakeAPI({A: item}))
         self.assertEqual(A, self.published()["videos"][0]["youtubeVideoId"])
@@ -361,7 +363,7 @@ class Refresh(unittest.TestCase):
 
     def test_replace_without_window_replaces_all_history_and_noop_keeps_bytes(self):
         self.create_existing()
-        self.channel["rules"]["maxAgeMonths"] = None
+        self.channel["rules"]["maxAgeDays"] = None
         self.write_config()
         item = video()
         item["snippet"].pop("publishedAt")
@@ -403,9 +405,9 @@ class Refresh(unittest.TestCase):
 
     def test_invalid_options_rejected_before_api_calls(self):
         for options in [{"updateMode": "erase"}, {"updateMode": None}, {"updateMode": []},
-                        {"rules": {"maxAgeMonths": 0}}, {"rules": {"maxAgeMonths": -1}},
-                        {"rules": {"maxAgeMonths": 1.5}}, {"rules": {"maxAgeMonths": True}},
-                        {"rules": {"maxAgeMonths": "2"}}, {"sources": []}]:
+                        {"rules": {"maxAgeDays": 0}}, {"rules": {"maxAgeDays": -1}},
+                        {"rules": {"maxAgeDays": 1.5}}, {"rules": {"maxAgeDays": True}},
+                        {"rules": {"maxAgeDays": "2"}}, {"sources": []}]:
             with self.subTest(options=options):
                 before = deepcopy(self.channel)
                 self.channel.update(options)
@@ -417,15 +419,24 @@ class Refresh(unittest.TestCase):
 
 
 class Validation(unittest.TestCase):
-    def test_calendar_month_cutoff_clamps_day_and_preserves_utc_time(self):
-        for instant, months, expected in [
-            ("2026-10-24T12:34:56Z", 2, "2026-08-24T12:34:56Z"),
-            ("2026-03-31T12:34:56Z", 1, "2026-02-28T12:34:56Z"),
-            ("2024-03-31T12:34:56Z", 1, "2024-02-29T12:34:56Z"),
-            ("2026-01-31T12:34:56Z", 2, "2025-11-30T12:34:56Z")]:
+    def test_day_cutoff_preserves_utc_time_across_months_and_years(self):
+        for instant, days, expected in [
+            ("2026-10-24T17:08:00Z", 2, "2026-10-22T17:08:00Z"),
+            ("2026-10-24T12:34:56Z", 60, "2026-08-25T12:34:56Z"),
+            ("2026-03-01T12:34:56Z", 1, "2026-02-28T12:34:56Z"),
+            ("2024-03-01T12:34:56Z", 1, "2024-02-29T12:34:56Z"),
+            ("2026-01-01T12:34:56Z", 2, "2025-12-30T12:34:56Z")]:
             with self.subTest(instant=instant):
-                self.assertEqual(expected, sync.stamp(sync.age_cutoff(sync.date(instant), months)))
+                self.assertEqual(expected, sync.stamp(sync.age_cutoff(sync.date(instant), days)))
         self.assertIsNone(sync.age_cutoff(NOW, None))
+
+    def test_day_cutoff_clamps_to_minimum_datetime_on_overflow(self):
+        for instant, days in [("0001-01-01T12:00:00Z", 1),
+                              ("2026-10-24T12:00:00Z", 999999999),
+                              ("2026-10-24T12:00:00Z", 10**100)]:
+            with self.subTest(instant=instant, days=days):
+                self.assertEqual(datetime.min.replace(tzinfo=timezone.utc),
+                                 sync.age_cutoff(sync.date(instant), days))
 
     def test_mixed_source_types(self):
         cases = {"UC" + "x" * 22: "channel", "@nombre": "handle", "PLabcdefghijk": "playlist", A: "video",

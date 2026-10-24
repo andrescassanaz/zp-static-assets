@@ -5,7 +5,7 @@
     "minDurationSeconds": 420,
     "maxDurationSeconds": null,
     "music": false,
-    "maxAgeMonths": null,
+    "maxAgeDays": null,
     "regionCodes": [
       "AR"
     ]
@@ -26,8 +26,8 @@
       "sources": []
     },
     {
-      "id": "comida",
-      "name": "Comida",
+      "id": "cocina",
+      "name": "Cocina",
       "active": true,
       "playbackMode": "cycle",
       "sources": [
@@ -51,6 +51,21 @@
         "@cukit",
         "@cucinare",
         "@lacapitalcocina"
+      ]
+    },
+    {
+      "id": "comida",
+      "name": "Comida",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": [
+        "@BajoneandoPorHay",
+        "@RodoCamaraTFTS",
+        "@lachicadelbrunch",
+        "@leandrin.b",
+        "@aviajarycomer",
+        "@comentino",
+        "@antigourmeteros"
       ]
     },
     {
@@ -177,10 +192,11 @@
         "@ElBarDelVicio",
         "@ShuxTeam",
         "@cinematixfilms",
-        "@ElBandicoot"
+        "@ElBandicoot",
+        "@VIDEOJUEGUISTA"
       ],
       "rules": {
-        "minDurationSeconds": 240,
+        "minDurationSeconds": 180,
         "music": false
       }
     },
@@ -206,10 +222,15 @@
       "updateMode": "replace",
       "sources": [
         "@midudev",
-        "@HolaMundoDev"
+        "@HolaMundoDev",
+        "@PeladoNerd",
+        "@gentlemanprogramming",
+        "@CodelyTV",
+        "@mouredev",
+        "@MaxiPrograma"
       ],
       "rules": {
-        "maxAgeMonths": 2
+        "maxAgeDays": 60
       }
     },
     {
@@ -234,6 +255,85 @@
       "rules": {
         "minDurationSeconds": 600,
         "music": false
+      }
+    },
+    {
+      "id": "deportes",
+      "name": "Deportes",
+      "active": true,
+      "playbackMode": "cycle",
+      "updateMode": "replace",
+      "sources": [
+        "@ESPNFans"
+      ],
+      "rules": {
+        "maxAgeDays": 3
+      }
+    },
+    {
+      "id": "nba",
+      "name": "Basquet",
+      "active": true,
+      "playbackMode": "cycle",
+      "updateMode": "replace",
+      "sources": [
+        "@somosnbaenespanol",
+        "@Juanposite",
+        "@leocarranza99",
+        "@LNB-Argentina"
+      ],
+      "rules": {
+        "maxAgeDays": 5
+      }
+    },
+    {
+      "id": "musica-90",
+      "name": "Musica 90'",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": [
+        "PL7DA3D097D6FDBC02",
+        "PL6E4N1fC1qsMnjbTQaGzBgI-nWmDWcnOT",
+        "PL59r0P5xZYazhfuiCtuAK_rKo_-hwUpIg",
+        "PLCQCtoOJpI_Dg1iO9xS2u24_2FtbyxCo2",
+        "PL0ITP65WhNWjT81eTu7L_0q-QJbhzRCGl",
+        "PLlXLfshWag9S1TwmJhJpke04DBK6TKd20",
+        "PLd9auH4JIHvudIscV4OlUAlNPvtnR9INj"
+      ],
+      "rules": {
+        "minDurationSeconds": 50,
+        "music": true
+      }
+    },
+    {
+      "id": "musica-80",
+      "name": "Musica 80'",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": [
+        "PLmXxqSJJq-yXrCPGIT2gn8b34JjOrl4Xf",
+        "PLd9auH4JIHvupoMgW5YfOjqtj6Lih0MKw",
+        "PLkqz3S84Tw-Qjyd_zHSVH_Xj6ge7yrgYI"
+      ],
+      "rules": {
+        "minDurationSeconds": 50,
+        "music": true
+      }
+    },
+    {
+      "id": "musica-2000",
+      "name": "Musica 2000'",
+      "active": true,
+      "playbackMode": "cycle",
+      "sources": [
+        "PLCh-xN1_B-eJazkwtVvYruDhfZyBCiMRn",
+        "PL9tY0BWXOZFu4vlBOzIOmvT6wjYb2jNiV",
+        "PL6Lt9p1lIRZ311J9ZHuzkR5A3xesae2pk",
+        "PLn4GvABOzCQursVQ7qMU9CkNaKz4RgrVM"
+      ],
+      "rules": {
+        "minDurationSeconds": 50,
+        "music": true
       }
     }
   ]

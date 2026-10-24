@@ -1,165 +1,165 @@
 {
   "channels": [
     {
-      "id": "viajes",
-      "number": 1,
-      "name": "Viajes",
-      "playbackMode": "cycle",
-      "file": "channels/viajes.json"
-    },
-    {
-      "id": "autos",
-      "number": 2,
-      "name": "Autos",
-      "playbackMode": "cycle",
-      "file": "channels/autos.json"
-    },
-    {
-      "id": "comida",
-      "number": 3,
-      "name": "Comida",
-      "playbackMode": "cycle",
-      "file": "channels/comida.json"
-    },
-    {
-      "id": "automovilismo",
-      "number": 4,
-      "name": "Automovilismo",
-      "playbackMode": "cycle",
-      "file": "channels/automovilismo.json"
-    },
-    {
       "id": "tn",
-      "number": 5,
+      "number": 1,
       "name": "TN",
       "playbackMode": "live",
       "file": "channels/tn.json"
     },
     {
       "id": "cronica",
-      "number": 6,
+      "number": 2,
       "name": "Crónica",
       "playbackMode": "live",
       "file": "channels/cronica.json"
     },
     {
       "id": "c5n",
-      "number": 7,
+      "number": 3,
       "name": "C5N",
       "playbackMode": "live",
       "file": "channels/c5n.json"
     },
     {
       "id": "a24",
-      "number": 8,
+      "number": 4,
       "name": "A24",
       "playbackMode": "live",
       "file": "channels/a24.json"
     },
     {
       "id": "ln-plus",
-      "number": 9,
+      "number": 5,
       "name": "LN+",
       "playbackMode": "live",
       "file": "channels/ln-plus.json"
     },
     {
       "id": "el-nueve",
-      "number": 10,
+      "number": 6,
       "name": "El Nueve",
       "playbackMode": "live",
       "file": "channels/el-nueve.json"
     },
     {
       "id": "america-noticias",
-      "number": 11,
+      "number": 7,
       "name": "América Noticias",
       "playbackMode": "live",
       "file": "channels/america-noticias.json"
     },
     {
       "id": "telefe-noticias",
-      "number": 12,
+      "number": 8,
       "name": "Telefe Noticias",
       "playbackMode": "live",
       "file": "channels/telefe-noticias.json"
     },
     {
-      "id": "standup",
-      "number": 13,
-      "name": "StandUp",
-      "playbackMode": "cycle",
-      "file": "channels/standup.json"
-    },
-    {
       "id": "documentales",
-      "number": 14,
+      "number": 9,
       "name": "Documentales",
       "playbackMode": "cycle",
       "file": "channels/documentales.json"
     },
     {
-      "id": "ultimos-cartuchos",
-      "number": 15,
-      "name": "Ultimos Cartuchos",
-      "playbackMode": "cycle",
-      "file": "channels/ultimos-cartuchos.json"
-    },
-    {
-      "id": "infantil",
-      "number": 16,
-      "name": "Infantil",
-      "playbackMode": "cycle",
-      "file": "channels/infantil.json"
-    },
-    {
-      "id": "falopita",
-      "number": 17,
-      "name": "Falopita",
-      "playbackMode": "cycle",
-      "file": "channels/falopita.json"
-    },
-    {
-      "id": "capusotto",
-      "number": 18,
-      "name": "Capusotto",
-      "playbackMode": "cycle",
-      "file": "channels/capusotto.json"
-    },
-    {
       "id": "historia",
-      "number": 19,
+      "number": 10,
       "name": "Historia",
       "playbackMode": "cycle",
       "file": "channels/historia.json"
     },
     {
-      "id": "gaming",
-      "number": 20,
-      "name": "Gaming",
-      "playbackMode": "cycle",
-      "file": "channels/gaming.json"
-    },
-    {
-      "id": "rock-nacional",
-      "number": 21,
-      "name": "Rock Nacional",
-      "playbackMode": "cycle",
-      "file": "channels/rock-nacional.json"
-    },
-    {
       "id": "entrevistas",
-      "number": 22,
+      "number": 11,
       "name": "Entrevistas",
       "playbackMode": "cycle",
       "file": "channels/entrevistas.json"
     },
     {
+      "id": "viajes",
+      "number": 12,
+      "name": "Viajes",
+      "playbackMode": "cycle",
+      "file": "channels/viajes.json"
+    },
+    {
+      "id": "cocina",
+      "number": 13,
+      "name": "Cocina",
+      "playbackMode": "cycle",
+      "file": "channels/cocina.json"
+    },
+    {
+      "id": "autos",
+      "number": 14,
+      "name": "Autos",
+      "playbackMode": "cycle",
+      "file": "channels/autos.json"
+    },
+    {
+      "id": "automovilismo",
+      "number": 15,
+      "name": "Automovilismo",
+      "playbackMode": "cycle",
+      "file": "channels/automovilismo.json"
+    },
+    {
+      "id": "gaming",
+      "number": 16,
+      "name": "Gaming",
+      "playbackMode": "cycle",
+      "file": "channels/gaming.json"
+    },
+    {
       "id": "programacion",
-      "number": 23,
+      "number": 17,
       "name": "Programación",
       "playbackMode": "cycle",
       "file": "channels/programacion.json"
+    },
+    {
+      "id": "standup",
+      "number": 18,
+      "name": "StandUp",
+      "playbackMode": "cycle",
+      "file": "channels/standup.json"
+    },
+    {
+      "id": "capusotto",
+      "number": 19,
+      "name": "Capusotto",
+      "playbackMode": "cycle",
+      "file": "channels/capusotto.json"
+    },
+    {
+      "id": "ultimos-cartuchos",
+      "number": 20,
+      "name": "Ultimos Cartuchos",
+      "playbackMode": "cycle",
+      "file": "channels/ultimos-cartuchos.json"
+    },
+    {
+      "id": "falopita",
+      "number": 21,
+      "name": "Falopita",
+      "playbackMode": "cycle",
+      "file": "channels/falopita.json"
+    },
+    {
+      "id": "infantil",
+      "number": 22,
+      "name": "Infantil",
+      "playbackMode": "cycle",
+      "file": "channels/infantil.json"
+    },
+    {
+      "id": "rock-nacional",
+      "number": 23,
+      "name": "Rock Nacional",
+      "playbackMode": "cycle",
+      "file": "channels/rock-nacional.json"
     }
   ]
 }
