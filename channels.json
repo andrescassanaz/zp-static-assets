@@ -132,9 +132,20 @@
       "name": "Historia",
       "playbackMode": "cycle",
       "file": "channels/historia.json"
+    },
+    {
+      "id": "gaming",
+      "number": 20,
+      "name": "Gaming",
+      "playbackMode": "cycle",
+      "file": "channels/gaming.json"
+    },
+    {
+      "id": "rock-nacional",
+      "number": 21,
+      "name": "Rock Nacional",
+      "playbackMode": "cycle",
+      "file": "channels/rock-nacional.json"
     }
-
-
-
   ]
 }
