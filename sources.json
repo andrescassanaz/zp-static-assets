@@ -30,7 +30,28 @@
       "name": "Comida",
       "active": true,
       "playbackMode": "cycle",
-      "sources": []
+      "sources": [
+        "@paulinacocina",
+        "@MarcosDiCesare",
+        "@LocosXelAsadoOficial",
+        "PLNmiVFA6YxeX8KsYBSml3RVDQlzOjGpPO",
+        "PLb4Y1rF-xrMTpSx8CM_IByQPXlFWYoGBN",
+        "PLvQQTTvZqMb4ySiWmai7xcFMl2670M4CW",
+        "PLKquGwKzE9TjM9I4bdGQXkcuwAhZGdrqm",
+        "PL8yDHRMKtx8zRHq5zp6P6lDYBngmkyDKl",
+        "PL8yDHRMKtx8znw20rDI4enMSXwISPBYEl",
+        "PL8yDHRMKtx8zDmaQ07Lk1jaPsM3IVGI-9",
+        "PL8yDHRMKtx8wjFpDA0VSFsoGzmw0NUG1k",
+        "PL8yDHRMKtx8y4QgYidUY4cFNN-X7TwrkY",
+        "PL8yDHRMKtx8xzWYu0Y8sTOuKFtO8LeOPT",
+        "PL8yDHRMKtx8yCl6pUKjC0HXHV17mU8ic1",
+        "PL8yDHRMKtx8yXM1_aGeVv0VQRLLXDH7gf",
+        "@TenedorLibreOK",
+        "@isabelvermal",
+        "@cukit",
+        "@cucinare",
+        "@lacapitalcocina"
+      ]
     },
     {
       "id": "automovilismo",

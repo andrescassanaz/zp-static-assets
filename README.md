@@ -58,7 +58,7 @@ Fuentes admitidas:
 
 No admite URLs completas. Los videos individuales se consultan una vez y luego participan del mantenimiento. `active: false` pausa toda automatización de ese canal sin borrarlo del índice ni modificar sus archivos.
 
-Los canales que ya existían están configurados para preservar sus listas y revisar disponibilidad semanalmente. Las fuentes que no estaban documentadas quedan como `[]`; completar esas listas para habilitar su descubrimiento. El sistema no puede deducir con fiabilidad las fuentes originales a partir de listas de IDs.
+Los canales que ya existían están configurados para preservar sus listas y revisar disponibilidad semanalmente. `comida` tiene las 20 fuentes confirmadas del archivo de referencia `Script extraer IDs/canales.txt`: 8 handles y 12 playlists. Las fuentes de los demás canales quedan como `[]`; completar esas listas para habilitar su descubrimiento. El sistema no puede deducir con fiabilidad las fuentes originales a partir de listas de IDs.
 
 `playbackMode: live` admite una única fuente de video individual: no busca ni inventa sustitutos para una emisión que termina. El JSON de un directo conserva un solo ID, sin duración ni origen de ciclo. La fuente debe tener una emisión en curso; también aplica audio español salvo `music: true`.
 
