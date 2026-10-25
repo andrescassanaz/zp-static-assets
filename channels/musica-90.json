@@ -5713,7 +5713,7 @@
     {
       "youtubeVideoId": "h3r7Oo0Fs-8",
       "durationSeconds": 264,
-      "title": "DEUS - Suds & Soda (from Worst Case Scenario)"
+      "title": "Deus - Suds & Soda (from Worst Case Scenario)"
     },
     {
       "youtubeVideoId": "IjN2mQ6IYQY",
@@ -8409,6 +8409,11 @@
       "youtubeVideoId": "sb2np1HGqxg",
       "durationSeconds": 289,
       "title": "Bell Biv DeVoe - Poison"
+    },
+    {
+      "youtubeVideoId": "WYchBAyW-_o",
+      "title": "Ring, Ring (Remix)",
+      "durationSeconds": 144
     }
   ],
   "cycleStartsAt": "2026-10-24T18:34:22Z"

@@ -1,255 +1,350 @@
 {
   "videos": [
     {
+      "youtubeVideoId": "DU1Mbrq4cG4",
+      "title": "Antonelli a un Paso de Ser Campeón de la F1 · Colapinto No Pudo Terminar la Carrera · Informe",
+      "durationSeconds": 1718
+    },
+    {
+      "youtubeVideoId": "_wXN1Rt3NFQ",
+      "title": "Boca Empezó con Todo la Messi Cup y Goleó al City · Manchester City 0-3 Boca · Resumen",
+      "durationSeconds": 698
+    },
+    {
+      "youtubeVideoId": "5afUfjEbB78",
+      "title": "Gol Agónico de Jagger Herrera para el Triunfo Xeneize · Independiente 0-1 Boca Juniors · Resumen",
+      "durationSeconds": 909
+    },
+    {
+      "youtubeVideoId": "X1LkK2tTKxw",
+      "title": "Resumen Completo: Abandonos, Estrategias y un Final Increíble en Estados Unidos · Fórmula 1",
+      "durationSeconds": 962
+    },
+    {
+      "youtubeVideoId": "6Br3eTNlVsk",
+      "title": "En Vivo · Messi Cup 2026 al Instante · Fecha 1",
+      "durationSeconds": 11686
+    },
+    {
+      "youtubeVideoId": "_zbxXYAWrG8",
+      "title": "Doblete Agónico de Mbappé para Llevarse el Clásico · Barcelona 1-2 Real Madrid · Resumen",
+      "durationSeconds": 798
+    },
+    {
+      "youtubeVideoId": "iAkmTI57BTY",
+      "title": "Flamengo y Cornellá No Se Sacaron Ventajas en la Messi Cup · Flamengo 0-0 Cornellá · Resumen",
+      "durationSeconds": 648
+    },
+    {
+      "youtubeVideoId": "oIOo4rzesCw",
+      "title": "Newell'S Debutó en la Messi Cup con un Gran Triunfo Ante el Arsenal · Arsenal 0-1 Newell's · Resumen",
+      "durationSeconds": 633
+    },
+    {
+      "youtubeVideoId": "R0f4xfzh0yI",
+      "title": "Asistencia de Modric en el Triunfo del Milan por la Serie a · Udinese 0-2 AC Milan · Resumen",
+      "durationSeconds": 650
+    },
+    {
+      "youtubeVideoId": "Zv-BFSNdoXc",
+      "title": "El Atleti Tuvo un Buen Debut en la Messi Cup · Atlético de Madrid 2-0 Benfica · Resumen",
+      "durationSeconds": 614
+    },
+    {
+      "youtubeVideoId": "38SCobswmRM",
+      "title": "Doble Gol Olímpico en la Victoria el Ajax por la Messi Cup · Ajax 2-1 Inter · Resumen",
+      "durationSeconds": 674
+    },
+    {
+      "youtubeVideoId": "B6FvwmtAKgw",
+      "title": "El Palmeiras Ganó un Partidazo Ante el Barcelona en la Messi Cup · Barcelona 0-2 Palmeiras · Resumen",
+      "durationSeconds": 628
+    },
+    {
+      "youtubeVideoId": "tEA3ctg6wdg",
+      "title": "Aldosivi Ganó un Partido Clave y Sueña con Quedarse en Primera · Aldosivi 1-0 Belgrano · Resumen",
+      "durationSeconds": 876
+    },
+    {
+      "youtubeVideoId": "5p-nFy9CqfI",
+      "title": "La Juve lo Liquidó en un Tiempo y Aspira a Pelear la Serie a · Lecce 0-2 Juventus · Resumen",
+      "durationSeconds": 636
+    },
+    {
+      "youtubeVideoId": "hlqntFuVPMk",
+      "title": "Sunderland No Pudo Ganar y Sigue Último en la Premier League · Sunderland 0-0 Leeds · Resumen",
+      "durationSeconds": 632
+    },
+    {
+      "youtubeVideoId": "fqYlCzkDlwc",
+      "title": "Blooper y Gol de Olise para Liquidar el Partido · Friburgo 1-3 Bayern Múnich · Resumen",
+      "durationSeconds": 755
+    },
+    {
+      "youtubeVideoId": "rC2SnkyNh7Y",
+      "title": "La Messi Cup Empezó con un Triunfazo de Inter Miami Ante del Valle · Idv 1-2 Inter Miami · Resumen",
+      "durationSeconds": 659
+    },
+    {
+      "youtubeVideoId": "vVqWCHKA8MM",
+      "title": "Marsella Aguantó Hasta el Final y Ganó un Partidazo · Marsella 4-3 Le Havre · Resumen",
+      "durationSeconds": 778
+    },
+    {
+      "youtubeVideoId": "BSuJ7FS0nT8",
+      "title": "Las Monjitas Se Lucieron y Ganaron por Goleada · Las Monjitas 22-8 La Aguada · Resumen",
+      "durationSeconds": 703
+    },
+    {
+      "youtubeVideoId": "5QDBamxOUzo",
+      "title": "El Empate al Betis lo Dejó en Puestos de Champions · Celta Vigo 0-0 Real Betis · Resumen",
+      "durationSeconds": 626
+    },
+    {
+      "youtubeVideoId": "gC66_LOdls4",
+      "title": "Un Final de Locos y Leverkusen Perdió por Goleada · 1899 Hoffenheim 3-0 Bayer Leverkusen · Resumen",
+      "durationSeconds": 626
+    },
+    {
+      "youtubeVideoId": "4CzHsMAaL7E",
+      "title": "Atalanta y Frosinone Jugaron el Mejor Partido de la Serie a · Atalanta 4-4 Frosinone · Resumen",
+      "durationSeconds": 741
+    },
+    {
+      "youtubeVideoId": "pWKl5-WFJTQ",
+      "title": "El Brentford Consiguió el Empate y Se Llevó un Puntazo · Hull City 1-1 Brentford · Resumen",
+      "durationSeconds": 627
+    },
+    {
+      "youtubeVideoId": "r3GjyIfhf8o",
+      "title": "Caída Libre para el United Que Perdió por Goleada · Manchester United 0-3 Bournemouth · Resumen",
+      "durationSeconds": 736
+    },
+    {
+      "youtubeVideoId": "gL0jMZ16FHI",
+      "title": "Isak Liquidó el Partido para Seguir Entre los Primeros · Liverpool 2-0 Brighton · Resumen",
+      "durationSeconds": 637
+    },
+    {
+      "youtubeVideoId": "EycRco7Rqtc",
+      "title": "Victoria Importante del Newcastle para Escalar Puestos · Crystal Palace 0-2 Newcastle · Resumen",
+      "durationSeconds": 634
+    },
+    {
+      "youtubeVideoId": "bt_HW3Or06I",
+      "title": "¡Inter lo Dio Vuelta y Derrotó a la Fiore de Mastantuono! · Inter 2-1 Fiorentina · Resumen",
+      "durationSeconds": 882
+    },
+    {
       "youtubeVideoId": "gFy-NBggyvc",
-      "durationSeconds": 2315,
-      "title": "¿Antonelli Puede Salir Campeón en Austin? · Colapinto Larga Desde Atrás · Espn Pit Lane"
+      "title": "¿Antonelli Puede Salir Campeón en Austin? · Colapinto Larga Desde Atrás · Espn Pit Lane",
+      "durationSeconds": 2315
     },
     {
       "youtubeVideoId": "loXPsbvG8mw",
-      "durationSeconds": 835,
-      "title": "Di María lo Liquidó y el Canalla Es Líder de la Anual · Rosario Central 2-0 Huracán · Resumen"
+      "title": "Di María lo Liquidó y el Canalla Es Líder de la Anual · Rosario Central 2-0 Huracán · Resumen",
+      "durationSeconds": 835
     },
     {
       "youtubeVideoId": "3Hpz2WOx4SQ",
-      "durationSeconds": 791,
-      "title": "Mística Pincharrata: Estudiantes Tachó a Flamengo en Río y Jugará la Final de la Libertadores · Vlog"
+      "title": "Mística Pincharrata: Estudiantes Tachó a Flamengo en Río y Jugará la Final de la Libertadores · Vlog",
+      "durationSeconds": 791
     },
     {
       "youtubeVideoId": "RKecZTbOYWc",
-      "durationSeconds": 620,
-      "title": "El Ciclón No Pudo Ganar y Sigue Afuera de los Playoffs · San Lorenzo 0-0 Newell's · Resumen"
+      "title": "El Ciclón No Pudo Ganar y Sigue Afuera de los Playoffs · San Lorenzo 0-0 Newell's · Resumen",
+      "durationSeconds": 620
     },
     {
       "youtubeVideoId": "uLP_uWS34ac",
-      "durationSeconds": 641,
-      "title": "Messi Entró en el Complemento en la Derrota del Inter Miami · New York Rb 2-0 Inter Miami · Resumen"
+      "title": "Messi Entró en el Complemento en la Derrota del Inter Miami · New York Rb 2-0 Inter Miami · Resumen",
+      "durationSeconds": 641
     },
     {
       "youtubeVideoId": "6iTaXdRnPrc",
-      "durationSeconds": 1662,
-      "title": "Antonelli Sueña con Ser el Campeón de la F1 · Colapinto y una Clasificación Complicada · Informe"
+      "title": "Antonelli Sueña con Ser el Campeón de la F1 · Colapinto y una Clasificación Complicada · Informe",
+      "durationSeconds": 1662
     },
     {
       "youtubeVideoId": "Zw19RHWnMdM",
-      "durationSeconds": 722,
-      "title": "Enorme Pole de Kimi Antonelli en Austin · Colapinto Largará 21° por la Penalización · Resumen"
+      "title": "Enorme Pole de Kimi Antonelli en Austin · Colapinto Largará 21° por la Penalización · Resumen",
+      "durationSeconds": 722
     },
     {
       "youtubeVideoId": "cpHPeZN04UM",
-      "durationSeconds": 731,
-      "title": "Agónica Victoria del Halcón Que Jugará los Playoffs · Talleres 1-2 Defensa y Justicia · Resumen"
+      "title": "Agónica Victoria del Halcón Que Jugará los Playoffs · Talleres 1-2 Defensa y Justicia · Resumen",
+      "durationSeconds": 731
     },
     {
       "youtubeVideoId": "N4VOe9BxejQ",
-      "durationSeconds": 915,
-      "title": "Nuevo Triunfo de la Natividad la Dolfina · La Natividad La Dolfina 17-7 La Ensenada · Resumen"
+      "title": "Nuevo Triunfo de la Natividad la Dolfina · La Natividad La Dolfina 17-7 La Ensenada · Resumen",
+      "durationSeconds": 915
     },
     {
       "youtubeVideoId": "T9OM6-jUaMM",
-      "durationSeconds": 640,
-      "title": "Julián Volvió a Marcar para Ganarse los Aplausos · Atlético de Madrid 1-0 Rc Deportivo · Resumen"
+      "title": "Julián Volvió a Marcar para Ganarse los Aplausos · Atlético de Madrid 1-0 Rc Deportivo · Resumen",
+      "durationSeconds": 640
     },
     {
       "youtubeVideoId": "OTlA_FZqnT4",
-      "durationSeconds": 768,
-      "title": "Lazio Sigue Ganando y Se Mantiene Como Líder de la Serie a · Lazio 2-1 Parma · Resumen"
+      "title": "Lazio Sigue Ganando y Se Mantiene Como Líder de la Serie a · Lazio 2-1 Parma · Resumen",
+      "durationSeconds": 768
     },
     {
       "youtubeVideoId": "Cp5BrfQb0a8",
-      "durationSeconds": 709,
-      "title": "Goles de Rocky Balboa y Cali Izquierdoz para el Empate en el Clásico · Banfield 1-1 Lanús · Resumen"
+      "title": "Goles de Rocky Balboa y Cali Izquierdoz para el Empate en el Clásico · Banfield 1-1 Lanús · Resumen",
+      "durationSeconds": 709
     },
     {
       "youtubeVideoId": "SbdhGDColJQ",
-      "durationSeconds": 818,
-      "title": "Triunfazo Agónico del Submarino Amarillo en Mestalla · Valencia 1-2 Villarreal · Resumen"
+      "title": "Triunfazo Agónico del Submarino Amarillo en Mestalla · Valencia 1-2 Villarreal · Resumen",
+      "durationSeconds": 818
     },
     {
       "youtubeVideoId": "8LoFNcuzXyM",
-      "durationSeconds": 680,
-      "title": "Victoria Necesaria de los Spurs en Stamford Bridge · Chelsea 0-2 Tottenham Hotspur · Resumen"
+      "title": "Victoria Necesaria de los Spurs en Stamford Bridge · Chelsea 0-2 Tottenham Hotspur · Resumen",
+      "durationSeconds": 680
     },
     {
       "youtubeVideoId": "MSZH-IKSSaY",
-      "durationSeconds": 627,
-      "title": "Ellerstina Indios Chapaleufú Sigue Ganando en Tortugas · Ellerstina 16-11 Don Ercole · Resumen"
+      "title": "Ellerstina Indios Chapaleufú Sigue Ganando en Tortugas · Ellerstina 16-11 Don Ercole · Resumen",
+      "durationSeconds": 627
     },
     {
       "youtubeVideoId": "zD2_W79E2JM",
-      "durationSeconds": 695,
-      "title": "Beier Ingresó Desde el Banco y Ganó el Partido · Borussia Dortmund 1-0 Eintracht Frankfurt · Resumen"
+      "title": "Beier Ingresó Desde el Banco y Ganó el Partido · Borussia Dortmund 1-0 Eintracht Frankfurt · Resumen",
+      "durationSeconds": 695
     },
     {
       "youtubeVideoId": "aclGCkt7nyI",
-      "durationSeconds": 683,
-      "title": "Golazo Total de Oscar Bobb para Sumar de a Tres a Domicilio · Coventry City 0-1 Fulham · Resumen"
+      "title": "Golazo Total de Oscar Bobb para Sumar de a Tres a Domicilio · Coventry City 0-1 Fulham · Resumen",
+      "durationSeconds": 683
     },
     {
       "youtubeVideoId": "ttclyUgPlyE",
-      "durationSeconds": 748,
-      "title": "Doblete de Balerdi, Gol de Soulé y un Empate Inolvidable en el Maradona · Napoli 3-3 Roma · Resumen"
+      "title": "Doblete de Balerdi, Gol de Soulé y un Empate Inolvidable en el Maradona · Napoli 3-3 Roma · Resumen",
+      "durationSeconds": 748
     },
     {
       "youtubeVideoId": "gWvAaooDQlk",
-      "durationSeconds": 636,
-      "title": "Los Gunners Festejaron Gracias a Su Dupla Central Konsa-Gabriel · Arsenal 2-0 Everton · Resumen"
+      "title": "Los Gunners Festejaron Gracias a Su Dupla Central Konsa-Gabriel · Arsenal 2-0 Everton · Resumen",
+      "durationSeconds": 636
     },
     {
       "youtubeVideoId": "DPHdy6c4q4Q",
-      "durationSeconds": 690,
-      "title": "Goleada de la Michoneta para Meterse en Puestos de Uel · Rb Leipzig 4-0 Elversberg · Resumen"
+      "title": "Goleada de la Michoneta para Meterse en Puestos de Uel · Rb Leipzig 4-0 Elversberg · Resumen",
+      "durationSeconds": 690
     },
     {
       "youtubeVideoId": "yeRBcBEEd-s",
-      "durationSeconds": 710,
-      "title": "Doblete de Douvikas para el Triunfo de Como con Perrone de Titular · Como 2-0 Sassuolo · Resumen"
+      "title": "Doblete de Douvikas para el Triunfo de Como con Perrone de Titular · Como 2-0 Sassuolo · Resumen",
+      "durationSeconds": 710
     },
     {
       "youtubeVideoId": "daE_QSEOipM",
-      "durationSeconds": 702,
-      "title": "Gol de Redondo, Asistencia de Buonanotte y Goleada a Domicilio · Rayo Vallecano 0-3 Elche · Resumen"
+      "title": "Gol de Redondo, Asistencia de Buonanotte y Goleada a Domicilio · Rayo Vallecano 0-3 Elche · Resumen",
+      "durationSeconds": 702
     },
     {
       "youtubeVideoId": "9tpf1K8L6l8",
-      "durationSeconds": 700,
-      "title": "Nico Jackson Fue el Villano del City con un Doblete · Aston Villa 2-1 Manchester City · Resumen"
-    },
-    {
-      "youtubeVideoId": "-WbM7pY2UAo",
-      "durationSeconds": 682,
-      "title": "Caída de Jorge Martín y Triunfazo de Marc Márquez en la Sprint de Australia · Moto Gp Resumen"
+      "title": "Nico Jackson Fue el Villano del City con un Doblete · Aston Villa 2-1 Manchester City · Resumen",
+      "durationSeconds": 700
     },
     {
       "youtubeVideoId": "PcoI-8BlWfw",
-      "durationSeconds": 715,
-      "title": "El Decano de Falcioni Cortó la Mala Racha con un Triunfazo · Tigre 0-1 Atlético Tucumán · Resumen"
+      "title": "El Decano de Falcioni Cortó la Mala Racha con un Triunfazo · Tigre 0-1 Atlético Tucumán · Resumen",
+      "durationSeconds": 715
     },
     {
       "youtubeVideoId": "aZUYqlx6uLU",
-      "durationSeconds": 644,
-      "title": "El Manya Terminó con Uno Menos y Sacó un Empate en el Centenario · Juventud 0-0 Peñarol · Resumen"
+      "title": "El Manya Terminó con Uno Menos y Sacó un Empate en el Centenario · Juventud 0-0 Peñarol · Resumen",
+      "durationSeconds": 644
     },
     {
       "youtubeVideoId": "D9HagL7JmXo",
-      "durationSeconds": 646,
-      "title": "Triunfazo Agónico del Calamar de Palermo en Mendoza · Gimnasia M. 1-2 Platense · Resumen"
-    },
-    {
-      "youtubeVideoId": "S3uNS9Iz_4E",
-      "durationSeconds": 692,
-      "title": "Nacho Marcó Otra Vez y el Lobo Se Prendió Arriba · Gimnasia Lp 2-0 Sarmiento · Resumen"
+      "title": "Triunfazo Agónico del Calamar de Palermo en Mendoza · Gimnasia M. 1-2 Platense · Resumen",
+      "durationSeconds": 646
     },
     {
       "youtubeVideoId": "-VF4CJ6AaE8",
-      "durationSeconds": 725,
-      "title": "Leclerc Fue el Más Rapido en las Prácticas · Colapinto Terminó 15° en Austin · Informe"
+      "title": "Leclerc Fue el Más Rapido en las Prácticas · Colapinto Terminó 15° en Austin · Informe",
+      "durationSeconds": 725
     },
     {
       "youtubeVideoId": "s_sgBAfbirM",
-      "durationSeconds": 3160,
-      "title": "Volvió la NBA... ¡y con Todo! · Imperdible Análisis Junto a Leo Montero, Oberto y el Pipa · Red Hot"
+      "title": "Volvió la NBA... ¡y con Todo! · Imperdible Análisis Junto a Leo Montero, Oberto y el Pipa · Red Hot",
+      "durationSeconds": 3160
     },
     {
       "youtubeVideoId": "z4K2ht7wuPE",
-      "durationSeconds": 685,
-      "title": "Enciso Fue Importante y Empató para el Ipswich por Premier · Ipswich 1-1 Nottingham Forest · Resumen"
+      "title": "Enciso Fue Importante y Empató para el Ipswich por Premier · Ipswich 1-1 Nottingham Forest · Resumen",
+      "durationSeconds": 685
     },
     {
       "youtubeVideoId": "xZG6i14GsTM",
-      "durationSeconds": 649,
-      "title": "Alavés Se Despertó Sobre el Final y Rescató un Punto de Local · Alavés 1-1 Málaga · Resumen"
+      "title": "Alavés Se Despertó Sobre el Final y Rescató un Punto de Local · Alavés 1-1 Málaga · Resumen",
+      "durationSeconds": 649
     },
     {
       "youtubeVideoId": "7c9acu4EAsM",
-      "durationSeconds": 730,
-      "title": "Asistencia de Gio Simeone en la Victoria del Torino por la Serie a · Torino 3-2 Monza · Resumen"
+      "title": "Asistencia de Gio Simeone en la Victoria del Torino por la Serie a · Torino 3-2 Monza · Resumen",
+      "durationSeconds": 730
     },
     {
       "youtubeVideoId": "lkgUnfzwI50",
-      "durationSeconds": 4625,
-      "title": "En Vivo · Espn Punto de Quiebre · Tenis"
+      "title": "En Vivo · Espn Punto de Quiebre · Tenis",
+      "durationSeconds": 4625
     },
     {
       "youtubeVideoId": "YqrzLXaP3oU",
-      "durationSeconds": 1491,
-      "title": "\"Estudiantes de la Plata Es un Estilo de Vida\", el Editorial de Vignolo Tras la Épica Pincha · F90"
+      "title": "\"Estudiantes de la Plata Es un Estilo de Vida\", el Editorial de Vignolo Tras la Épica Pincha · F90",
+      "durationSeconds": 1491
     },
     {
       "youtubeVideoId": "TLlAfiCfq3A",
-      "durationSeconds": 1770,
-      "title": "Tomás Lavanini: \"la Competencia Va a Estar, No Voy a Regalar Nada\""
-    },
-    {
-      "youtubeVideoId": "fZ8jYTmAQVI",
-      "durationSeconds": 1969,
-      "title": "\"Qué Extraordinario Momento Se Vivió Anoche\", el Análisis de Mariano Closs Tras la Epica Pincha"
+      "title": "Tomás Lavanini: \"la Competencia Va a Estar, No Voy a Regalar Nada\"",
+      "durationSeconds": 1770
     },
     {
       "youtubeVideoId": "jxb13quIuOo",
-      "durationSeconds": 1517,
-      "title": "Alpine, con Actualizaciones en Ambos Autos para el Gran Premio de Estados Unidos 2026 · Informe Sc"
+      "title": "Alpine, con Actualizaciones en Ambos Autos para el Gran Premio de Estados Unidos 2026 · Informe Sc",
+      "durationSeconds": 1517
     },
     {
       "youtubeVideoId": "6dwPpKXQkEo",
-      "durationSeconds": 655,
-      "title": "\"Mi Sueño Es Salir Campeon con Gimnasia\" · Nico y Bautista Barros Schelotto · Espn F360"
+      "title": "\"Mi Sueño Es Salir Campeon con Gimnasia\" · Nico y Bautista Barros Schelotto · Espn F360",
+      "durationSeconds": 655
     },
     {
       "youtubeVideoId": "K_d6EOv1hLE",
-      "durationSeconds": 608,
-      "title": "Jerarquía de Fran Cerúndolo para Derrotar a Chidekh y Meterse Entre los Cuatro Mejores · Resumen"
+      "title": "Jerarquía de Fran Cerúndolo para Derrotar a Chidekh y Meterse Entre los Cuatro Mejores · Resumen",
+      "durationSeconds": 608
     },
     {
       "youtubeVideoId": "q2BKPHHimM8",
-      "durationSeconds": 1383,
-      "title": "Emocionantes Palabras de Juan Sebastián Verón para con Fernando Muslera Tras Ser Héroe en Brasil"
+      "title": "Emocionantes Palabras de Juan Sebastián Verón para con Fernando Muslera Tras Ser Héroe en Brasil",
+      "durationSeconds": 1383
     },
     {
       "youtubeVideoId": "Za5IoT-RqLI",
-      "durationSeconds": 1645,
-      "title": "¡El Análisis Completo Tras el Maracanazo de Estudiantes y el Pasaje a la Final de la Libertadores!"
+      "title": "¡El Análisis Completo Tras el Maracanazo de Estudiantes y el Pasaje a la Final de la Libertadores!",
+      "durationSeconds": 1645
     },
     {
       "youtubeVideoId": "7Im4gOZgEzU",
-      "durationSeconds": 954,
-      "title": "Mística Clasificación del Pincha a la Final por Penales · Flamengo 0-0 Estudiantes Lp · Resumen"
+      "title": "Mística Clasificación del Pincha a la Final por Penales · Flamengo 0-0 Estudiantes Lp · Resumen",
+      "durationSeconds": 954
     },
     {
       "youtubeVideoId": "d41z3hKirh8",
-      "durationSeconds": 9811,
-      "title": "Flamengo Vs Estudiantes · en Vivo · Semis · Libertadores 2026"
+      "title": "Flamengo Vs Estudiantes · en Vivo · Semis · Libertadores 2026",
+      "durationSeconds": 9811
     },
     {
       "youtubeVideoId": "pSOUFsapfMg",
-      "durationSeconds": 1740,
-      "title": "¡Los Detalles de la Clasificación de Boca y lo Más Destacado de la Champions en F Tactico!"
-    },
-    {
-      "youtubeVideoId": "e8Zg5UeB1fo",
-      "durationSeconds": 673,
-      "title": "Victoria de Olympiacos de Hezze en la Europa League · Olympiacos 1-0 Sparta Praga · Resumen"
-    },
-    {
-      "youtubeVideoId": "J6tSEq-Aong",
-      "durationSeconds": 472,
-      "title": "La Pasión Oculta de Franco Colapinto y la Previa del Gran Premio de Estados Unidos con Fossaroli"
-    },
-    {
-      "youtubeVideoId": "srM1-w_b9Wo",
-      "durationSeconds": 902,
-      "title": "Maracanazo Xeneize: Boca Copó Río de Janeiro y Se Metió en la Final de la Sudamericana · Vlog"
-    },
-    {
-      "youtubeVideoId": "jSc-JAG6AaI",
-      "durationSeconds": 626,
-      "title": "La Vecchia Signora Apenas Rescató un Empate Como Local · Juventus 2-2 Rennes · Resumen"
-    },
-    {
-      "youtubeVideoId": "CBPBu3Uc2b4",
-      "durationSeconds": 640,
-      "title": "Gol y Asistencia del Faraón Salah para Sumar de a Tres en Casa · Trabzonspor 2-0 Hearts · Resumen"
+      "title": "¡Los Detalles de la Clasificación de Boca y lo Más Destacado de la Champions en F Tactico!",
+      "durationSeconds": 1740
     }
   ],
-  "cycleStartsAt": "2026-10-25T11:20:06Z"
+  "cycleStartsAt": "2026-10-25T03:36:23Z"
 }
