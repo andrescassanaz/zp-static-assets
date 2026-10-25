@@ -1,6 +1,70 @@
 {
   "videos": [
     {
+      "youtubeVideoId": "gFy-NBggyvc",
+      "durationSeconds": 2315
+    },
+    {
+      "youtubeVideoId": "loXPsbvG8mw",
+      "durationSeconds": 835
+    },
+    {
+      "youtubeVideoId": "3Hpz2WOx4SQ",
+      "durationSeconds": 791
+    },
+    {
+      "youtubeVideoId": "RKecZTbOYWc",
+      "durationSeconds": 620
+    },
+    {
+      "youtubeVideoId": "uLP_uWS34ac",
+      "durationSeconds": 641
+    },
+    {
+      "youtubeVideoId": "6iTaXdRnPrc",
+      "durationSeconds": 1662
+    },
+    {
+      "youtubeVideoId": "Zw19RHWnMdM",
+      "durationSeconds": 722
+    },
+    {
+      "youtubeVideoId": "cpHPeZN04UM",
+      "durationSeconds": 731
+    },
+    {
+      "youtubeVideoId": "N4VOe9BxejQ",
+      "durationSeconds": 915
+    },
+    {
+      "youtubeVideoId": "T9OM6-jUaMM",
+      "durationSeconds": 640
+    },
+    {
+      "youtubeVideoId": "OTlA_FZqnT4",
+      "durationSeconds": 768
+    },
+    {
+      "youtubeVideoId": "Cp5BrfQb0a8",
+      "durationSeconds": 709
+    },
+    {
+      "youtubeVideoId": "SbdhGDColJQ",
+      "durationSeconds": 818
+    },
+    {
+      "youtubeVideoId": "8LoFNcuzXyM",
+      "durationSeconds": 680
+    },
+    {
+      "youtubeVideoId": "MSZH-IKSSaY",
+      "durationSeconds": 627
+    },
+    {
+      "youtubeVideoId": "zD2_W79E2JM",
+      "durationSeconds": 695
+    },
+    {
       "youtubeVideoId": "aclGCkt7nyI",
       "durationSeconds": 683
     },
@@ -117,34 +181,6 @@
       "durationSeconds": 1740
     },
     {
-      "youtubeVideoId": "F022moHJR4U",
-      "durationSeconds": 2561
-    },
-    {
-      "youtubeVideoId": "5UrHukP8G0Y",
-      "durationSeconds": 659
-    },
-    {
-      "youtubeVideoId": "9hpIzq6yz5E",
-      "durationSeconds": 645
-    },
-    {
-      "youtubeVideoId": "CCnx1ZDnOIQ",
-      "durationSeconds": 624
-    },
-    {
-      "youtubeVideoId": "DgusEXbWEUM",
-      "durationSeconds": 653
-    },
-    {
-      "youtubeVideoId": "hSpY6pOQo3E",
-      "durationSeconds": 829
-    },
-    {
-      "youtubeVideoId": "orezm491DCs",
-      "durationSeconds": 687
-    },
-    {
       "youtubeVideoId": "e8Zg5UeB1fo",
       "durationSeconds": 673
     },
@@ -157,121 +193,13 @@
       "durationSeconds": 902
     },
     {
-      "youtubeVideoId": "gn2N5pYPzx0",
-      "durationSeconds": 671
-    },
-    {
-      "youtubeVideoId": "ApoLOS6SFgA",
-      "durationSeconds": 800
-    },
-    {
-      "youtubeVideoId": "9FR3-ejwQno",
-      "durationSeconds": 690
-    },
-    {
       "youtubeVideoId": "jSc-JAG6AaI",
       "durationSeconds": 626
     },
     {
       "youtubeVideoId": "CBPBu3Uc2b4",
       "durationSeconds": 640
-    },
-    {
-      "youtubeVideoId": "JNnwm2Q85Eg",
-      "durationSeconds": 670
-    },
-    {
-      "youtubeVideoId": "iG5Kia1tmfg",
-      "durationSeconds": 718
-    },
-    {
-      "youtubeVideoId": "RODnsL5W-7U",
-      "durationSeconds": 1398
-    },
-    {
-      "youtubeVideoId": "d6Q5ogR7nkk",
-      "durationSeconds": 1943
-    },
-    {
-      "youtubeVideoId": "YXgsuD6zIaI",
-      "durationSeconds": 1935
-    },
-    {
-      "youtubeVideoId": "cUbpOmGIoQI",
-      "durationSeconds": 2835
-    },
-    {
-      "youtubeVideoId": "Lc7THB3wobw",
-      "durationSeconds": 806
-    },
-    {
-      "youtubeVideoId": "Apa3XJGr_8c",
-      "durationSeconds": 9711
-    },
-    {
-      "youtubeVideoId": "A7uoA_Of1hs",
-      "durationSeconds": 805
-    },
-    {
-      "youtubeVideoId": "1-dwgquMyns",
-      "durationSeconds": 1501
-    },
-    {
-      "youtubeVideoId": "P60Q6-fP8pA",
-      "durationSeconds": 4960
-    },
-    {
-      "youtubeVideoId": "Y7znAXoVjhA",
-      "durationSeconds": 689
-    },
-    {
-      "youtubeVideoId": "889kpmbAIWo",
-      "durationSeconds": 840
-    },
-    {
-      "youtubeVideoId": "s8SZuiI8BO0",
-      "durationSeconds": 797
-    },
-    {
-      "youtubeVideoId": "E3dGGkZGHQM",
-      "durationSeconds": 666
-    },
-    {
-      "youtubeVideoId": "EP5LeATasTs",
-      "durationSeconds": 1150
-    },
-    {
-      "youtubeVideoId": "ZDB_wc64Ouo",
-      "durationSeconds": 829
-    },
-    {
-      "youtubeVideoId": "IxeVorq8fAU",
-      "durationSeconds": 9166
-    },
-    {
-      "youtubeVideoId": "0N7ngh_NmpA",
-      "durationSeconds": 733
-    },
-    {
-      "youtubeVideoId": "yviDaWylMDY",
-      "durationSeconds": 665
-    },
-    {
-      "youtubeVideoId": "D8hwkJjFC9k",
-      "durationSeconds": 2929
-    },
-    {
-      "youtubeVideoId": "DN12djORMDA",
-      "durationSeconds": 888
-    },
-    {
-      "youtubeVideoId": "wi3ZTY7_-JY",
-      "durationSeconds": 714
-    },
-    {
-      "youtubeVideoId": "Xx4SDDcZUus",
-      "durationSeconds": 654
     }
   ],
-  "cycleStartsAt": "2026-10-24T18:34:22Z"
+  "cycleStartsAt": "2026-10-25T11:20:06Z"
 }

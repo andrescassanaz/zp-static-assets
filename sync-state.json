@@ -2,7 +2,7 @@
   "version": 1,
   "channels": {
     "viajes": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -15,7 +15,7 @@
       "publication": "published"
     },
     "autos": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -28,20 +28,20 @@
       "publication": "published"
     },
     "cocina": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 20,
-      "discoveredIds": 15316,
+      "discoveredIds": 15317,
       "addedVideos": 0,
-      "filteredVideos": 9353,
+      "filteredVideos": 9354,
       "checkedVideos": 0,
       "removedVideos": 0,
       "errors": [],
       "publication": "published"
     },
     "automovilismo": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -54,7 +54,7 @@
       "publication": "published"
     },
     "tn": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -67,7 +67,7 @@
       "publication": "published"
     },
     "cronica": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -80,7 +80,7 @@
       "publication": "published"
     },
     "c5n": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -93,7 +93,7 @@
       "publication": "published"
     },
     "a24": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -106,7 +106,7 @@
       "publication": "published"
     },
     "ln-plus": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -119,7 +119,7 @@
       "publication": "published"
     },
     "el-nueve": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -132,7 +132,7 @@
       "publication": "published"
     },
     "america-noticias": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -145,7 +145,7 @@
       "publication": "published"
     },
     "telefe-noticias": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -158,7 +158,7 @@
       "publication": "published"
     },
     "standup": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -171,7 +171,7 @@
       "publication": "published"
     },
     "documentales": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -184,7 +184,7 @@
       "publication": "published"
     },
     "ultimos-cartuchos": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -197,7 +197,7 @@
       "publication": "published"
     },
     "infantil": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -210,7 +210,7 @@
       "publication": "published"
     },
     "falopita": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -223,7 +223,7 @@
       "publication": "published"
     },
     "capusotto": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -236,7 +236,7 @@
       "publication": "published"
     },
     "historia": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -249,12 +249,12 @@
       "publication": "published"
     },
     "gaming": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 8,
-      "discoveredIds": 5877,
-      "addedVideos": 416,
+      "discoveredIds": 5879,
+      "addedVideos": 2,
       "filteredVideos": 2326,
       "checkedVideos": 0,
       "removedVideos": 0,
@@ -262,7 +262,7 @@
       "publication": "published"
     },
     "rock-nacional": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 2,
@@ -275,12 +275,12 @@
       "publication": "published"
     },
     "entrevistas": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 12,
-      "discoveredIds": 3068,
-      "addedVideos": 0,
+      "discoveredIds": 3069,
+      "addedVideos": 1,
       "filteredVideos": 2088,
       "checkedVideos": 0,
       "removedVideos": 0,
@@ -288,64 +288,64 @@
       "publication": "published"
     },
     "programacion": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 7,
-      "discoveredIds": 213,
-      "addedVideos": 63,
-      "filteredVideos": 92,
+      "discoveredIds": 212,
+      "addedVideos": 0,
+      "filteredVideos": 91,
       "checkedVideos": 0,
-      "removedVideos": 2,
+      "removedVideos": 0,
       "errors": [],
       "publication": "published"
     },
     "comida": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 7,
-      "discoveredIds": 2289,
-      "addedVideos": 894,
-      "filteredVideos": 1395,
+      "discoveredIds": 2290,
+      "addedVideos": 2,
+      "filteredVideos": 1394,
       "checkedVideos": 0,
       "removedVideos": 0,
       "errors": [],
       "publication": "published"
     },
     "deportes": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 1,
-      "discoveredIds": 221,
-      "addedVideos": 68,
-      "filteredVideos": 153,
+      "discoveredIds": 215,
+      "addedVideos": 16,
+      "filteredVideos": 165,
       "checkedVideos": 0,
-      "removedVideos": 0,
+      "removedVideos": 34,
       "errors": [],
       "publication": "published"
     },
     "nba": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 4,
-      "discoveredIds": 111,
-      "addedVideos": 23,
-      "filteredVideos": 88,
+      "discoveredIds": 127,
+      "addedVideos": 3,
+      "filteredVideos": 103,
       "checkedVideos": 0,
-      "removedVideos": 0,
+      "removedVideos": 2,
       "errors": [],
       "publication": "published"
     },
     "musica-90": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 7,
       "discoveredIds": 1853,
-      "addedVideos": 1682,
+      "addedVideos": 0,
       "filteredVideos": 171,
       "checkedVideos": 0,
       "removedVideos": 0,
@@ -353,12 +353,12 @@
       "publication": "published"
     },
     "musica-80": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 3,
       "discoveredIds": 916,
-      "addedVideos": 763,
+      "addedVideos": 0,
       "filteredVideos": 153,
       "checkedVideos": 0,
       "removedVideos": 0,
@@ -366,12 +366,12 @@
       "publication": "published"
     },
     "musica-2000": {
-      "at": "2026-10-24T18:34:22Z",
+      "at": "2026-10-25T13:43:41Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 4,
       "discoveredIds": 901,
-      "addedVideos": 864,
+      "addedVideos": 0,
       "filteredVideos": 37,
       "checkedVideos": 0,
       "removedVideos": 0,
@@ -380,9 +380,9 @@
     }
   },
   "lastRun": {
-    "at": "2026-10-24T18:34:22Z",
+    "at": "2026-10-25T13:43:41Z",
     "mode": "daily",
-    "quotaUnits": 2143,
+    "quotaUnits": 2102,
     "result": "success",
     "errors": []
   }

@@ -1,6 +1,18 @@
 {
   "videos": [
     {
+      "youtubeVideoId": "ZS7rO2zV9xE",
+      "durationSeconds": 909
+    },
+    {
+      "youtubeVideoId": "2E2HQZFnzv8",
+      "durationSeconds": 1691
+    },
+    {
+      "youtubeVideoId": "7ChIwbhqUWU",
+      "durationSeconds": 16091
+    },
+    {
       "youtubeVideoId": "GMk-GEUYTA0",
       "durationSeconds": 1169
     },
@@ -53,10 +65,6 @@
       "durationSeconds": 5736
     },
     {
-      "youtubeVideoId": "zQ8BIVnAeOY",
-      "durationSeconds": 1516
-    },
-    {
       "youtubeVideoId": "kbKjTbbIxVM",
       "durationSeconds": 939
     },
@@ -87,11 +95,7 @@
     {
       "youtubeVideoId": "0o94c6BtLfs",
       "durationSeconds": 3190
-    },
-    {
-      "youtubeVideoId": "5oOjULP6ACo",
-      "durationSeconds": 1101
     }
   ],
-  "cycleStartsAt": "2026-10-24T18:34:22Z"
+  "cycleStartsAt": "2026-10-25T07:28:43Z"
 }
