@@ -159,7 +159,8 @@
       "number": 23,
       "name": "Rock Nacional",
       "playbackMode": "cycle",
-      "file": "channels/rock-nacional.json"
+      "file": "channels/rock-nacional.json",
+      "guideMode": "continuous"
     },
     {
       "id": "comida",
@@ -187,21 +188,24 @@
       "number": 27,
       "name": "Musica 90'",
       "playbackMode": "cycle",
-      "file": "channels/musica-90.json"
+      "file": "channels/musica-90.json",
+      "guideMode": "continuous"
     },
     {
       "id": "musica-80",
       "number": 28,
       "name": "Musica 80'",
       "playbackMode": "cycle",
-      "file": "channels/musica-80.json"
+      "file": "channels/musica-80.json",
+      "guideMode": "continuous"
     },
     {
       "id": "musica-2000",
       "number": 29,
       "name": "Musica 2000'",
       "playbackMode": "cycle",
-      "file": "channels/musica-2000.json"
+      "file": "channels/musica-2000.json",
+      "guideMode": "continuous"
     }
   ]
 }

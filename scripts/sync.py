@@ -19,6 +19,7 @@ import time
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import urlopen
+from video_titles import normalize_title
 
 ROOT = Path(__file__).resolve().parents[1]
 VIDEO = re.compile(r"[A-Za-z0-9_-]{11}\Z")
@@ -155,6 +156,8 @@ def validate_playlist(playlist: dict, mode: str):
     for row in playlist["videos"]:
         if not isinstance(row, dict) or not VIDEO.fullmatch(row.get("youtubeVideoId", "")):
             raise SyncError("ID inválido en un archivo de reproducción.")
+        if row.get("title") is not None and (not isinstance(row["title"], str) or not row["title"].strip()):
+            raise SyncError("title debe ser un texto no vacío cuando está presente.")
         if mode == "cycle":
             positive_int(row.get("durationSeconds"), "durationSeconds")
     if mode == "cycle":
@@ -186,6 +189,8 @@ def read_config(root: Path):
             raise SyncError("Falta el nombre de un canal.")
         if entry.get("playbackMode") not in {"cycle", "live"}:
             raise SyncError("playbackMode debe ser cycle o live.")
+        if entry.get("guideMode", "schedule") not in {"schedule", "continuous"}:
+            raise SyncError("guideMode debe ser schedule o continuous.")
         validate_playlist(load(safe_file(root, entry["file"])), entry["playbackMode"])
         ids.add(identifier); numbers.add(number); files.add(entry["file"])
     configured = set()
@@ -199,6 +204,8 @@ def read_config(root: Path):
         if type(channel.get("active", True)) is not bool:
             raise SyncError("active debe ser true o false.")
         mode = channel.get("playbackMode", "cycle")
+        if channel.get("guideMode", "schedule") not in {"schedule", "continuous"}:
+            raise SyncError("guideMode debe ser schedule o continuous.")
         if mode not in {"cycle", "live"}:
             raise SyncError("playbackMode debe ser cycle o live.")
         existing = next((entry for entry in index["channels"] if entry["id"] == identifier), None)
@@ -296,7 +303,7 @@ class YouTube:
         for start in range(0, len(missing), 50):
             batch = missing[start:start + 50]
             payload = self.get("videos", part="snippet,contentDetails,status,liveStreamingDetails", id=",".join(batch),
-                               fields="items(id,snippet(publishedAt,defaultAudioLanguage,liveBroadcastContent),contentDetails(duration,regionRestriction,contentRating),status(privacyStatus,uploadStatus,embeddable),liveStreamingDetails(actualStartTime,actualEndTime))")
+                               fields="items(id,snippet(title,publishedAt,defaultAudioLanguage,liveBroadcastContent),contentDetails(duration,regionRestriction,contentRating),status(privacyStatus,uploadStatus,embeddable),liveStreamingDetails(actualStartTime,actualEndTime))")
             found = {item.get("id"): item for item in payload["items"]}
             for identifier in batch:
                 self.video_cache[identifier] = found.get(identifier)
@@ -481,6 +488,9 @@ class Sync:
                         published = publication_date(item.get("snippet", {}).get("publishedAt")) if item else None
                         if status == "approved" and within_window(published, cutoff, self.now):
                             row = {"youtubeVideoId": identifier}
+                            title = item.get("snippet", {}).get("title")
+                            if isinstance(title, str) and title.strip():
+                                row["title"] = title.strip()
                             if channel.get("playbackMode", "cycle") == "cycle":
                                 row["durationSeconds"] = metadata["durationSeconds"]
                             rows.append(row)
@@ -501,6 +511,11 @@ class Sync:
         for start in range(0, len(ids), 50):
             batch = ids[start:start + 50]
             items = self.api.videos(batch)
+            for row in rows:
+                item = items.get(row["youtubeVideoId"])
+                title = item.get("snippet", {}).get("title") if item else None
+                if isinstance(title, str) and title.strip():
+                    row["title"] = title.strip()
             unavailable = {identifier for identifier in batch
                            if assess(items[identifier], self.rules(channel), channel.get("playbackMode", "cycle"))[0] == "unavailable"}
             if channel.get("updateMode", "append") == "replace":
@@ -528,8 +543,10 @@ class Sync:
             rows = rows[:1]
         playlist = deepcopy(old) if old else {}
         playlist["videos"] = rows
-        if mode == "cycle" and (not old or old["videos"] != rows):
+        playback = lambda videos: [(row["youtubeVideoId"], row.get("durationSeconds")) for row in videos]
+        if mode == "cycle" and (not old or playback(old["videos"]) != playback(rows)):
             playlist["cycleStartsAt"] = anchor_update(old, rows, self.now) if old else self.when
+        self.clean_titles(playlist["videos"])
         validate_playlist(playlist, mode)
         if not entry:
             reserved = [item.get("number", 0) for item in self.config["channels"]]
@@ -537,10 +554,15 @@ class Sync:
             entry = {"id": channel["id"], "number": number, "name": channel["name"], "playbackMode": mode,
                      "file": f"channels/{channel['id']}.json"}
             self.index["channels"].append(entry)
+        self.guide_metadata(channel, entry)
         save(path, playlist)
         return "published"
 
     def run(self, mode="daily", selected=None):
+        if mode == "presentation":
+            return self.refresh_presentation(selected)
+        if mode == "titles":
+            return self.refresh_titles(selected)
         baselines = {channel["id"]: self.baseline(channel) for channel in self.config["channels"]
                      if channel.get("active", True) and (selected is None or channel["id"] == selected)}
         if selected and selected not in baselines:
@@ -564,6 +586,8 @@ class Sync:
                 try:
                     if mode == "daily":
                         self.discover(channel, rows, stats)
+                        if not replace:
+                            self.fill_titles(rows)
                     else:
                         self.maintain(channel, rows, stats)
                 except SyncError as exc:
@@ -590,10 +614,71 @@ class Sync:
         save(self.root / "sync-state.json", self.state)
         return 2 if self.errors else 0
 
+    def fill_titles(self, rows, refresh=False):
+        """Enriquece sin reordenar, filtrar ni cambiar duraciones/orígenes."""
+        ids = list(dict.fromkeys(row["youtubeVideoId"] for row in rows if refresh or not row.get("title")))
+        for start in range(0, len(ids), 50):
+            items = self.api.videos(ids[start:start + 50])
+            for row in rows:
+                item = items.get(row["youtubeVideoId"])
+                title = item.get("snippet", {}).get("title") if item else None
+                if isinstance(title, str) and title.strip():
+                    row["title"] = normalize_title(title.strip()) or "Título no disponible"
+
+    @staticmethod
+    def clean_titles(rows):
+        for row in rows:
+            if row.get("title"):
+                row["title"] = normalize_title(row["title"]) or "Título no disponible"
+
+    def guide_metadata(self, channel, entry):
+        mode = channel.get("guideMode")
+        if mode is None and self.rules(channel)["music"]:
+            mode = "continuous"
+        if mode is not None:
+            entry["guideMode"] = mode
+
+    def refresh_presentation(self, selected=None):
+        entries = [entry for entry in self.index["channels"] if selected is None or entry["id"] == selected]
+        if selected and not entries:
+            raise SyncError("El canal seleccionado no está publicado.")
+        for entry in entries:
+            configured = next((channel for channel in self.config["channels"] if channel["id"] == entry["id"]), None)
+            if configured:
+                self.guide_metadata(configured, entry)
+            path = safe_file(self.root, entry["file"])
+            playlist = load(path)
+            self.clean_titles(playlist["videos"])
+            validate_playlist(playlist, entry["playbackMode"])
+            save(path, playlist)
+        save(self.root / "channels.json", self.index)
+        return 0
+
+    def refresh_titles(self, selected=None):
+        entries = [entry for entry in self.index["channels"] if selected is None or entry["id"] == selected]
+        if selected and not entries:
+            raise SyncError("El canal seleccionado no está publicado.")
+        for entry in entries:
+            path = safe_file(self.root, entry["file"])
+            playlist = load(path)
+            try:
+                self.fill_titles(playlist["videos"], refresh=True)
+            except SyncError as exc:
+                self.errors.append(f"{entry['id']}: {exc}")
+                # Los títulos ya verificados son seguros incluso si falla otro lote.
+            validate_playlist(playlist, entry["playbackMode"])
+            self.clean_titles(playlist["videos"])
+            save(path, playlist)
+        save(self.root / "channels.json", self.index)
+        self.state["lastTitleRefresh"] = {"at": self.when, "quotaUnits": self.api.used,
+                                           "errors": self.errors}
+        save(self.root / "sync-state.json", self.state)
+        return 2 if self.errors else 0
+
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--mode", choices=["daily", "maintenance", "validate"], default="daily")
+    parser.add_argument("--mode", choices=["daily", "maintenance", "titles", "presentation", "validate"], default="daily")
     parser.add_argument("--channel", help="ID de un canal activo; omitido procesa todos")
     parser.add_argument("--root", type=Path, default=ROOT)
     args = parser.parse_args(argv)
@@ -605,6 +690,10 @@ def main(argv=None):
                     engine.baseline(channel)
                 print("Configuración e índice válidos. No se consultó YouTube.")
                 return 0
+            if args.mode == "presentation":
+                result = engine.refresh_presentation(args.channel)
+                print("Presentación actualizada sin consultar YouTube ni alterar la reproducción.")
+                return result
             key = os.environ.get("YOUTUBE_API_KEY", "").strip()
             if not key:
                 raise SyncError("Falta YOUTUBE_API_KEY en el entorno de GitHub Actions Secrets.")

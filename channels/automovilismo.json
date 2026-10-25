@@ -3,363 +3,453 @@
   "videos": [
     {
       "youtubeVideoId": "6xAtYNLI5ZQ",
-      "durationSeconds": 4096
+      "durationSeconds": 4096,
+      "title": "Carburando Histórico · Turismo Carretera en Buenos Aires - 16/03/2008"
     },
     {
       "youtubeVideoId": "EInvTIHTbro",
-      "durationSeconds": 4027
+      "durationSeconds": 4027,
+      "title": "Carburando Histórico · Turismo Carretera en Buenos Aires - 11/12/1994"
     },
     {
       "youtubeVideoId": "ntXnu8kcP5o",
-      "durationSeconds": 211
+      "durationSeconds": 211,
+      "title": "Turismo Carretera · ¿Cómo sigue la historia de la tuerca central en la categoría?"
     },
     {
       "youtubeVideoId": "dBGkfNfb_Ko",
-      "durationSeconds": 3451
+      "durationSeconds": 3451,
+      "title": "Carburando Histórico · Turismo Carretera en Buenos Aires - 14/11/1999"
     },
     {
       "youtubeVideoId": "JtRkpWb3-cQ",
-      "durationSeconds": 4065
+      "durationSeconds": 4065,
+      "title": "Carburando Histórico · Turismo Carretera en 9 de Julio - 01/12/1996"
     },
     {
       "youtubeVideoId": "a6zwZYHu1j4",
-      "durationSeconds": 3305
+      "durationSeconds": 3305,
+      "title": "Carburando Histórico · Turismo Carretera en Balcarce (04/02/2001)"
     },
     {
       "youtubeVideoId": "ybCihtIQHNE",
-      "durationSeconds": 247
+      "durationSeconds": 247,
+      "title": "#TC - Johnny Laboritto nos muestra cómo preparar un motor campeón (31/01/2017) - Carburando.com"
     },
     {
       "youtubeVideoId": "JQsZEedDKy4",
-      "durationSeconds": 1162
+      "durationSeconds": 1162,
+      "title": "Historia del Turismo Carretera"
     },
     {
       "youtubeVideoId": "GR-Rtz_o1Rw",
-      "durationSeconds": 11006
+      "durationSeconds": 11006,
+      "title": "Juan Manuel Fangio: El Mejor Piloto de Todos Los Tiempos · Documental"
     },
     {
       "youtubeVideoId": "0ogNdlJ9bHs",
-      "durationSeconds": 2030
+      "durationSeconds": 2030,
+      "title": "Pechito López en Vorterix - Entrevista completa con Mario Pergolini en el 2015"
     },
     {
       "youtubeVideoId": "sGGsHDTgYVw",
-      "durationSeconds": 504
+      "durationSeconds": 504,
+      "title": "Entrevista con Pechito López en Le Mans"
     },
     {
       "youtubeVideoId": "pae-avr4rHI",
-      "durationSeconds": 3044
+      "durationSeconds": 3044,
+      "title": "Agustín Canapino: Pasión, Dedicación y Sacrificio · Documental"
     },
     {
       "youtubeVideoId": "q8Dwrq958po",
-      "durationSeconds": 4249
+      "durationSeconds": 4249,
+      "title": "Juan Maria Traverso en Vorterix 2015 - Entrevista Completa"
     },
     {
       "youtubeVideoId": "KnyGBhbwfA0",
-      "durationSeconds": 4604
+      "durationSeconds": 4604,
+      "title": "Turismo Carretera 2001: 9na Fecha Balcarce - Final TC"
     },
     {
       "youtubeVideoId": "3s1WFbotx6Y",
-      "durationSeconds": 3218
+      "durationSeconds": 3218,
+      "title": "Turismo Carretera 2001: 1ra Fecha Balcarce - Final TC"
     },
     {
       "youtubeVideoId": "W__tKGOihCY",
-      "durationSeconds": 3655
+      "durationSeconds": 3655,
+      "title": "Turismo Carretera 2001: 6ta Fecha Río Iv - Final TC"
     },
     {
       "youtubeVideoId": "DIK5FGUq7Bc",
-      "durationSeconds": 4888
+      "durationSeconds": 4888,
+      "title": "Turismo Carretera 2001: 10ma Fecha Paraná - Final TC"
     },
     {
       "youtubeVideoId": "90i6Vlc-6gE",
-      "durationSeconds": 3498
+      "durationSeconds": 3498,
+      "title": "Turismo Carretera 2001: 5ta Fecha Trelew - Final TC"
     },
     {
       "youtubeVideoId": "Vs5Lt2h0IGs",
-      "durationSeconds": 3998
+      "durationSeconds": 3998,
+      "title": "Turismo Carretera 2001: 4ta Fecha La Plata - Final TC"
     },
     {
       "youtubeVideoId": "ElKQ3fRc18s",
-      "durationSeconds": 5106
+      "durationSeconds": 5106,
+      "title": "Turismo Carretera 1997: 13ra Fecha Buenos Aires - Final TC"
     },
     {
       "youtubeVideoId": "u2VLZLvRok8",
-      "durationSeconds": 3401
+      "durationSeconds": 3401,
+      "title": "Turismo Carretera 1998: 9na Fecha Buenos Aires - Final TC"
     },
     {
       "youtubeVideoId": "L7LUJzGNTzQ",
-      "durationSeconds": 207
+      "durationSeconds": 207,
+      "title": "TC2000 Campeonato de 1991"
     },
     {
       "youtubeVideoId": "bhcTkTv9phI",
-      "durationSeconds": 1217
+      "durationSeconds": 1217,
+      "title": "Historia del Rally Dakar: Nos vamos a Sudamérica"
     },
     {
       "youtubeVideoId": "dokuneNDRZg",
-      "durationSeconds": 2106
+      "durationSeconds": 2106,
+      "title": "La Increíble historia del Grupo B"
     },
     {
       "youtubeVideoId": "VqoxXJ4-7fI",
-      "durationSeconds": 1402
+      "durationSeconds": 1402,
+      "title": "Coches míticos de Le Mans"
     },
     {
       "youtubeVideoId": "FLC2o55VwgU",
-      "durationSeconds": 944
+      "durationSeconds": 944,
+      "title": "Coches de Competición Innovadores, que no son F1"
     },
     {
       "youtubeVideoId": "dO3J2Sds7vk",
-      "durationSeconds": 992
+      "durationSeconds": 992,
+      "title": "La historia del Ford Gt-40"
     },
     {
       "youtubeVideoId": "nuBKsATIw8Q",
-      "durationSeconds": 2127
+      "durationSeconds": 2127,
+      "title": "24 Horas de Le Mans Historia - Documental"
     },
     {
       "youtubeVideoId": "AjX-o5GbqgU",
-      "durationSeconds": 1012
+      "durationSeconds": 1012,
+      "title": "Os contamos la historia del Porsche 917"
     },
     {
       "youtubeVideoId": "6Q30WBVUh6c",
-      "durationSeconds": 1598
+      "durationSeconds": 1598,
+      "title": "¿Cómo se conduce un Grupo B? Lo coches más difíciles de la historia"
     },
     {
       "youtubeVideoId": "C_36xzYmJDM",
-      "durationSeconds": 1070
+      "durationSeconds": 1070,
+      "title": "Mundial de Rallyes: El Grupo B ha muerto... ¿Seguro?"
     },
     {
       "youtubeVideoId": "s4GrTbFCnKE",
-      "durationSeconds": 858
+      "durationSeconds": 858,
+      "title": "Le Mans '66 / Contra lo Imposible: la historia Real que enfrentó a Ford y Ferrari"
     },
     {
       "youtubeVideoId": "tp9Twa7cLQw",
-      "durationSeconds": 1577
+      "durationSeconds": 1577,
+      "title": "Can-Am: Más rápidos que los Fórmula 1"
     },
     {
       "youtubeVideoId": "ZYeXnY1HVfo",
-      "durationSeconds": 3742
+      "durationSeconds": 3742,
+      "title": "TC 2000 - 1987: 2da Fecha General Roca - Final TC 2000"
     },
     {
       "youtubeVideoId": "QqaJy6k0Y6k",
-      "durationSeconds": 3233
+      "durationSeconds": 3233,
+      "title": "TC 2000 - 1987: 3ra Fecha Mendoza - Final TC 2000"
     },
     {
       "youtubeVideoId": "mRFt6DrGXCQ",
-      "durationSeconds": 3308
+      "durationSeconds": 3308,
+      "title": "TC 2000 - 1987: 4ta Fecha Santa Fe - Final TC 2000"
     },
     {
       "youtubeVideoId": "dTVQjdaboq4",
-      "durationSeconds": 3213
+      "durationSeconds": 3213,
+      "title": "TC 2000 - 1987: 5ta Fecha Buenos Aires - Final TC 2000"
     },
     {
       "youtubeVideoId": "G6TacweciuM",
-      "durationSeconds": 3260
+      "durationSeconds": 3260,
+      "title": "TC 2000 - 1987: 6ta Fecha Alta Gracia - Final TC 2000"
     },
     {
       "youtubeVideoId": "ygyCXG8yl2c",
-      "durationSeconds": 2852
+      "durationSeconds": 2852,
+      "title": "TC 2000 - 1987: 7ma Fecha Rafaela - Final TC 2000"
     },
     {
       "youtubeVideoId": "ccqmTnAJEJo",
-      "durationSeconds": 3715
+      "durationSeconds": 3715,
+      "title": "TC 2000 - 1987: 10ma Fecha Pigüé - Final TC 2000"
     },
     {
       "youtubeVideoId": "fO54rWW8Km0",
-      "durationSeconds": 3724
+      "durationSeconds": 3724,
+      "title": "TC 2000 - 1988: 2da Fecha General Roca - Final TC 2000"
     },
     {
       "youtubeVideoId": "693ZpnqbHa8",
-      "durationSeconds": 2315
+      "durationSeconds": 2315,
+      "title": "TC 2000 - 1988: 11ma Fecha Allen - Final TC 2000"
     },
     {
       "youtubeVideoId": "w2aga7xKeSY",
-      "durationSeconds": 2241
+      "durationSeconds": 2241,
+      "title": "TC 2000 - 1988: 13ra Fecha Balcarce - Final TC 2000"
     },
     {
       "youtubeVideoId": "MIM18-STgc0",
-      "durationSeconds": 424
+      "durationSeconds": 424,
+      "title": "TC 2000 Pigue 1989"
     },
     {
       "youtubeVideoId": "lhVjEjDvQp8",
-      "durationSeconds": 2229
+      "durationSeconds": 2229,
+      "title": "TC 2000 - 1989: 7ma Fecha Rafaela - Final TC 2000"
     },
     {
       "youtubeVideoId": "C5f_g-D9kBE",
-      "durationSeconds": 4344
+      "durationSeconds": 4344,
+      "title": "TC 2000 - 1989: 10ma Fecha Alta Gracia - Final TC 2000"
     },
     {
       "youtubeVideoId": "FJX2aJMXfsE",
-      "durationSeconds": 686
+      "durationSeconds": 686,
+      "title": "\"Yoyo\" contra \"Cocho\" y el \"Flaco\""
     },
     {
       "youtubeVideoId": "AAKn2liHpug",
-      "durationSeconds": 544
+      "durationSeconds": 544,
+      "title": "TC 2000 1991 Triunfo de Jorge Omar Del Rio en Mar del Plata"
     },
     {
       "youtubeVideoId": "kJ75aI3iW2o",
-      "durationSeconds": 518
+      "durationSeconds": 518,
+      "title": "TC 2000 1991 Triunfo de Juan Maria Traverso en General Roca"
     },
     {
       "youtubeVideoId": "KVxbUr8kA1w",
-      "durationSeconds": 790
+      "durationSeconds": 790,
+      "title": "TC 2000 1991 Triunfo de Juan Maria Traverso en 9 de Julio"
     },
     {
       "youtubeVideoId": "NQSbaQ_vsu4",
-      "durationSeconds": 320
+      "durationSeconds": 320,
+      "title": "TC 2000 1993 Triunfo de Tito Bessone en Bs As"
     },
     {
       "youtubeVideoId": "rkjGggwpbfg",
-      "durationSeconds": 3990
+      "durationSeconds": 3990,
+      "title": "TC2000 Rio Cuarto 1993"
     },
     {
       "youtubeVideoId": "UK-lxJx_i0k",
-      "durationSeconds": 374
+      "durationSeconds": 374,
+      "title": "TC 2000 1993 Obera Misiones"
     },
     {
       "youtubeVideoId": "swLH0c6x-LA",
-      "durationSeconds": 569
+      "durationSeconds": 569,
+      "title": "TC2000 Parana 1993"
     },
     {
       "youtubeVideoId": "Lev0yVtnq-g",
-      "durationSeconds": 358
+      "durationSeconds": 358,
+      "title": "TC 2000 1994 Triunfo del Toto Etchegaray en Bs As"
     },
     {
       "youtubeVideoId": "ivBhQdHAxQQ",
-      "durationSeconds": 2174
+      "durationSeconds": 2174,
+      "title": "TC 2000 - 1994: 13ra Fecha Paraná - Final TC 2000"
     },
     {
       "youtubeVideoId": "6rdzflFgzsI",
-      "durationSeconds": 397
+      "durationSeconds": 397,
+      "title": "\"Yoyo\" campeón y Ortelli ganador"
     },
     {
       "youtubeVideoId": "ooQ83GTzT4Q",
-      "durationSeconds": 9801
+      "durationSeconds": 9801,
+      "title": "TC 2000 - 1995: 6ta Fecha Mendoza (Transmisión Completa)"
     },
     {
       "youtubeVideoId": "ol-I0ysetQo",
-      "durationSeconds": 2518
+      "durationSeconds": 2518,
+      "title": "TC 2000 1995 Triunfo del Guri Martinez en Bs As"
     },
     {
       "youtubeVideoId": "ODpivi-ghkI",
-      "durationSeconds": 1457
+      "durationSeconds": 1457,
+      "title": "TC 2000 - 1997: 1ra Fecha Rafaela - 1ra Carrera"
     },
     {
       "youtubeVideoId": "g8YvbQ-0VH8",
-      "durationSeconds": 1262
+      "durationSeconds": 1262,
+      "title": "TC 2000 - 1997: 1ra Fecha Rafaela - 2da Carrera"
     },
     {
       "youtubeVideoId": "eVcPeJgUVrk",
-      "durationSeconds": 1279
+      "durationSeconds": 1279,
+      "title": "TC 2000 - 1997: 2da Fecha Río Iv - 1ra Carrera"
     },
     {
       "youtubeVideoId": "g8ZIyxfTvsg",
-      "durationSeconds": 1412
+      "durationSeconds": 1412,
+      "title": "TC 2000 - 1997: 2da Fecha Río Iv - 2da Carrera"
     },
     {
       "youtubeVideoId": "dr-sC7d1SPU",
-      "durationSeconds": 3287
+      "durationSeconds": 3287,
+      "title": "TC 2000 - 1997: 8va Fecha San Juan - 2da Carrera"
     },
     {
       "youtubeVideoId": "s8oT6Eorhi8",
-      "durationSeconds": 2878
+      "durationSeconds": 2878,
+      "title": "Carburando 02-06-1997"
     },
     {
       "youtubeVideoId": "aMY2mxj6uW4",
-      "durationSeconds": 786
+      "durationSeconds": 786,
+      "title": "TC 2000 en Buenos Aires 1998 - Carrera 1"
     },
     {
       "youtubeVideoId": "XiC6Uq0ErCo",
-      "durationSeconds": 633
+      "durationSeconds": 633,
+      "title": "TC 2000 en Buenos Aires 1998 - Carrera 2"
     },
     {
       "youtubeVideoId": "gXbANbiyj_g",
-      "durationSeconds": 691
+      "durationSeconds": 691,
+      "title": "TC 2000 en Mar del Plata - 1998"
     },
     {
       "youtubeVideoId": "yqbRtyq0N5I",
-      "durationSeconds": 984
+      "durationSeconds": 984,
+      "title": "Carburando 28-06-1999"
     },
     {
       "youtubeVideoId": "JGMD7Y96dSY",
-      "durationSeconds": 949
+      "durationSeconds": 949,
+      "title": "Carburando 20-12-1999"
     },
     {
       "youtubeVideoId": "WonRnqRG9Jw",
-      "durationSeconds": 993
+      "durationSeconds": 993,
+      "title": "Carburando 05-06-2000"
     },
     {
       "youtubeVideoId": "fwwaxjoTZlo",
-      "durationSeconds": 1276
+      "durationSeconds": 1276,
+      "title": "Carburando 31-07-2000"
     },
     {
       "youtubeVideoId": "VtXWFQXUR0U",
-      "durationSeconds": 787
+      "durationSeconds": 787,
+      "title": "Carburando 01-10-2001"
     },
     {
       "youtubeVideoId": "vHYTGJTxsZI",
-      "durationSeconds": 3741
+      "durationSeconds": 3741,
+      "title": "Carburando 60 años: TC2000 (Buenos Aires 2001) Victoria de Walter Hernández"
     },
     {
       "youtubeVideoId": "qSpwsVKfpSM",
-      "durationSeconds": 3414
+      "durationSeconds": 3414,
+      "title": "Carburando 60 años - TC2000 en Paraná 2002 - Triunfo de Martínez"
     },
     {
       "youtubeVideoId": "mX5KzAyrJIc",
-      "durationSeconds": 736
+      "durationSeconds": 736,
+      "title": "Carburando 01-09-2003"
     },
     {
       "youtubeVideoId": "yfLf7q-DbcQ",
-      "durationSeconds": 928
+      "durationSeconds": 928,
+      "title": "03.06.2005. TC 2000. Buenos Aires. Series."
     },
     {
       "youtubeVideoId": "sOScXW7LSgY",
-      "durationSeconds": 3476
+      "durationSeconds": 3476,
+      "title": "06.03.2005. TC 2000. Buenos Aires. Final."
     },
     {
       "youtubeVideoId": "cxBtjbMTszY",
-      "durationSeconds": 834
+      "durationSeconds": 834,
+      "title": "27.03.2005. TC 2000. Parana. Serie 1."
     },
     {
       "youtubeVideoId": "9GSbqEqz3p4",
-      "durationSeconds": 887
+      "durationSeconds": 887,
+      "title": "27.03.2005. TC 2000. Parana. Serie 2."
     },
     {
       "youtubeVideoId": "UPs_9WRpj-A",
-      "durationSeconds": 946
+      "durationSeconds": 946,
+      "title": "17.04.2005. TC2000. Viedma. Serie 1."
     },
     {
       "youtubeVideoId": "wsZe6Ax-KJg",
-      "durationSeconds": 772
+      "durationSeconds": 772,
+      "title": "17.04.2005. TC2000. Viedma. Serie 2."
     },
     {
       "youtubeVideoId": "TuEycJ4YeeU",
-      "durationSeconds": 3090
+      "durationSeconds": 3090,
+      "title": "17.04.2005. TC2000. Viedma. Final."
     },
     {
       "youtubeVideoId": "OSGERlctnbM",
-      "durationSeconds": 643
+      "durationSeconds": 643,
+      "title": "08.05.2005. TC2000. San Juan. Serie 1."
     },
     {
       "youtubeVideoId": "7MYP4gUt204",
-      "durationSeconds": 778
+      "durationSeconds": 778,
+      "title": "08.05.2005. TC2000. San Juan. Serie 2."
     },
     {
       "youtubeVideoId": "Z1qF2u2SMIQ",
-      "durationSeconds": 3586
+      "durationSeconds": 3586,
+      "title": "08.05.2005. TC2000. San Juan. Final."
     },
     {
       "youtubeVideoId": "0sCadXlkE_U",
-      "durationSeconds": 3021
+      "durationSeconds": 3021,
+      "title": "29.05.2005. TC 2000. Olavarria. Final."
     },
     {
       "youtubeVideoId": "E9zRLKuLwCc",
-      "durationSeconds": 1350
+      "durationSeconds": 1350,
+      "title": "Carburando 60 años: TC2000 - (Rafaela) 2005"
     },
     {
       "youtubeVideoId": "EvlI7w7dPAw",
-      "durationSeconds": 3372
+      "durationSeconds": 3372,
+      "title": "TC 2000 - 2007: 1ra Fecha Comodoro Rivadavia - Final TC 2000"
     },
     {
       "youtubeVideoId": "HqUj5ZMP9_E",
-      "durationSeconds": 1524
+      "durationSeconds": 1524,
+      "title": "Carburando 60 años - TC2000 (Mendoza 2009)"
     }
   ]
 }
