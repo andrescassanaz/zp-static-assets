@@ -2,487 +2,608 @@
   "videos": [
     {
       "youtubeVideoId": "yuV06p1Fxhs",
-      "durationSeconds": 658
+      "durationSeconds": 658,
+      "title": "¡Hackean OpenCode!"
     },
     {
       "youtubeVideoId": "pl4HphKwpYg",
-      "durationSeconds": 769
+      "durationSeconds": 769,
+      "title": "¡Espionaje en OpenAI!"
     },
     {
       "youtubeVideoId": "Z5iNYBYIZVo",
-      "durationSeconds": 439
+      "durationSeconds": 439,
+      "title": "Linus Torvalds defiende la IA en Linux"
     },
     {
       "youtubeVideoId": "CuvRrItIdKs",
-      "durationSeconds": 619
+      "durationSeconds": 619,
+      "title": "¡Han hackeado PHP!"
     },
     {
       "youtubeVideoId": "j3ZIM9UaXlE",
-      "durationSeconds": 604
+      "durationSeconds": 604,
+      "title": "La IA debería hacernos trabajar menos (NO MÁS)"
     },
     {
       "youtubeVideoId": "3j5LC1dbuvk",
-      "durationSeconds": 721
+      "durationSeconds": 721,
+      "title": "La ingeniería inversa se volvió demasiado fácil"
     },
     {
       "youtubeVideoId": "mqTuHg4-Cvk",
-      "durationSeconds": 919
+      "durationSeconds": 919,
+      "title": "Anthropic crea su propio Git"
     },
     {
       "youtubeVideoId": "eHfdaCLNPQk",
-      "durationSeconds": 444
+      "durationSeconds": 444,
+      "title": "Fallece Margaret Hamilton: Pionera de la ingeniería de software"
     },
     {
       "youtubeVideoId": "RHloC2DXQYc",
-      "durationSeconds": 489
+      "durationSeconds": 489,
+      "title": "Algo no cuadra con los despidos de OpenAI"
     },
     {
       "youtubeVideoId": "70LEUWeNQXg",
-      "durationSeconds": 739
+      "durationSeconds": 739,
+      "title": "La IA está rompiendo los límites del software"
     },
     {
       "youtubeVideoId": "CvdkF52Ms1w",
-      "durationSeconds": 1152
+      "durationSeconds": 1152,
+      "title": "La IA pone en apuros a Adobe"
     },
     {
       "youtubeVideoId": "gAa2oY3gdts",
-      "durationSeconds": 666
+      "durationSeconds": 666,
+      "title": "Microsoft quiere competir con el MacBook Pro"
     },
     {
       "youtubeVideoId": "IHs3rhATACU",
-      "durationSeconds": 548
+      "durationSeconds": 548,
+      "title": "Espionaje en la era de la IA"
     },
     {
       "youtubeVideoId": "A4QYEDQCnaQ",
-      "durationSeconds": 1548
+      "durationSeconds": 1548,
+      "title": "Crea una Landing ESPECTACULAR con Claude Code"
     },
     {
       "youtubeVideoId": "ItAe6Nbjn54",
-      "durationSeconds": 1456
+      "durationSeconds": 1456,
+      "title": "Recortes en OpenAI, nuevo GPT 6.1 Sol y la demo que salió mal"
     },
     {
       "youtubeVideoId": "W9NkGakJzcs",
-      "durationSeconds": 494
+      "durationSeconds": 494,
+      "title": "JavaScript acaba de romper la PS5"
     },
     {
       "youtubeVideoId": "C3vaxYtFmOo",
-      "durationSeconds": 1238
+      "durationSeconds": 1238,
+      "title": "El estado actual del mundo tech en 2026"
     },
     {
       "youtubeVideoId": "yTPuF7whdSQ",
-      "durationSeconds": 585
+      "durationSeconds": 585,
+      "title": "No instales esto de Facebook (por ahora)"
     },
     {
       "youtubeVideoId": "IbJW8xIwf3E",
-      "durationSeconds": 1077
+      "durationSeconds": 1077,
+      "title": "GPT-6 es absurdamente barato (lo siento, Deepseek)"
     },
     {
       "youtubeVideoId": "FrNMcmMarUQ",
-      "durationSeconds": 1156
+      "durationSeconds": 1156,
+      "title": "Claude Opus 5.5 es..."
     },
     {
       "youtubeVideoId": "FNxAM5qLzbg",
-      "durationSeconds": 685
+      "durationSeconds": 685,
+      "title": "La IA de Google que mejora sola"
     },
     {
       "youtubeVideoId": "8uAL3szNLqE",
-      "durationSeconds": 594
+      "durationSeconds": 594,
+      "title": "Un modelo de IA chino roba tu código"
     },
     {
       "youtubeVideoId": "DQ1MyiYtCo8",
-      "durationSeconds": 759
+      "durationSeconds": 759,
+      "title": "Hackean OpenAI con una imagen y Opus 5"
     },
     {
       "youtubeVideoId": "P6Mr5c0T1DQ",
-      "durationSeconds": 1191
+      "durationSeconds": 1191,
+      "title": "Monté mi propia nube con este pequeño servidor"
     },
     {
       "youtubeVideoId": "KvpQ16XlUv0",
-      "durationSeconds": 1584
+      "durationSeconds": 1584,
+      "title": "Lo de Jev es Salvaje"
     },
     {
       "youtubeVideoId": "kmhwC7k6p4o",
-      "durationSeconds": 458
+      "durationSeconds": 458,
+      "title": "El iPhone DUO ya tiene problemas"
     },
     {
       "youtubeVideoId": "gwBi5gJNHpo",
-      "durationSeconds": 513
+      "durationSeconds": 513,
+      "title": "La guerra de la IA acaba de ponerse MUY rara"
     },
     {
       "youtubeVideoId": "uZrggvSk6wY",
-      "durationSeconds": 863
+      "durationSeconds": 863,
+      "title": "El robo del siglo"
     },
     {
       "youtubeVideoId": "muN6vRUsoPA",
-      "durationSeconds": 519
+      "durationSeconds": 519,
+      "title": "Abandonan React Native... ¿Por qué?"
     },
     {
       "youtubeVideoId": "Cx_mDgaosNk",
-      "durationSeconds": 2274
+      "durationSeconds": 2274,
+      "title": "Anthropic cree que la IA podría matarnos"
     },
     {
       "youtubeVideoId": "gKIQbZb36OE",
-      "durationSeconds": 651
+      "durationSeconds": 651,
+      "title": "NVIDIA rompe el mercado"
     },
     {
       "youtubeVideoId": "6pDzTda4eVE",
-      "durationSeconds": 443
+      "durationSeconds": 443,
+      "title": "No era lo que nos habían contado"
     },
     {
       "youtubeVideoId": "yod4yAnJWso",
-      "durationSeconds": 650
+      "durationSeconds": 650,
+      "title": "Google Chrome está jugando sucio"
     },
     {
       "youtubeVideoId": "Soxm8gIHDEs",
-      "durationSeconds": 1051
+      "durationSeconds": 1051,
+      "title": "La fatiga de los modelos de IA"
     },
     {
       "youtubeVideoId": "LPuUFOs9UUc",
-      "durationSeconds": 737
+      "durationSeconds": 737,
+      "title": "Cuidado con esta oferta de trabajo"
     },
     {
       "youtubeVideoId": "Qd8rumA6N8k",
-      "durationSeconds": 933
+      "durationSeconds": 933,
+      "title": "GPT-6 es Salvaje"
     },
     {
       "youtubeVideoId": "BxpI2TOsFG0",
-      "durationSeconds": 477
+      "durationSeconds": 477,
+      "title": "Se filtro todo"
     },
     {
       "youtubeVideoId": "qrSd-cGI73A",
-      "durationSeconds": 688
+      "durationSeconds": 688,
+      "title": "OpenAI mete miedo"
     },
     {
       "youtubeVideoId": "pOCxSPVFP7Y",
-      "durationSeconds": 1287
+      "durationSeconds": 1287,
+      "title": "Apple, ¿Pero qué haces?"
     },
     {
       "youtubeVideoId": "1VAH6U0LLBQ",
-      "durationSeconds": 813
+      "durationSeconds": 813,
+      "title": "¿Por qué OpenAI ABANDONA Cursor AI?"
     },
     {
       "youtubeVideoId": "1L4hKZ81Be4",
-      "durationSeconds": 1343
+      "durationSeconds": 1343,
+      "title": "Lo de Anthropic es Salvaje"
     },
     {
       "youtubeVideoId": "3dlrGwXeyB8",
-      "durationSeconds": 832
+      "durationSeconds": 832,
+      "title": "Así controlo todos mis agentes"
     },
     {
       "youtubeVideoId": "5JjuF1zpNbI",
-      "durationSeconds": 2259
+      "durationSeconds": 2259,
+      "title": "Me equivoqué, NO uses Spec Driven Development"
     },
     {
       "youtubeVideoId": "uD_9-Ic5sZU",
-      "durationSeconds": 1081
+      "durationSeconds": 1081,
+      "title": "Tienes que usar Dokploy ahora! es GRATIS y privado!"
     },
     {
       "youtubeVideoId": "p2kspDx5G6w",
-      "durationSeconds": 776
+      "durationSeconds": 776,
+      "title": "Pi es IMPRESIONANTE!"
     },
     {
       "youtubeVideoId": "WrnFtgGLO38",
-      "durationSeconds": 3135
+      "durationSeconds": 3135,
+      "title": "Tienes que aprender FastAPI ahora, es increíble!"
     },
     {
       "youtubeVideoId": "YBszDe6UHv8",
-      "durationSeconds": 9638
+      "durationSeconds": 9638,
+      "title": "Anthropic invierte 100M para formar ingenieros, NZ excelente salud en IT, demasiada basura IA"
     },
     {
       "youtubeVideoId": "oCGli8G9dpQ",
-      "durationSeconds": 3666
+      "durationSeconds": 3666,
+      "title": "Curso de JavaScript Unit Testing para principiantes"
     },
     {
       "youtubeVideoId": "vDzSDGfGqZw",
-      "durationSeconds": 11210
+      "durationSeconds": 11210,
+      "title": "Estamos en vivo!"
     },
     {
       "youtubeVideoId": "SQUiLmKH5Cc",
-      "durationSeconds": 3660
+      "durationSeconds": 3660,
+      "title": "Obsidian es increíble! Apréndelo ahora gratis con certificado incluído"
     },
     {
       "youtubeVideoId": "84eaObtLSw0",
-      "durationSeconds": 788
+      "durationSeconds": 788,
+      "title": "Esto hace tu app 100 veces MEJOR"
     },
     {
       "youtubeVideoId": "FxgzAcQfro0",
-      "durationSeconds": 2868
+      "durationSeconds": 2868,
+      "title": "Herdr es increíble! apréndelo gratis ahora con certificado incluído."
     },
     {
       "youtubeVideoId": "L9xf3q6yDbU",
-      "durationSeconds": 1085
+      "durationSeconds": 1085,
+      "title": "¿TODAVÍA VALE LA PENA?"
     },
     {
       "youtubeVideoId": "ropI9KKocMo",
-      "durationSeconds": 1302
+      "durationSeconds": 1302,
+      "title": "Estás usando mal ChatGPT, Claude y Gemini"
     },
     {
       "youtubeVideoId": "YHs2Z08UeIU",
-      "durationSeconds": 986
+      "durationSeconds": 986,
+      "title": "Están saboteando tu carrera y no lo sabes."
     },
     {
       "youtubeVideoId": "FG3Xeq_NNSI",
-      "durationSeconds": 1099
+      "durationSeconds": 1099,
+      "title": "La situación del Mac Studio es complicada"
     },
     {
       "youtubeVideoId": "6g3GAgz5jJU",
-      "durationSeconds": 1803
+      "durationSeconds": 1803,
+      "title": "Maldición apple..."
     },
     {
       "youtubeVideoId": "4UtyJt2rMfo",
-      "durationSeconds": 6448
+      "durationSeconds": 6448,
+      "title": "Aprende OpenClaw Ahora! curso completo desde cero para programadores"
     },
     {
       "youtubeVideoId": "-lMmAzo5YAY",
-      "durationSeconds": 1167
+      "durationSeconds": 1167,
+      "title": "Crear un agente IA es FÁCIL"
     },
     {
       "youtubeVideoId": "f2laroE5zgE",
-      "durationSeconds": 1270
+      "durationSeconds": 1270,
+      "title": "VIBECODING con Kimchi - Usando Kimi, GLM, Minimax"
     },
     {
       "youtubeVideoId": "rGwNTdniad0",
-      "durationSeconds": 602
+      "durationSeconds": 602,
+      "title": "Despliega tu propio Bitly - GRATIS y OPEN SOURCE"
     },
     {
       "youtubeVideoId": "m8tXuCa-ikc",
-      "durationSeconds": 1058
+      "durationSeconds": 1058,
+      "title": "ACP en la vida real - Conecté 2 agentes para delegar trabajo"
     },
     {
       "youtubeVideoId": "czO_0iGbg7c",
-      "durationSeconds": 682
+      "durationSeconds": 682,
+      "title": "Laburás las mismas horas con IA y terminás frito. Por qué"
     },
     {
       "youtubeVideoId": "gpO4I3d06hs",
-      "durationSeconds": 611
+      "durationSeconds": 611,
+      "title": "Inteligencia artificial: un modelo barato con ojos le gana a uno caro"
     },
     {
       "youtubeVideoId": "oYsHWtl5Ci0",
-      "durationSeconds": 538
+      "durationSeconds": 538,
+      "title": "Inteligencia artificial: le di a GPT-6 Astra el trabajo de mi editor"
     },
     {
       "youtubeVideoId": "KeMRKkhLvEw",
-      "durationSeconds": 891
+      "durationSeconds": 891,
+      "title": "Inteligencia artificial: la verdad sobre el autocompact (y tips)"
     },
     {
       "youtubeVideoId": "pDWGRg32Bsk",
-      "durationSeconds": 1417
+      "durationSeconds": 1417,
+      "title": "Inteligencia artificial: por qué rechacé Jev para gentle-ai"
     },
     {
       "youtubeVideoId": "qAVc4HNY9OE",
-      "durationSeconds": 841
+      "durationSeconds": 841,
+      "title": "Inteligencia artificial: el bug que dejó mi servidor en cero"
     },
     {
       "youtubeVideoId": "nUiWXGA8pAI",
-      "durationSeconds": 722
+      "durationSeconds": 722,
+      "title": "Inteligencia artificial: por qué los modelos son cada vez más baratos"
     },
     {
       "youtubeVideoId": "7CZLMLnfIiw",
-      "durationSeconds": 1192
+      "durationSeconds": 1192,
+      "title": "Inteligencia artificial: por qué hace lo que le pedís y sale mal"
     },
     {
       "youtubeVideoId": "mjG1w1RjDKg",
-      "durationSeconds": 2300
+      "durationSeconds": 2300,
+      "title": "Inteligencia artificial sin sobreingeniería: por qué creé Gentle AI (curso)"
     },
     {
       "youtubeVideoId": "RE_Sd5BxzDo",
-      "durationSeconds": 2253
+      "durationSeconds": 2253,
+      "title": "Ventana de contexto en inteligencia artificial: por qué llenarla sale mal"
     },
     {
       "youtubeVideoId": "t4OnW22zXi4",
-      "durationSeconds": 2458
+      "durationSeconds": 2458,
+      "title": "KV Cache vs. Prompt: la ingeniería detrás de los agentes que vuelan, cap 2"
     },
     {
       "youtubeVideoId": "eq4C_QZ8KgY",
-      "durationSeconds": 2685
+      "durationSeconds": 2685,
+      "title": "Qué es un LLM y por qué la IA \"alucina\": curso gratis, capítulo 1"
     },
     {
       "youtubeVideoId": "38Y1JWU-mdE",
-      "durationSeconds": 1622
+      "durationSeconds": 1622,
+      "title": "Alucinaciones de IA durante el desarrollo: por qué pasan y la solución"
     },
     {
       "youtubeVideoId": "qWctMexZT6c",
-      "durationSeconds": 5447
+      "durationSeconds": 5447,
+      "title": "Noticias programación: Vulnerabilidades PHP, Node, Movistar + Tests de moda + Sunset Arc #CaféCodely"
     },
     {
       "youtubeVideoId": "805xq9IOYf0",
-      "durationSeconds": 642
+      "durationSeconds": 642,
+      "title": "Por qué NO usar modelos System One para hacer búsquedas en base de datos"
     },
     {
       "youtubeVideoId": "rriUgP4cTaM",
-      "durationSeconds": 6935
+      "durationSeconds": 6935,
+      "title": "Juniors, pairing, management, y buscar empleo en tiempos de la IA - Directo desde la #scbcn26"
     },
     {
       "youtubeVideoId": "IGBY579gM4c",
-      "durationSeconds": 5411
+      "durationSeconds": 5411,
+      "title": "Noticias programación: Rex terminal TOP, Bomba a los Bots, Calidad IA de Spotify #CaféCodely"
     },
     {
       "youtubeVideoId": "xHrGLw6jknk",
-      "durationSeconds": 5354
+      "durationSeconds": 5354,
+      "title": "Noticias programación: Codex vs Claude Code,  JetBrains reporta pérdidas, Haiku 5.5 #CaféCodely"
     },
     {
       "youtubeVideoId": "InDcn9Oclbw",
-      "durationSeconds": 784
+      "durationSeconds": 784,
+      "title": "Modelos System One: Qué son y cómo usarlos"
     },
     {
       "youtubeVideoId": "my5hHTVZ_NI",
-      "durationSeconds": 470
+      "durationSeconds": 470,
+      "title": "De 20 minutos a 1 segundo: Controla tu navegador desde terminal"
     },
     {
       "youtubeVideoId": "x6xIC4O9iBM",
-      "durationSeconds": 7149
+      "durationSeconds": 7149,
+      "title": "Noticias programación: DevDay de OpenAI, apoyamos al Open Source, Sonnet 5.5 #CaféCodely"
     },
     {
       "youtubeVideoId": "8_cBu3BopxQ",
-      "durationSeconds": 5453
+      "durationSeconds": 5453,
+      "title": "Noticias programación: Opus 5.5 - Problema de ser programador senior - Casos de uso Jev #CaféCodely"
     },
     {
       "youtubeVideoId": "bSbc3vJH4es",
-      "durationSeconds": 503
+      "durationSeconds": 503,
+      "title": "Adiós a la limitación de Kafka: Más de un consumer por partición"
     },
     {
       "youtubeVideoId": "v8fZV9SagJo",
-      "durationSeconds": 5963
+      "durationSeconds": 5963,
+      "title": "Noticias programación: Jev: Nuevo modelo TOP - ¿Frenos a la IA? - ADIOS React Native #CaféCodely"
     },
     {
       "youtubeVideoId": "oloL4JxOHRE",
-      "durationSeconds": 7200
+      "durationSeconds": 7200,
+      "title": "Noticias programación: manifiesto devs IA, spotify reduce 90% tokens, drama OpenAI… #CaféCodely"
     },
     {
       "youtubeVideoId": "R9wzfQjP0i4",
-      "durationSeconds": 5876
+      "durationSeconds": 5876,
+      "title": "Noticias programación: GPT-6 Astra vs Fable, Google quita uBlock, Legacy Evernote #CaféConCodely"
     },
     {
       "youtubeVideoId": "uGNklRpzFdY",
-      "durationSeconds": 1312
+      "durationSeconds": 1312,
+      "title": "RabbitMQ vs Kafka en el 2026"
     },
     {
       "youtubeVideoId": "jNXMq6xh0Io",
-      "durationSeconds": 6112
+      "durationSeconds": 6112,
+      "title": "Noticias programación: OpenAI hackeó HuggingFace, mejor post tech, AliExpress espía #CaféConCodely"
     },
     {
       "youtubeVideoId": "Yk_gquO45es",
-      "durationSeconds": 2170
+      "durationSeconds": 2170,
+      "title": "Os presentamos a Pablo, nuevo Contents Engineer en Codely 🎉"
     },
     {
       "youtubeVideoId": "2G4aeaCTsHc",
-      "durationSeconds": 788
+      "durationSeconds": 788,
+      "title": "Mi nuevo flujo con IA: Adiós a los prompts complejos"
     },
     {
       "youtubeVideoId": "M6tly_RD-1Y",
-      "durationSeconds": 1786
+      "durationSeconds": 1786,
+      "title": "¿La IA nos iba a liberar? El CEO de Vercel confiesa lo contrario"
     },
     {
       "youtubeVideoId": "oKKJr7QIskI",
-      "durationSeconds": 6495
+      "durationSeconds": 6495,
+      "title": "Control total con Pi Agent: La alternativa open-source a Claude Code"
     },
     {
       "youtubeVideoId": "dK_Bwa6xNdo",
-      "durationSeconds": 1769
+      "durationSeconds": 1769,
+      "title": "OpenAI despide a sus vigilantes de seguridad: ¿podemos seguir fiándonos de la IA?"
     },
     {
       "youtubeVideoId": "B4N9XjGRVOU",
-      "durationSeconds": 566
+      "durationSeconds": 566,
+      "title": "El impacto real de la IA en las Empresas"
     },
     {
       "youtubeVideoId": "R1UGk4rb9BM",
-      "durationSeconds": 5740
+      "durationSeconds": 5740,
+      "title": "Curso de Desarrollo con IA: el Nuevo Programador - Día 3 - Usa multiagentes para desarrollar mejor"
     },
     {
       "youtubeVideoId": "hzQNE092cW0",
-      "durationSeconds": 4410
+      "durationSeconds": 4410,
+      "title": "Curso de Desarrollo con IA: el Nuevo Programador - Día 2 - Programa con agentes bajo control"
     },
     {
       "youtubeVideoId": "qHYi92zRn-s",
-      "durationSeconds": 4417
+      "durationSeconds": 4417,
+      "title": "Curso de Desarrollo con IA: el Nuevo Programador – Día 1 – De la idea a la instrucción perfecta"
     },
     {
       "youtubeVideoId": "OWFtwwVlMYQ",
-      "durationSeconds": 6166
+      "durationSeconds": 6166,
+      "title": "¿Está cambiando del desarrollo de software?: Preguntas y respuestas"
     },
     {
       "youtubeVideoId": "LKkJRM-ue0o",
-      "durationSeconds": 1587
+      "durationSeconds": 1587,
+      "title": "¿Peligro real o mentira? Lo que pasó en 8 días con la IA"
     },
     {
       "youtubeVideoId": "9TIXgOokdAk",
-      "durationSeconds": 683
+      "durationSeconds": 683,
+      "title": "¿Por qué los reclutadores rechazan tu CV hecho con IA?"
     },
     {
       "youtubeVideoId": "8u6LnQ5ffKE",
-      "durationSeconds": 1847
+      "durationSeconds": 1847,
+      "title": "¿Por qué los CEOs quieren frenar la IA? (pero no lo va a hacer)"
     },
     {
       "youtubeVideoId": "UGh6q6rKVM4",
-      "durationSeconds": 5775
+      "durationSeconds": 5775,
+      "title": "Taller de Skills para Agentes de IA desde cero: Claude Code, OpenCode, Codex, Cursor, VS Code..."
     },
     {
       "youtubeVideoId": "CauENcmaL80",
-      "durationSeconds": 1008
+      "durationSeconds": 1008,
+      "title": "El fin de la burbuja: ¿Por qué la IA no reemplaza programadores?"
     },
     {
       "youtubeVideoId": "TkFYv1PV5EI",
-      "durationSeconds": 1566
+      "durationSeconds": 1566,
+      "title": "El fracaso de la IA: Meta y OpenAI admiten la verdad"
     },
     {
       "youtubeVideoId": "5HaOxAAA5qI",
-      "durationSeconds": 7396
+      "durationSeconds": 7396,
+      "title": "El fin del Vibe Coding: Crea software robusto con este método"
     },
     {
       "youtubeVideoId": "EYqOaZN36t0",
-      "durationSeconds": 8191
+      "durationSeconds": 8191,
+      "title": "🔴 A ver hoy"
     },
     {
       "youtubeVideoId": "Oz4p-IpH_m4",
-      "durationSeconds": 7540
+      "durationSeconds": 7540,
+      "title": "🔴 y hoy? qué ondissss"
     },
     {
       "youtubeVideoId": "gjvZFwWDkKk",
-      "durationSeconds": 952
+      "durationSeconds": 952,
+      "title": "Trabajar en CRM: qué hacen y cómo empezar"
     },
     {
       "youtubeVideoId": "dB2Yohxo8xw",
-      "durationSeconds": 9086
+      "durationSeconds": 9086,
+      "title": "🔴 Probamos si sale..."
     },
     {
       "youtubeVideoId": "-TgVC3UduOQ",
-      "durationSeconds": 1151
+      "durationSeconds": 1151,
+      "title": "¿La IA hace el código…  y ahora qué estudiamos?"
     },
     {
       "youtubeVideoId": "ApwDPMmzsDw",
-      "durationSeconds": 2898
+      "durationSeconds": 2898,
+      "title": "🔴 TARDE pero con HISTORIA"
     },
     {
       "youtubeVideoId": "RvdcQzuqeKg",
-      "durationSeconds": 10435
+      "durationSeconds": 10435,
+      "title": "🔴 PENSASTE que no venía?"
     },
     {
       "youtubeVideoId": "WPeBupfWj2E",
-      "durationSeconds": 683
+      "durationSeconds": 683,
+      "title": "NUEVAS carreras de la UTN: ¿Conviene estudiarlas? (IA, Datos, Seguridad)"
     },
     {
       "youtubeVideoId": "Lv6eAzqy6r8",
-      "durationSeconds": 13230
+      "durationSeconds": 13230,
+      "title": "🔴 IA ANIQUILA Humanidad (?)"
     },
     {
       "youtubeVideoId": "2w39FjoumyA",
-      "durationSeconds": 1125
+      "durationSeconds": 1125,
+      "title": "Apple ya no sorprende, pero..."
     },
     {
       "youtubeVideoId": "9yTBhf_8UQs",
-      "durationSeconds": 9449
+      "durationSeconds": 9449,
+      "title": "🔴 ESTAMOS, pipis?"
     },
     {
       "youtubeVideoId": "IAX-p2g4TQw",
-      "durationSeconds": 698
+      "durationSeconds": 698,
+      "title": "¿Conocías esta funcionalidad de ChatGPT?"
     },
     {
       "youtubeVideoId": "aOhrEq2l03Y",
-      "durationSeconds": 6446
+      "durationSeconds": 6446,
+      "title": "🔴 ES EL FIN... tengo ganas"
     },
     {
       "youtubeVideoId": "PtR3ukzBncI",
-      "durationSeconds": 1508
+      "durationSeconds": 1508,
+      "title": "¿Cómo elegir el mejor modelo de Inteligencia Artificial?"
     }
   ],
   "cycleStartsAt": "2026-10-24T06:48:41Z"
