@@ -2,6 +2,10 @@
 
 El sistema recorre las fuentes de YouTube y actualiza cada canal por acumulación o reemplazo, con una ventana de antigüedad opcional. Funciona con Python 3.10+, YouTube Data API y GitHub Actions, sin dependencias externas, backend ni base de datos.
 
+Cada video puede incluir `youtubeChannelName`, el **nombre visible del canal que publicó ese video**, por ejemplo `"Ramiro Diz"`; no es el handle `@dizramiro` ni el canal temático de ZappingTube. Se toma de [`snippet.channelTitle`](https://developers.google.com/youtube/data/reference/rest/v3/videos#snippet.channelTitle) en la misma consulta de metadatos, tanto para grabaciones como para directos y videos de playlists ajenas. Sólo se recortan los espacios de los extremos: se conservan mayúsculas, acentos, símbolos y emojis del nombre.
+
+La primera sincronización diaria después de integrar este cambio completa los nombres faltantes de las listas existentes, en lotes de hasta 50 IDs y con la caché y el presupuesto de cuota habituales. No cambia títulos existentes, orden, duplicados, duraciones, campos manuales ni origen del ciclo. Si falta el dato o falla un pedido, conserva los datos verificados; la siguiente ejecución reintenta. `maintenance` también actualiza el nombre visible, y el modo manual `titles` ahora refresca títulos **y nombres de YouTube**. El campo es opcional para que los JSON anteriores y las versiones anteriores de Android sigan siendo compatibles. Los nombres de videos ya publicados se actualizan en mantenimiento o con `titles` si el creador cambia su nombre.
+
 ## Cómo actualiza
 
 Para cada canal activo en `sources.json`:

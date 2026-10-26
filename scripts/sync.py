@@ -156,8 +156,9 @@ def validate_playlist(playlist: dict, mode: str):
     for row in playlist["videos"]:
         if not isinstance(row, dict) or not VIDEO.fullmatch(row.get("youtubeVideoId", "")):
             raise SyncError("ID inválido en un archivo de reproducción.")
-        if row.get("title") is not None and (not isinstance(row["title"], str) or not row["title"].strip()):
-            raise SyncError("title debe ser un texto no vacío cuando está presente.")
+        for field in ("title", "youtubeChannelName"):
+            if row.get(field) is not None and (not isinstance(row[field], str) or not row[field].strip()):
+                raise SyncError(f"{field} debe ser un texto no vacío cuando está presente.")
         if mode == "cycle":
             positive_int(row.get("durationSeconds"), "durationSeconds")
     if mode == "cycle":
@@ -303,7 +304,7 @@ class YouTube:
         for start in range(0, len(missing), 50):
             batch = missing[start:start + 50]
             payload = self.get("videos", part="snippet,contentDetails,status,liveStreamingDetails", id=",".join(batch),
-                               fields="items(id,snippet(title,publishedAt,defaultAudioLanguage,liveBroadcastContent),contentDetails(duration,regionRestriction,contentRating),status(privacyStatus,uploadStatus,embeddable),liveStreamingDetails(actualStartTime,actualEndTime))")
+                               fields="items(id,snippet(title,channelTitle,publishedAt,defaultAudioLanguage,liveBroadcastContent),contentDetails(duration,regionRestriction,contentRating),status(privacyStatus,uploadStatus,embeddable),liveStreamingDetails(actualStartTime,actualEndTime))")
             found = {item.get("id"): item for item in payload["items"]}
             for identifier in batch:
                 self.video_cache[identifier] = found.get(identifier)
@@ -488,9 +489,7 @@ class Sync:
                         published = publication_date(item.get("snippet", {}).get("publishedAt")) if item else None
                         if status == "approved" and within_window(published, cutoff, self.now):
                             row = {"youtubeVideoId": identifier}
-                            title = item.get("snippet", {}).get("title")
-                            if isinstance(title, str) and title.strip():
-                                row["title"] = title.strip()
+                            self.apply_video_metadata(row, item)
                             if channel.get("playbackMode", "cycle") == "cycle":
                                 row["durationSeconds"] = metadata["durationSeconds"]
                             rows.append(row)
@@ -513,9 +512,7 @@ class Sync:
             items = self.api.videos(batch)
             for row in rows:
                 item = items.get(row["youtubeVideoId"])
-                title = item.get("snippet", {}).get("title") if item else None
-                if isinstance(title, str) and title.strip():
-                    row["title"] = title.strip()
+                self.apply_video_metadata(row, item)
             unavailable = {identifier for identifier in batch
                            if assess(items[identifier], self.rules(channel), channel.get("playbackMode", "cycle"))[0] == "unavailable"}
             if channel.get("updateMode", "append") == "replace":
@@ -616,14 +613,25 @@ class Sync:
 
     def fill_titles(self, rows, refresh=False):
         """Enriquece sin reordenar, filtrar ni cambiar duraciones/orígenes."""
-        ids = list(dict.fromkeys(row["youtubeVideoId"] for row in rows if refresh or not row.get("title")))
+        ids = list(dict.fromkeys(row["youtubeVideoId"] for row in rows
+                                if refresh or not row.get("title") or not row.get("youtubeChannelName")))
         for start in range(0, len(ids), 50):
             items = self.api.videos(ids[start:start + 50])
             for row in rows:
                 item = items.get(row["youtubeVideoId"])
-                title = item.get("snippet", {}).get("title") if item else None
-                if isinstance(title, str) and title.strip():
-                    row["title"] = normalize_title(title.strip()) or "Título no disponible"
+                self.apply_video_metadata(row, item, refresh=refresh)
+
+    @staticmethod
+    def apply_video_metadata(row, item, refresh=True):
+        snippet = item.get("snippet", {}) if item else {}
+        title = snippet.get("title")
+        if (refresh or not row.get("title")) and isinstance(title, str) and title.strip():
+            row["title"] = normalize_title(title.strip()) or "Título no disponible"
+        # The uploader's display name comes from this video's metadata, never
+        # from the configured source (which may be another user's playlist).
+        name = snippet.get("channelTitle")
+        if (refresh or not row.get("youtubeChannelName")) and isinstance(name, str) and name.strip():
+            row["youtubeChannelName"] = name.strip()
 
     @staticmethod
     def clean_titles(rows):
