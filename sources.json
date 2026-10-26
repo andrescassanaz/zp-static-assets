@@ -145,12 +145,87 @@
       "sources": []
     },
     {
-      "id": "standup",
-      "name": "StandUp",
+      "id": "humor",
+      "name": "Humor",
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
-      "sources": []
+      "sources": [
+        "@petercapusottotv",
+        "PLNSoE2CvMBYElz97z1lqpFKl7mvwvI9of",
+        "PLksg5qNMGry92Z2Yx7gzU6R7Qlztcfn4j",
+        "PLksg5qNMGry_MpBtRv5juCBbWoyhOkuzL",
+        "@LuchoMellera",
+        "PLnX9Rt7Y_gPLfJpzzUdjPmCmTPT3Lsb4E",
+        "KuG-njpJAPk",
+        "@GuilleAquino"
+      ]
+    },
+    {
+      "id": "expedientes",
+      "name": "Expedientes",
+      "active": true,
+      "playbackMode": "cycle",
+      "videoOrder": "random",
+      "sources": [
+        "@CriminalistaNocturno",
+        "@EstelaNaiad",
+        "@paul_lando",
+        "@Historias.Innecesarias",
+        "@DinosaurVlogs",
+        "@Leanriccio02",
+        "PLXQRjCkgvGB1sXyRIR_538NM0q6JmvTCO",
+        "PLIfJe7tyqvMM",
+        "PLj-PilRaROYBtmKTj-mfULeejxEmw8y6i",
+        "PLB68CTVWbvPo",
+        "@crimenymisterioC9"
+      ]
+    },
+    {
+      "id": "cine-y-series",
+      "name": "Cine y Series",
+      "active": true,
+      "playbackMode": "cycle",
+      "videoOrder": "random",
+      "sources": [
+        "@ZEPFILMS",
+        "@Teloresumoasinomas",
+        "@AxlKss",
+        "@MarianoRodriguez",
+        "@JordiMaquiavello"
+      ]
+    },
+    {
+      "id": "futbol",
+      "name": "Fútbol",
+      "active": true,
+      "playbackMode": "cycle",
+      "videoOrder": "random",
+      "sources": [
+        "@futbolinsolito",
+        "@LeoMdQII",
+        "@memoriasdelfutbol"
+      ]
+    },
+    {
+      "id": "musica-en-vivo",
+      "name": "Música en vivo",
+      "active": true,
+      "playbackMode": "cycle",
+      "videoOrder": "random",
+      "sources": [
+        "PLSb1BaffS3K1ZosR0lRT9WQL7Nbl8x0Kj",
+        "PLSb1BaffS3K0Ky9biK3OW6NbBRMZBjkBr",
+        "PL4VCKpPvFSURROAcy832Ygc_I0-iZ5eZK",
+        "PLy2PCKGkKRVZWMhf38CpGE76mSqZoxwFC",
+        "e4TFD2PfVPw",
+        "PLNAYYx8S9-3k"
+      ],
+      "rules": {
+        "minDurationSeconds": 50,
+        "music": true
+      },
+      "guideMode": "schedule"
     },
     {
       "id": "documentales",
@@ -179,14 +254,6 @@
     {
       "id": "falopita",
       "name": "Falopita",
-      "active": true,
-      "playbackMode": "cycle",
-      "videoOrder": "random",
-      "sources": []
-    },
-    {
-      "id": "capusotto",
-      "name": "Capusotto",
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
@@ -235,7 +302,7 @@
         "minDurationSeconds": 50,
         "music": true
       },
-      "guideMode": "continuous"
+      "guideMode": "schedule"
     },
     {
       "id": "programacion",
@@ -332,7 +399,7 @@
         "minDurationSeconds": 50,
         "music": true
       },
-      "guideMode": "continuous"
+      "guideMode": "schedule"
     },
     {
       "id": "musica-80",
@@ -349,7 +416,7 @@
         "minDurationSeconds": 50,
         "music": true
       },
-      "guideMode": "continuous"
+      "guideMode": "schedule"
     },
     {
       "id": "musica-2000",
@@ -367,7 +434,7 @@
         "minDurationSeconds": 50,
         "music": true
       },
-      "guideMode": "continuous"
+      "guideMode": "schedule"
     }
   ]
 }
