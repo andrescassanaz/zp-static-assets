@@ -17,7 +17,7 @@ NOW = datetime(2026, 10, 23, 12, 0, tzinfo=timezone.utc)
 
 
 def video(identifier=A, seconds=600, audio="es-AR", **extra):
-    item = {"id": identifier, "snippet": {"title": "Una pieza", "channelId": "UC" + "a" * 22,
+    item = {"id": identifier, "snippet": {"title": "Una pieza", "channelTitle": "Ramiro Diz", "channelId": "UC" + "a" * 22,
             "publishedAt": "2026-10-20T00:00:00Z", "defaultAudioLanguage": audio, "liveBroadcastContent": "none"},
             "contentDetails": {"duration": f"PT{seconds}S"},
             "status": {"privacyStatus": "public", "uploadStatus": "processed", "embeddable": True}}
@@ -89,7 +89,7 @@ class Integration(unittest.TestCase):
     def test_create_channel_and_compatible_json_without_catalog(self):
         result, _ = self.run_sync(FakeAPI({A: video()}))
         self.assertEqual(0, result)
-        self.assertEqual({"cycleStartsAt": sync.stamp(NOW), "videos": [{"youtubeVideoId": A, "durationSeconds": 600, "title": "Una pieza"}]}, self.published())
+        self.assertEqual({"cycleStartsAt": sync.stamp(NOW), "videos": [{"youtubeVideoId": A, "durationSeconds": 600, "title": "Una pieza", "youtubeChannelName": "Ramiro Diz"}]}, self.published())
         entry = sync.load(self.root / "channels.json")["channels"][0]
         self.assertEqual({"id": "test", "name": "Prueba", "number": 1, "file": "channels/test.json", "playbackMode": "cycle"}, entry)
         self.assertFalse((self.root / "catalog").exists())
@@ -252,7 +252,7 @@ class Integration(unittest.TestCase):
         self.write_config()
         item = video(liveStreamingDetails={"actualStartTime": "2026-10-23T00:00:00Z"})
         self.run_sync(FakeAPI({A: item}))
-        self.assertEqual({"videos": [{"youtubeVideoId": A, "title": "Una pieza"}]}, self.published())
+        self.assertEqual({"videos": [{"youtubeVideoId": A, "title": "Una pieza", "youtubeChannelName": "Ramiro Diz"}]}, self.published())
 
 
 class Refresh(unittest.TestCase):

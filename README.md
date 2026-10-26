@@ -2,6 +2,14 @@
 
 El sistema recorre las fuentes de YouTube y actualiza cada canal por acumulación o reemplazo, con una ventana de antigüedad opcional. Funciona con Python 3.10+, YouTube Data API y GitHub Actions, sin dependencias externas, backend ni base de datos.
 
+Cada video puede incluir `youtubeChannelName`, el **nombre visible del canal que publicó ese video**, por ejemplo `"Ramiro Diz"`; no es el handle `@dizramiro` ni el canal temático de ZappingTube. Se toma de [`snippet.channelTitle`](https://developers.google.com/youtube/data/reference/rest/v3/videos#snippet.channelTitle) en la misma consulta de metadatos, tanto para grabaciones como para directos y videos de playlists ajenas. Sólo se recortan los espacios de los extremos: se conservan mayúsculas, acentos, símbolos y emojis del nombre.
+
+Los JSON versionados ya incluyen los nombres, sin depender de que la aplicación los consulte durante la reproducción. La carga inicial del 26/10/2026 completó **42.539 de 42.540 registros** en los 29 canales, usando 871 solicitudes de metadatos en lotes de hasta 50 IDs y con caché entre canales. Sólo `e4VpCP8KWLY` (El Nueve) no devolvió metadatos; no se inventó su creador. Se verificó que el resto del contenido de cada JSON permaneciera idéntico, incluidos títulos, orden, duplicados, duraciones, campos manuales y origen del ciclo.
+
+`python scripts/sync.py --mode names` completa únicamente los nombres faltantes de todos los canales publicados, sin descubrir, eliminar ni reordenar videos, sin limpiar títulos y sin modificar horarios. Si falta un dato o falla un pedido, conserva los datos verificados y permite reintentar; `sync-state.json.lastChannelNameRefresh` registra cobertura, cuota y errores. También está disponible como modo manual en Actions una vez integrado el PR.
+
+Las sincronizaciones diarias siguen completando nombres faltantes para nuevas incorporaciones. `maintenance` actualiza nombres existentes y el modo `titles` refresca títulos **y nombres de YouTube**. El campo es opcional para que los JSON anteriores y las versiones anteriores de Android sigan siendo compatibles.
+
 ## Cómo actualiza
 
 Para cada canal activo en `sources.json`:

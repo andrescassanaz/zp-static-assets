@@ -65,6 +65,7 @@ class Titles(unittest.TestCase):
         expected = deepcopy(before)
         for row in expected["videos"]:
             row["title"] = "Una pieza"
+            row["youtubeChannelName"] = "Ramiro Diz"
         self.assertEqual(expected, self.published())
         self.assertEqual([("videos", {"ids": [A, B]})], api.calls)
         stamp = (self.root / "channels/test.json").stat().st_mtime_ns

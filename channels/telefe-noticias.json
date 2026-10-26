@@ -2,7 +2,8 @@
   "videos": [
     {
       "youtubeVideoId": "XhAYcYpPzTc",
-      "title": "En Vivo Telefe Noticias 24HS de Información"
+      "title": "En Vivo Telefe Noticias 24HS de Información",
+      "youtubeChannelName": "Telefe Noticias"
     }
   ]
 }
