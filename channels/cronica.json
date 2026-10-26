@@ -2,7 +2,8 @@
   "videos": [
     {
       "youtubeVideoId": "hw4uHyct4vg",
-      "title": "Crónica en Vivo las 24 Horas"
+      "title": "Crónica en Vivo las 24 Horas",
+      "youtubeChannelName": "Crónica TV"
     }
   ]
 }

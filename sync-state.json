@@ -390,5 +390,13 @@
     "at": "2026-10-25T16:11:41Z",
     "quotaUnits": 869,
     "errors": []
+  },
+  "lastChannelNameRefresh": {
+    "at": "2026-10-26T03:08:47Z",
+    "quotaUnits": 871,
+    "namedVideos": 42539,
+    "totalVideos": 42540,
+    "missingVideos": 1,
+    "errors": []
   }
 }

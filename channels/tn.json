@@ -2,7 +2,8 @@
   "videos": [
     {
       "youtubeVideoId": "cb12KmMMDJA",
-      "title": "Tn en Vivo - Seguí la Transmisión en Vivo de Todo Noticias"
+      "title": "Tn en Vivo - Seguí la Transmisión en Vivo de Todo Noticias",
+      "youtubeChannelName": "Todo Noticias"
     }
   ]
 }
