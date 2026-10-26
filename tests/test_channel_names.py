@@ -79,6 +79,53 @@ class ChannelNames(unittest.TestCase):
         api.videos([A])
         self.assertEqual(1, len(urls))
 
+    def test_names_mode_changes_only_missing_names_and_resumes_without_duplicate_requests(self):
+        self.create_existing((A, B, A), (600, 900, 600))
+        before = self.published()
+        for row in before["videos"]:
+            row["title"] = "🔥 MI TÍTULO MANUAL 🔥"
+            if row["youtubeVideoId"] == A:
+                row["youtubeChannelName"] = "Nombre verificado"
+        sync.save(self.root / "channels/test.json", before)
+        api = FakeAPI({B: video(B)})
+        self.assertEqual(0, self.run_sync(api, mode="names")[0])
+        after = self.published()
+        self.assertEqual("Ramiro Diz", after["videos"][1].pop("youtubeChannelName"))
+        self.assertEqual(before, after)
+        self.assertEqual([("videos", {"ids": [B]})], api.calls)
+        again = FakeAPI()
+        self.run_sync(again, mode="names")
+        self.assertEqual([], again.calls)
+
+    def test_names_mode_preserves_missing_metadata_without_removing_or_inventing_a_video(self):
+        self.create_existing()
+        before = self.published()
+        result, _ = self.run_sync(FakeAPI(), mode="names")
+        self.assertEqual(0, result)
+        self.assertEqual(before, self.published())
+        report = sync.load(self.root / "sync-state.json")["lastChannelNameRefresh"]
+        self.assertEqual(2, report["missingVideos"])
+        self.assertEqual(0, report["namedVideos"])
+        result, _ = self.run_sync(FakeAPI(fail=sync.QuotaError("Sin cuota")), mode="names")
+        self.assertEqual(2, result)
+        self.assertEqual(before, self.published())
+
+    def test_names_mode_saves_a_verified_batch_before_quota_failure(self):
+        ids = tuple(f"{index:011d}" for index in range(51))
+        self.create_existing(ids, (600,) * len(ids))
+        before = self.published()
+        class FailSecondBatch(FakeAPI):
+            def videos(self, ids):
+                if self.used:
+                    raise sync.QuotaError("Sin cuota")
+                return super().videos(ids)
+        result, _ = self.run_sync(FailSecondBatch({identifier: video(identifier) for identifier in ids}), mode="names")
+        self.assertEqual(2, result)
+        after = self.published()
+        for row in after["videos"][:50]:
+            self.assertEqual("Ramiro Diz", row.pop("youtubeChannelName"))
+        self.assertEqual(before, after)
+
     def test_quota_failure_after_a_batch_keeps_verified_names_and_original_schedule(self):
         ids = tuple(f"{index:011d}" for index in range(51))
         self.create_existing(ids, (600,) * len(ids))

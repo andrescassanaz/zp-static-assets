@@ -556,6 +556,8 @@ class Sync:
         return "published"
 
     def run(self, mode="daily", selected=None):
+        if mode == "names":
+            return self.refresh_channel_names(selected)
         if mode == "presentation":
             return self.refresh_presentation(selected)
         if mode == "titles":
@@ -662,6 +664,43 @@ class Sync:
         save(self.root / "channels.json", self.index)
         return 0
 
+    def refresh_channel_names(self, selected=None):
+        """Completa sólo nombres; conserva exactamente el resto del catálogo."""
+        entries = [entry for entry in self.index["channels"] if selected is None or entry["id"] == selected]
+        if selected and not entries:
+            raise SyncError("El canal seleccionado no está publicado.")
+        exhausted = False
+        total = named = 0
+        for entry in entries:
+            path = safe_file(self.root, entry["file"])
+            playlist = load(path)
+            rows = playlist["videos"]
+            ids = list(dict.fromkeys(row["youtubeVideoId"] for row in rows if not row.get("youtubeChannelName")))
+            if not exhausted:
+                try:
+                    for start in range(0, len(ids), 50):
+                        items = self.api.videos(ids[start:start + 50])
+                        for row in rows:
+                            item = items.get(row["youtubeVideoId"])
+                            name = item.get("snippet", {}).get("channelTitle") if item else None
+                            if not row.get("youtubeChannelName") and isinstance(name, str) and name.strip():
+                                row["youtubeChannelName"] = name.strip()
+                except SyncError as exc:
+                    self.errors.append(f"{entry['id']}: {exc}")
+                    exhausted = isinstance(exc, QuotaError)
+            validate_playlist(playlist, entry["playbackMode"])
+            save(path, playlist)
+            count = sum(bool(row.get("youtubeChannelName")) for row in rows)
+            total += len(rows)
+            named += count
+            print(f"Nombres {entry['id']}: {count}/{len(rows)}", flush=True)
+        self.state["lastChannelNameRefresh"] = {
+            "at": self.when, "quotaUnits": self.api.used, "namedVideos": named,
+            "totalVideos": total, "missingVideos": total - named, "errors": self.errors,
+        }
+        save(self.root / "sync-state.json", self.state)
+        return 2 if self.errors else 0
+
     def refresh_titles(self, selected=None):
         entries = [entry for entry in self.index["channels"] if selected is None or entry["id"] == selected]
         if selected and not entries:
@@ -686,7 +725,7 @@ class Sync:
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--mode", choices=["daily", "maintenance", "titles", "presentation", "validate"], default="daily")
+    parser.add_argument("--mode", choices=["daily", "maintenance", "names", "titles", "presentation", "validate"], default="daily")
     parser.add_argument("--channel", help="ID de un canal activo; omitido procesa todos")
     parser.add_argument("--root", type=Path, default=ROOT)
     args = parser.parse_args(argv)

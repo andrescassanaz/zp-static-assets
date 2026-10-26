@@ -18,7 +18,7 @@ on:
       mode:
         description: Tipo de sincronización
         type: choice
-        options: [daily, maintenance, titles]
+        options: [daily, maintenance, names, titles]
         default: daily
       channel:
         description: ID de canal (vacío procesa todos)
