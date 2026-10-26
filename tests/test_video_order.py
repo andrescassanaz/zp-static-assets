@@ -130,4 +130,4 @@ class VideoOrder(unittest.TestCase):
             self.assertFalse(sync.save(path, sync.load(path), compact=True))
             self.assertEqual(before, (path.read_bytes(), path.stat().st_mtime_ns))
         self.assertIn("\n  ", (self.root / "sources.json").read_text(encoding="utf-8"))
-        self.assertIn("\n  ", (self.root / "sync-state.json").read_text(encoding="utf-8"))
+        self.assertFalse((self.root / "sync-state.json").exists())

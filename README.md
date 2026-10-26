@@ -1,196 +1,221 @@
-# Canales automáticos de ZappingTube
+# Canales de ZappingTube
 
-El sistema recorre las fuentes de YouTube y actualiza cada canal por acumulación o reemplazo, con una ventana de antigüedad opcional. Funciona con Python 3.10+, YouTube Data API y GitHub Actions, sin dependencias externas, backend ni base de datos.
+El proceso tiene una configuración, un script y un catálogo publicado:
 
-Cada video puede incluir `youtubeChannelName`, el **nombre visible del canal que publicó ese video**, por ejemplo `"Ramiro Diz"`; no es el handle `@dizramiro` ni el canal temático de ZappingTube. Se toma de [`snippet.channelTitle`](https://developers.google.com/youtube/data/reference/rest/v3/videos#snippet.channelTitle) en la misma consulta de metadatos, tanto para grabaciones como para directos y videos de playlists ajenas. Sólo se recortan los espacios de los extremos: se conservan mayúsculas, acentos, símbolos y emojis del nombre.
+```text
+sources.json → scripts/sync.py → channels.json + channels/<id>.json → app
+                                ↓
+                       Reporte en los logs
+```
 
-Los JSON versionados ya incluyen los nombres, sin depender de que la aplicación los consulte durante la reproducción. La carga inicial del 26/10/2026 completó **42.539 de 42.540 registros** en los 29 canales, usando 871 solicitudes de metadatos en lotes de hasta 50 IDs y con caché entre canales. Sólo `e4VpCP8KWLY` (El Nueve) no devolvió metadatos; no se inventó su creador. Se verificó que el resto del contenido de cada JSON permaneciera idéntico, incluidos títulos, orden, duplicados, duraciones, campos manuales y origen del ciclo.
+Python 3.10 o posterior, biblioteca estándar, YouTube Data API y GitHub Actions.
+El proceso es **stateless**: cada ejecución empieza desde cero. No hay cursores,
+checkpoints, base de datos, caché persistente de metadatos ni historial de
+candidatos descartados. La última lista publicada es contenido del producto y
+se lee para acumular videos, evitar duplicados y conservar una programación válida.
 
-`python scripts/sync.py --mode names` completa únicamente los nombres faltantes de todos los canales publicados, sin descubrir, eliminar ni reordenar videos, sin limpiar títulos y sin modificar horarios. Si falta un dato o falla un pedido, conserva los datos verificados y permite reintentar; `sync-state.json.lastChannelNameRefresh` registra cobertura, cuota y errores. También está disponible como modo manual en Actions una vez integrado el PR.
+## Agregar o modificar un canal
 
-Las sincronizaciones diarias siguen completando nombres faltantes para nuevas incorporaciones. `maintenance` actualiza nombres existentes y el modo `titles` refresca títulos **y nombres de YouTube**. El campo es opcional para que los JSON anteriores y las versiones anteriores de Android sigan siendo compatibles.
-
-## Cómo actualiza
-
-Para cada canal activo en `sources.json`:
-
-1. Lee los videos que ya contiene `channels/{id}.json`.
-2. Recorre **todas las páginas** de cada canal o playlist configurada y los videos individuales.
-3. Elimina duplicados entre las fuentes. En modo `append` también descarta los IDs ya publicados; en `replace` vuelve a evaluarlos.
-4. Consulta metadatos y aplica las validaciones, incluida la fecha de publicación cuando hay una ventana configurada.
-5. Con `updateMode: "append"` (predeterminado), agrega los nuevos videos válidos al final, conservando los existentes. Con `updateMode: "replace"`, reemplaza la lista completa por los videos válidos de las fuentes actuales, sólo si terminó todo el recorrido sin errores.
-6. Aplica `videoOrder`: `"random"` (predeterminado) mezcla el lote nuevo en `append` o toda la lista reconstruida en `replace`; `"ordered"` conserva el orden de recorrido de las fuentes y sus páginas.
-
-Cada ejecución vuelve a recorrer las fuentes completas. No se detiene al encontrar IDs conocidos ni conserva cursores, listas de descubiertos o catálogos por video. Así también encuentra incorporaciones al medio o al final de una playlist. La paginación de YouTube puede verse afectada por modificaciones concurrentes; el siguiente recorrido vuelve a comprobarla.
-
-Los JSON de reproducción son la referencia para saber qué videos ya fueron incorporados. En `append` se conservan las repeticiones manuales existentes; en `replace` la lista se reconstruye sin duplicados.
-
-## Archivos
-
-| Archivo | Uso |
-| --- | --- |
-| `sources.json` | Canales, fuentes, reglas y exclusiones manuales opcionales |
-| `channels.json` | Índice público de canales disponibles |
-| `channels/{id}.json` | Videos que reproduce cada canal, con el formato actual de Android |
-| `sync-state.json` | Resumen de las últimas ejecuciones: fecha, cantidades, cuota y errores |
-| `scripts/sync.py` | Recorrido, comparación, validación y publicación |
-
-El script guarda `channels.json` y `channels/{id}.json` minificados, en una sola línea y sin espacios de formato. Al volver a guardar un archivo existente también lo minifica aunque sus datos no hayan cambiado; una vez minificado, una ejecución sin cambios conserva sus bytes y fecha de modificación. `sources.json` y `sync-state.json` mantienen su formato legible.
-
-No se utiliza `catalog/`. No se guardan registros individuales de aprobados, pendientes o rechazados. Los candidatos que no pasan las validaciones se omiten; si siguen en las fuentes, se volverán a evaluar en una ejecución posterior.
-
-## Agregar un canal
-
-Agregar un objeto a la lista `channels` de `sources.json`:
+Editar solamente `sources.json`. Ejemplo de configuración (los números deben
+estar libres en tu catálogo):
 
 ```json
 {
-  "id": "cocina-automatica",
-  "name": "Cocina automática",
-  "active": true,
-  "playbackMode": "cycle",
-  "videoOrder": "random",
-  "sources": [
-    "@paulinacocina",
-    "@MarcosDiCesare"
-  ],
-  "rules": {
+  "version": 1,
+  "quotaBudget": 2500,
+  "limits": {
+    "videosPerDay": 50,
+    "maxPagesPerSource": 100
+  },
+  "defaults": {
     "minDurationSeconds": 420,
-    "maxDurationSeconds": 7200,
+    "maxDurationSeconds": null,
+    "maxAgeDays": null,
     "music": false,
     "regionCodes": ["AR"]
-  }
+  },
+  "channels": [
+    {
+      "id": "programacion",
+      "number": 1,
+      "name": "Programación",
+      "updateFrequency": "daily",
+      "updateMode": "replace",
+      "playbackMode": "cycle",
+      "videoOrder": "random",
+      "sources": ["@midudev", "@HolaMundoDev"],
+      "rules": {"maxAgeDays": 5}
+    }
+  ]
 }
 ```
 
-Cuando encuentre videos válidos, el sistema crea `channels/cocina-automatica.json` y agrega su entrada a `channels.json`, con el siguiente número libre. `number` puede fijarse explícitamente si está disponible. Un canal sin videos válidos todavía no se publica.
+- `id`: estable, letras minúsculas, números y guiones, hasta 64 caracteres.
+- `name` y `number`: se administran en esta configuración y se reflejan en el índice.
+  `number` es opcional: si se omite se conserva el existente o se asigna uno libre.
+- `updateFrequency`: `daily` por defecto o `weekly`. La elegís vos; no se deduce
+  del nombre, género ni de los datos actuales de los canales.
+- `updateMode`: `append` por defecto conserva la biblioteca y agrega videos;
+  `replace` reconstruye la lista desde las fuentes y exige una revisión completa.
+- `playbackMode`: `cycle` por defecto, o `live` con una única fuente de video.
+  Cambiar el ID de una emisión en `sources` reemplaza el directo publicado después
+  de verificarlo. No cambia automáticamente entre cycle y live un canal publicado.
+- `videoOrder`: `random` por defecto mezcla sólo las altas en append y la lista
+  reconstruida en replace. `ordered` conserva el orden de fuentes y páginas.
+- `rules`: sobreescribe `defaults`. Límites de duración exclusivos, en segundos.
+  `maxAgeDays` usa días de 24 horas desde el inicio UTC de la ejecución; ausente o
+  null permite cualquier antigüedad. En append afecta sólo a las altas; en replace
+  también retira contenido que salió de la ventana tras completar la revisión.
+- `limits`: permite sobreescribir por canal los dos límites globales del ejemplo.
+- `excludedVideoIds`: lista opcional de IDs que no deben incorporarse y que se
+  retiran de la programación. Borrar un video sólo del JSON permite su reingreso.
+- `guideMode`: `schedule` o `continuous`; música usa continuous por defecto.
+- `active: false`: pausa las consultas y conserva el canal publicado.
+  **Eliminar un canal de sources.json lo retira del índice y elimina su archivo
+  en la próxima actualización**, incluso si ya no queda ningún canal para consultar.
 
-`id` debe ser estable y usar letras minúsculas, números y guiones, hasta 64 caracteres. `active: false` pausa la automatización sin retirar el canal de la aplicación. Las entradas existentes del índice, sus nombres, números y campos adicionales se conservan.
+No se editan manualmente `channels.json` ni sus listas para administrar canales.
+Los canales históricos con `sources: []` conservan su biblioteca; no descubren
+altas hasta configurar fuentes. No se reconstruye contenido histórico que no esté
+representado en las fuentes.
 
-Cada fuente ocupa un elemento independiente:
+Fuentes admitidas, un elemento por fuente:
 
-| Fuente | Interpretación |
+| Formato | Interpretación |
 | --- | --- |
-| ID de 24 caracteres que empieza con `UC` | Canal: se recorre su playlist de subidas |
-| `@handle` | Canal: se resuelve a su playlist de subidas |
-| ID de video de 11 caracteres | Video individual |
-| Otro ID de más de 11 caracteres | Playlist |
-| `playlist:ID` / `video:ID` | Tipo explícito para evitar ambigüedades |
+| `@handle` o `UC...` de 24 caracteres | Canal de YouTube: playlist de subidas |
+| ID de video de 11 caracteres o `video:ID` | Video individual |
+| ID largo de playlist o `playlist:ID` | Playlist, que puede estar ordenada manualmente |
 
-No admite URLs completas. `playbackMode: live` requiere una única fuente de video individual; no inventa sustitutos cuando termina una emisión. Su JSON contiene un solo ID, sin duración ni origen de ciclo.
+Usar IDs o handles, no URLs completas.
 
-`cocina` ya tiene las 20 fuentes confirmadas del archivo de referencia `Script extraer IDs/canales.txt`: 8 handles y 12 playlists. Los demás canales conservan sus listas y el mantenimiento semanal; completar sus fuentes para habilitar descubrimiento.
+## Cuándo consulta YouTube
 
-## Orden, antigüedad y reemplazo
-
-Cada canal de `sources.json` puede configurar estas opciones independientes:
-
-| Campo | Valores y comportamiento |
+| Disparador | Alcance |
 | --- | --- |
-| `videoOrder` | `"random"` u omitido: mezcla los videos al generar el listado. `"ordered"`: respeta el orden en que aparecen en `sources` y, dentro de cada playlist o canal, el orden que devuelve YouTube. No ordena por título ni por número de episodio. |
-| `rules.maxAgeDays` | Entero positivo: admite publicaciones desde esa cantidad de días de 24 horas antes del inicio de la ejecución, hasta ese inicio, ambos inclusive. `null` u omitido: sin límite de antigüedad. También puede definirse en `defaults`. |
-| `updateMode` | `"append"` u omitido: suma contenido nuevo y conserva el existente. `"replace"`: reconstruye toda la lista a partir de las fuentes y las reglas actuales; requiere al menos una fuente. |
+| Push a main que modifica sources.json | Sólo canales cuya configuración cambió |
+| Cambio de defaults, limits u otra opción global | Todos los canales activos |
+| Todos los días a las 06:17 de Argentina | Canales daily |
+| Domingos a las 07:47 de Argentina | Canales weekly y después mantenimiento de todos los activos |
+| Ejecución manual | Un canal o todos los activos, sin filtrar frecuencia |
+| Cambios en scripts, documentación o catálogo generado | Pruebas/validación; ninguna sincronización con API por ese push |
 
-En un canal nuevo, `random` mezcla toda la primera lista. En `append`, conserva el orden ya publicado y mezcla únicamente las nuevas incorporaciones juntas, después de recorrer todas las fuentes y páginas. En `replace`, mezcla toda la lista en cada reconstrucción diaria completa. Cambiar `videoOrder` en un canal `append` afecta a las próximas incorporaciones; para reconstruir la lista completa desde las fuentes, usar `replace`. El mantenimiento y los modos `names`, `titles` y `presentation` conservan el orden existente. Los directos mantienen un único video.
+Los horarios de Actions son aproximados. La comparación de configuración usa el
+commit anterior de Git; no guarda estado de ejecuciones. Si no puede leer esa
+versión, falla antes de consultar YouTube. Cambiar sólo un nombre también selecciona
+ese canal, por simplicidad. Reordenar canales sin cambiar sus opciones no los selecciona.
+Las bajas se aplican al índice aunque no requieran consultas.
 
-`programacion` ya está configurado así:
+Antes de consultar, el mismo script valida JSON, IDs, números, opciones, reglas y
+archivos de reproducción. No confirma por esta vía que una fuente exista en YouTube.
+La API key se lee únicamente de `YOUTUBE_API_KEY`; en Actions se configura como secret.
+No se imprimen claves ni URLs de requests.
 
-```json
-{
-  "id": "programacion",
-  "name": "Programación",
-  "active": true,
-  "playbackMode": "cycle",
-  "updateMode": "replace",
-  "sources": ["@midudev", "@HolaMundoDev"],
-  "rules": {
-    "maxAgeDays": 60
-  }
-}
+## Consultas acotadas
+
+**Canal de YouTube con ventana:** máximo `maxAgeDays × videosPerDay` candidatos por
+fuente, en páginas de hasta 50, y nunca más de `maxPagesPerSource` páginas. Se cuentan
+candidatos antes de filtrar o deduplicar; no videos aprobados. Tres días con factor
+50 permiten hasta 150 candidatos y tres páginas de listado, además de resolver el
+canal y consultar los metadatos necesarios. El factor es una estimación configurable,
+no un máximo garantizado de publicaciones diarias de YouTube.
+
+La playlist de subidas se recorre de reciente a antiguo. Si una página entera tiene
+fechas conocidas anteriores al corte, termina ese recorrido sin pedir el resto del
+historial. Es una optimización basada en ese orden de las subidas; no constituye una
+búsqueda exhaustiva de publicaciones retrospectivas ni una garantía ante cambios
+concurrentes de YouTube. Una fecha vieja aislada, fechas faltantes o una página mixta
+no causan ese corte. También termina si YouTube no ofrece una página siguiente.
+Si se alcanza el límite y todavía podría haber contenido dentro de la ventana,
+registra revisión incompleta; no interpreta el límite como cobertura completa.
+
+**Canal sin ventana y playlists:** se recorren hasta finalizar o alcanzar
+`maxPagesPerSource` (100 por defecto). Las playlists no usan `días × videosPerDay`
+ni se detienen por fechas viejas: pueden contener videos recientes en cualquier
+posición. Sí se filtran por fecha los candidatos cuando hay maxAgeDays.
+
+Cada página aporta IDs y, cuando está disponible, fecha de publicación. Los candidatos
+fuera de ventana no pasan a la consulta de detalles. Si falta su fecha, se consulta
+`videos.list` antes de decidir. Duración, restricciones, título y nombre visible del
+creador se obtienen juntos en lotes de hasta 50. Sólo se reutilizan respuestas dentro
+de la misma ejecución; los descartados pueden volver a consultarse en la siguiente.
+
+El presupuesto `quotaBudget` es total por invocación e incluye reintentos, descubrimiento
+y mantenimiento si se ejecutan juntos. No es un presupuesto diario del proyecto.
+Se usan channels.list, playlistItems.list y videos.list; no search.list.
+Cada endpoint cuesta una unidad por solicitud. Si una carga no entra en los límites,
+hay que ampliar el presupuesto o acotar las fuentes. Repetir no reanuda ni garantiza
+que alcance el contenido restante. Una fuente grande puede agotar el presupuesto
+antes de que se procesen otras; no hay reparto persistente de turnos.
+
+## Publicación y fallos
+
+- Append permite publicar altas verificadas aunque otra página falle. Conserva
+  los videos existentes y sus datos manuales; completa títulos y creadores faltantes.
+- Replace conserva exactamente la última lista ante errores, cuota agotada o límites
+  que impidan completar la revisión. La primera carga queda sin publicar hasta completarse.
+- Un replace completo sin videos válidos retira el canal del índice. La configuración
+  permanece y permite que vuelva cuando haya contenido admisible.
+- Los videos nuevos deben estar disponibles, procesados, permitir inserción, ser
+  reproducibles en las regiones configuradas y no tener restricción de edad. Los
+  ciclos excluyen emisiones activas o próximas. El contenido no musical requiere
+  idioma de audio declarado español; música exceptúa ese requisito.
+- El mantenimiento revisa los videos publicados y retira bajas confirmadas. No vuelve
+  a descubrir fuentes. Los fallos de red no se interpretan como videos eliminados.
+- Se conserva el programa y segundo actuales al ajustar el origen del ciclo cuando
+  es posible. El formato de reproducción y el funcionamiento de Android no cambian.
+
+Cada JSON se escribe atómicamente y minificado; si sus bytes no cambian, no se reescribe.
+El índice se publica después de las listas. No hay una transacción conjunta entre
+archivos ni versiones coordinadas de descarga. Un commit contiene los cambios para GitHub.
+Los conflictos de publicación fallan sin force-push; repetir con main actualizado.
+
+El reporte sale por stdout en JSON con canales, páginas, candidatos, cuota y errores.
+Actions conserva sus logs según los permisos y retención del repositorio; no son un
+almacenamiento privado de secretos. No se guarda ni lee `sync-state.json`.
+Una ejecución sin cambios del catálogo no genera un commit de reporte.
+El lock local `.sync.lock` sólo evita procesos simultáneos y se elimina al terminar;
+no guarda avance. Las ejecuciones de Actions también están serializadas.
+
+## Comandos
+
+Desde esta carpeta:
+
+```powershell
+py -3 scripts/sync.py --mode validate
+py -3 scripts/sync.py --channel programacion
+py -3 scripts/sync.py --frequency daily
+py -3 scripts/sync.py --frequency weekly --maintenance
+py -3 scripts/sync.py --mode maintenance --channel cocina
 ```
 
-Cada día equivale a 24 horas y la ventana se recalcula en cada ejecución, conservando la hora UTC. Por ejemplo, con `maxAgeDays: 2`, una ejecución el `2026-10-24T17:08:00Z` admite videos publicados desde `2026-10-22T17:08:00Z` hasta ese inicio, ambos inclusive: las últimas 48 horas. En Argentina, corresponde al intervalo entre el 22 y el 24 de octubre a las 14:08. Se usa la fecha de publicación del video, no la fecha en que se agregó a una playlist. Con ventana activa, las fechas ausentes, inválidas o futuras no se admiten.
+Sin --channel ni --frequency actualiza todos los activos. `--changed-since SHA`
+permite seleccionar por diferencias con el commit anterior, como hace el workflow.
+Los modos names, titles y presentation siguen disponibles como utilidades puntuales:
+completan nombres, refrescan metadatos o normalizan presentación; presentation no usa API.
+`--mode daily` sigue siendo un alias de update por compatibilidad con comandos anteriores.
 
-Se siguen recorriendo todas las páginas para encontrar videos recientes aunque la playlist esté desordenada. Cuando `contentDetails.videoPublishedAt` indica que un video está fuera de la ventana, se omite su consulta de metadatos; si falta esa fecha, se consulta `videos.list` y se comprueba `snippet.publishedAt`. Ver [fechas de los elementos de una playlist](https://developers.google.com/youtube/data/reference/rest/v3/playlistItems#contentDetails.videoPublishedAt).
-
-En `append`, la ventana sólo limita las incorporaciones: no elimina videos existentes que envejecieron. En `replace`, los videos que salieron de la ventana, se retiraron de las fuentes o ya no cumplen las validaciones desaparecen de la nueva lista. También se actualizan sus duraciones y se eliminan los campos manuales de cada video; los campos generales del archivo y del índice se conservan.
-
-Si falla alguna fuente, una página o una consulta de metadatos, o se agota la cuota, `replace` conserva el archivo completo anterior y registra `held_incomplete`; la primera carga queda pendiente como `awaiting_complete_refresh`. En ese caso la última lista puede contener videos que ya salieron de la ventana, hasta lograr una actualización completa. `append` conserva su comportamiento de guardar incorporaciones parciales verificadas.
-
-Un reemplazo completo sin videos válidos retira el canal del índice y elimina su archivo, con estado `unpublished_empty`, para no mantener contenido vencido. La configuración sigue activa y el canal vuelve a publicarse cuando encuentra videos válidos; puede recibir un nuevo número salvo que se haya fijado `number` en `sources.json`. Si todavía no existía, queda como `awaiting_valid_videos`. Durante el mantenimiento, los canales `replace` también retiran videos fuera de la ventana; ante errores conservan la lista completa anterior.
-
-## Validaciones y exclusiones manuales
-
-Los nuevos videos deben estar disponibles y procesados, permitir inserción y poder reproducirse en todos los países configurados en `regionCodes` (predeterminado `AR`). Se descartan videos con restricciones de edad incompatibles con reproducción embebida. Para ciclos no se incorporan emisiones en curso ni próximas.
-
-Las duraciones deben ser enteros positivos. Los límites son exclusivos, como en `extraer_ids.py`: mínimo 420 significa más de 7 minutos. El máximo predeterminado es `null`, sin máximo.
-
-El contenido no musical requiere `snippet.defaultAudioLanguage=es` o una variante como `es-AR`. La ausencia del dato no se reemplaza con títulos, subtítulos o `defaultLanguage`. `music: true` exceptúa solamente el idioma. En `append`, los videos existentes no se recertifican con nuevas reglas ni se sobrescriben sus duraciones manuales; en `replace` sí se vuelven a validar durante el recorrido diario.
-
-Para impedir la incorporación de un video, agregar su ID en la configuración de ese canal:
-
-```json
-"excludedVideoIds": [
-  "ID_DE_VIDEO"
-]
-```
-
-Reemplazar el marcador por un ID real de 11 caracteres. Las exclusiones son opcionales; se descartan antes de consultar metadatos y también retiran ese ID de una lista existente. En `append` se conserva la última lista si quedaría vacía; en `replace` se retira el canal tras una actualización completa sin resultados. Para restaurarlo, quitarlo de `excludedVideoIds`.
-
-Si sólo se borra un video del JSON de reproducción y sigue en una fuente, se considera nuevo y puede volver a incorporarse. Usar `excludedVideoIds` cuando se trate de un rechazo permanente. No existe otro historial de decisiones.
-
-## GitHub Actions
-
-La carpeta local se llama `zp-static-asset`; su remoto es [`andrescassanaz/zp-static-assets`](https://github.com/andrescassanaz/zp-static-assets). Toda la implementación vive en ese repositorio.
-
-1. Integrar los cambios en `main`.
-2. Configurar **Settings → Secrets and variables → Actions → YOUTUBE_API_KEY**. La clave ya fue registrada durante la implementación. El script la lee exclusivamente del entorno; no lee archivos locales de claves ni la imprime.
-3. Habilitar Actions y permitir al workflow escribir `contents`, respetando las políticas de protección de rama del repositorio.
-4. Ejecutar **Actions → Sincronizar canales → Run workflow**, con `daily` y opcionalmente el ID de un canal. Los cambios en las fuentes y listas también disparan la sincronización.
-
-Hay una sincronización diaria a las **06:17 de Argentina** y mantenimiento los domingos a las **07:47 de Argentina** (09:17 y 10:47 UTC). GitHub puede demorar los horarios y deshabilitarlos en repositorios públicos tras 60 días sin actividad; pueden reactivarse desde Actions.
-
-El mantenimiento semanal consulta los videos ya publicados y retira los confirmados como eliminados, privados, restringidos o sin inserción. En `append` conserva el resto ante errores de red y, si quedaría vacío, mantiene su último JSON válido con `held_empty`, porque Android no admite listas vacías. En `replace` también controla la antigüedad y sólo publica si el mantenimiento terminó sin errores; una lista vacía retira el canal. Un video retirado puede reincorporarse en el recorrido diario si vuelve a cumplir las reglas y sigue en una fuente sin estar excluido.
-
-## Cuota y errores
-
-Se usan `channels.list`, `playlistItems.list` y `videos.list`, con costo de una unidad por solicitud. No se utiliza `search.list`. Los metadatos se agrupan en lotes de hasta 50 IDs y se cachean dentro de la ejecución. En `append`, los IDs existentes no consumen consultas de metadatos durante el recorrido diario; en `replace` sí se revalidan.
-
-`quotaBudget`, predeterminado en 2500 unidades por ejecución, incluye reintentos. Recorrer fuentes completas puede consumir más cuota que una búsqueda incremental. No hay un tope artificial de páginas por fuente; si se agota el presupuesto o la cuota de YouTube, la ejecución queda incompleta y termina con código 2. `append` conserva las incorporaciones verificadas y `replace` mantiene su última lista completa. El resumen indica que el recorrido quedó incompleto; no se guarda un cursor para reanudar. La próxima ejecución vuelve a empezar desde la primera página. Ajustar el presupuesto y la cantidad de fuentes a la cuota disponible para poder completar todos los recorridos.
-
-Los errores temporales se reintentan hasta cuatro veces con espera creciente. Un fallo de una fuente no impide procesar las siguientes salvo agotamiento de cuota. No se publica una lista vacía por un fallo ni se incorporan videos cuyo pedido de metadatos falló.
-
-Los commits se generan sólo cuando hay diferencias, incluyendo el resumen de ejecución. También se guarda avance parcial verificado antes de marcar la ejecución como fallida. El bot no dispara otro workflow de push con sus propios commits. Si una publicación manual se adelanta al bot, su push se rechaza: no se hace force-push ni rebase automático de listas generadas; repetir contra `main` actualizado.
-
-## Continuidad y operación local
-
-En `append`, los nuevos videos se agregan al final, mezclados con `videoOrder: "random"` o según el recorrido con `"ordered"`, y se conservan las duraciones, los campos manuales y el orden de los existentes. En `replace`, se aplica `videoOrder` a toda la lista reconstruida y las duraciones se vuelven a obtener. Al cambiar la lista, se ajusta `cycleStartsAt` para conservar el video y segundo actuales si siguen disponibles, o alinear el siguiente sobreviviente al final nominal del video retirado.
-
-La aplicación mantiene el reproductor en curso hasta su transición natural. El contrato actual no tiene versiones programadas: los clientes con versiones distintas, o que descargan después de cruzar el final del ciclo anterior, pueden diferir. Garantizar cambios simultáneos en todos los clientes requeriría ampliar el contrato de la app. No se modificó la aplicación.
-
-Pruebas y validación sin clave ni cuota:
+Código 0: ejecución completa. Código 2: error, revisión incompleta o cuota agotada.
+No se necesitan claves para validar ni ejecutar las pruebas:
 
 ```powershell
 py -3 -m unittest discover -s tests -v
-py -3 scripts/sync.py --mode validate
 ```
 
-Actions ejecuta:
+## Respaldo para una versión de Android
 
-```text
-python scripts/sync.py --mode daily
-python scripts/sync.py --mode daily --channel cocina
-python scripts/sync.py --mode daily --channel programacion
-python scripts/sync.py --mode maintenance
+El catálogo canónico se publica desde este repositorio. La APK lleva una copia,
+que se actualiza explícitamente al preparar una versión:
+
+```powershell
+py -3 scripts/sync.py --mode backup --app-root ../App
 ```
 
-Sólo se ejecuta una sincronización remota a la vez. `.sync.lock` evita procesos locales simultáneos. No editar los JSON mientras corre un proceso local. Cada JSON se reemplaza atómicamente y el índice se guarda después de los archivos de canal; una interrupción entre archivos puede requerir repetir la sincronización. No hay transacción conjunta de todo el conjunto de archivos.
+Valida y copia el índice y los archivos a `App/app/src/main/assets/catalog/`, sin
+consultar YouTube, cambiar metadatos, duraciones ni horarios. Revisar y confirmar
+esa copia en la rama de Android antes de compilar. No hace falta copiarla para que
+las instalaciones existentes reciban cambios del catálogo remoto.
 
-Los pull requests ejecutan pruebas y validación sin secretos. Las sincronizaciones con API sólo corren en `main`, usando argumentos citados y variables de entorno para las opciones manuales.
-
-## Referencias
-
-- [Canales, handles y playlist de subidas](https://developers.google.com/youtube/data/reference/rest/v3/channels/list).
-- [Paginación de playlists](https://developers.google.com/youtube/data/reference/rest/v3/playlistItems/list).
-- [Metadatos y restricciones de videos](https://developers.google.com/youtube/data/reference/rest/v3/videos).
-- [Horarios de GitHub Actions](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule).
+`Script cargar canal` y `Script extraer IDs` son herramientas históricas de exploración
+fuera de este flujo. Su salida no se publica automáticamente. El procedimiento vigente
+para administrar canales es editar sources.json y ejecutar este sincronizador.
