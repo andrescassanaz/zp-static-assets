@@ -2,7 +2,7 @@
   "version": 1,
   "channels": {
     "viajes": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -15,7 +15,7 @@
       "publication": "published"
     },
     "autos": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
       "result": "success",
       "sourcesScanned": 0,
@@ -28,133 +28,153 @@
       "publication": "published"
     },
     "cocina": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
-      "result": "success",
-      "sourcesScanned": 20,
-      "discoveredIds": 15322,
+      "result": "partial",
+      "sourcesScanned": 1,
+      "discoveredIds": 50,
       "addedVideos": 0,
-      "filteredVideos": 9361,
+      "filteredVideos": 36,
       "checkedVideos": 0,
       "removedVideos": 0,
-      "errors": [],
+      "errors": [
+        "YouTube agotó la cuota; se conserva el avance."
+      ],
       "publication": "published"
     },
     "automovilismo": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
-      "result": "success",
+      "result": "skipped",
       "sourcesScanned": 0,
       "discoveredIds": 0,
       "addedVideos": 0,
       "filteredVideos": 0,
       "checkedVideos": 0,
       "removedVideos": 0,
-      "errors": [],
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
       "publication": "published"
     },
     "tn": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
-      "result": "success",
+      "result": "skipped",
       "sourcesScanned": 0,
       "discoveredIds": 0,
       "addedVideos": 0,
       "filteredVideos": 0,
       "checkedVideos": 0,
       "removedVideos": 0,
-      "errors": [],
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
       "publication": "published"
     },
     "cronica": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
-      "result": "success",
+      "result": "skipped",
       "sourcesScanned": 0,
       "discoveredIds": 0,
       "addedVideos": 0,
       "filteredVideos": 0,
       "checkedVideos": 0,
       "removedVideos": 0,
-      "errors": [],
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
       "publication": "published"
     },
     "c5n": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
-      "result": "success",
+      "result": "skipped",
       "sourcesScanned": 0,
       "discoveredIds": 0,
       "addedVideos": 0,
       "filteredVideos": 0,
       "checkedVideos": 0,
       "removedVideos": 0,
-      "errors": [],
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
       "publication": "published"
     },
     "a24": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
-      "result": "success",
+      "result": "skipped",
       "sourcesScanned": 0,
       "discoveredIds": 0,
       "addedVideos": 0,
       "filteredVideos": 0,
       "checkedVideos": 0,
       "removedVideos": 0,
-      "errors": [],
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
       "publication": "published"
     },
     "ln-plus": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
-      "result": "success",
+      "result": "skipped",
       "sourcesScanned": 0,
       "discoveredIds": 0,
       "addedVideos": 0,
       "filteredVideos": 0,
       "checkedVideos": 0,
       "removedVideos": 0,
-      "errors": [],
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
       "publication": "published"
     },
     "el-nueve": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
-      "result": "success",
+      "result": "skipped",
       "sourcesScanned": 0,
       "discoveredIds": 0,
       "addedVideos": 0,
       "filteredVideos": 0,
       "checkedVideos": 0,
       "removedVideos": 0,
-      "errors": [],
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
       "publication": "published"
     },
     "america-noticias": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
-      "result": "success",
+      "result": "skipped",
       "sourcesScanned": 0,
       "discoveredIds": 0,
       "addedVideos": 0,
       "filteredVideos": 0,
       "checkedVideos": 0,
       "removedVideos": 0,
-      "errors": [],
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
       "publication": "published"
     },
     "telefe-noticias": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
-      "result": "success",
+      "result": "skipped",
       "sourcesScanned": 0,
       "discoveredIds": 0,
       "addedVideos": 0,
       "filteredVideos": 0,
       "checkedVideos": 0,
       "removedVideos": 0,
-      "errors": [],
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
       "publication": "published"
     },
     "standup": {
@@ -171,55 +191,63 @@
       "publication": "published"
     },
     "documentales": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
-      "result": "success",
+      "result": "skipped",
       "sourcesScanned": 0,
       "discoveredIds": 0,
       "addedVideos": 0,
       "filteredVideos": 0,
       "checkedVideos": 0,
       "removedVideos": 0,
-      "errors": [],
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
       "publication": "published"
     },
     "ultimos-cartuchos": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
-      "result": "success",
+      "result": "skipped",
       "sourcesScanned": 0,
       "discoveredIds": 0,
       "addedVideos": 0,
       "filteredVideos": 0,
       "checkedVideos": 0,
       "removedVideos": 0,
-      "errors": [],
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
       "publication": "published"
     },
     "infantil": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
-      "result": "success",
+      "result": "skipped",
       "sourcesScanned": 0,
       "discoveredIds": 0,
       "addedVideos": 0,
       "filteredVideos": 0,
       "checkedVideos": 0,
       "removedVideos": 0,
-      "errors": [],
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
       "publication": "published"
     },
     "falopita": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
-      "result": "success",
+      "result": "skipped",
       "sourcesScanned": 0,
       "discoveredIds": 0,
       "addedVideos": 0,
       "filteredVideos": 0,
       "checkedVideos": 0,
       "removedVideos": 0,
-      "errors": [],
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
       "publication": "published"
     },
     "capusotto": {
@@ -236,48 +264,52 @@
       "publication": "published"
     },
     "historia": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
-      "result": "success",
+      "result": "skipped",
       "sourcesScanned": 0,
       "discoveredIds": 0,
       "addedVideos": 0,
       "filteredVideos": 0,
       "checkedVideos": 0,
       "removedVideos": 0,
-      "errors": [],
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
       "publication": "published"
     },
     "gaming": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
-      "result": "success",
-      "sourcesScanned": 8,
-      "discoveredIds": 5882,
+      "result": "skipped",
+      "sourcesScanned": 0,
+      "discoveredIds": 0,
       "addedVideos": 0,
-      "filteredVideos": 2326,
-      "checkedVideos": 0,
-      "removedVideos": 0,
-      "errors": [],
-      "publication": "published"
-    },
-    "rock-nacional": {
-      "at": "2026-10-26T03:28:21Z",
-      "mode": "daily",
-      "result": "partial",
-      "sourcesScanned": 2,
-      "discoveredIds": 327,
-      "addedVideos": 0,
-      "filteredVideos": 80,
+      "filteredVideos": 0,
       "checkedVideos": 0,
       "removedVideos": 0,
       "errors": [
-        "YouTube agotó la cuota; se conserva el avance."
+        "Sin cuota disponible; canal pendiente."
+      ],
+      "publication": "published"
+    },
+    "rock-nacional": {
+      "at": "2026-10-26T04:54:50Z",
+      "mode": "daily",
+      "result": "skipped",
+      "sourcesScanned": 0,
+      "discoveredIds": 0,
+      "addedVideos": 0,
+      "filteredVideos": 0,
+      "checkedVideos": 0,
+      "removedVideos": 0,
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
       ],
       "publication": "published"
     },
     "entrevistas": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
       "result": "skipped",
       "sourcesScanned": 0,
@@ -292,7 +324,7 @@
       "publication": "published"
     },
     "programacion": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
       "result": "skipped",
       "sourcesScanned": 0,
@@ -307,20 +339,22 @@
       "publication": "held_incomplete"
     },
     "comida": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
-      "result": "success",
-      "sourcesScanned": 7,
-      "discoveredIds": 2291,
+      "result": "skipped",
+      "sourcesScanned": 0,
+      "discoveredIds": 0,
       "addedVideos": 0,
-      "filteredVideos": 1394,
+      "filteredVideos": 0,
       "checkedVideos": 0,
       "removedVideos": 0,
-      "errors": [],
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
       "publication": "published"
     },
     "deportes": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
       "result": "skipped",
       "sourcesScanned": 0,
@@ -335,7 +369,7 @@
       "publication": "held_incomplete"
     },
     "nba": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
       "result": "skipped",
       "sourcesScanned": 0,
@@ -350,7 +384,7 @@
       "publication": "held_incomplete"
     },
     "musica-90": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
       "result": "skipped",
       "sourcesScanned": 0,
@@ -365,7 +399,7 @@
       "publication": "published"
     },
     "musica-80": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
       "result": "skipped",
       "sourcesScanned": 0,
@@ -380,7 +414,7 @@
       "publication": "published"
     },
     "musica-2000": {
-      "at": "2026-10-26T03:28:21Z",
+      "at": "2026-10-26T04:54:50Z",
       "mode": "daily",
       "result": "skipped",
       "sourcesScanned": 0,
@@ -393,15 +427,112 @@
         "Sin cuota disponible; canal pendiente."
       ],
       "publication": "published"
+    },
+    "humor": {
+      "at": "2026-10-26T04:54:50Z",
+      "mode": "daily",
+      "result": "skipped",
+      "sourcesScanned": 0,
+      "discoveredIds": 0,
+      "addedVideos": 0,
+      "filteredVideos": 0,
+      "checkedVideos": 0,
+      "removedVideos": 0,
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
+      "publication": "awaiting_valid_videos"
+    },
+    "expedientes": {
+      "at": "2026-10-26T04:54:50Z",
+      "mode": "daily",
+      "result": "skipped",
+      "sourcesScanned": 0,
+      "discoveredIds": 0,
+      "addedVideos": 0,
+      "filteredVideos": 0,
+      "checkedVideos": 0,
+      "removedVideos": 0,
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
+      "publication": "awaiting_valid_videos"
+    },
+    "cine-y-series": {
+      "at": "2026-10-26T04:54:50Z",
+      "mode": "daily",
+      "result": "skipped",
+      "sourcesScanned": 0,
+      "discoveredIds": 0,
+      "addedVideos": 0,
+      "filteredVideos": 0,
+      "checkedVideos": 0,
+      "removedVideos": 0,
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
+      "publication": "awaiting_valid_videos"
+    },
+    "futbol": {
+      "at": "2026-10-26T04:54:50Z",
+      "mode": "daily",
+      "result": "skipped",
+      "sourcesScanned": 0,
+      "discoveredIds": 0,
+      "addedVideos": 0,
+      "filteredVideos": 0,
+      "checkedVideos": 0,
+      "removedVideos": 0,
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
+      "publication": "awaiting_valid_videos"
+    },
+    "musica-en-vivo": {
+      "at": "2026-10-26T04:54:50Z",
+      "mode": "daily",
+      "result": "skipped",
+      "sourcesScanned": 0,
+      "discoveredIds": 0,
+      "addedVideos": 0,
+      "filteredVideos": 0,
+      "checkedVideos": 0,
+      "removedVideos": 0,
+      "errors": [
+        "Sin cuota disponible; canal pendiente."
+      ],
+      "publication": "awaiting_valid_videos"
     }
   },
   "lastRun": {
-    "at": "2026-10-26T03:28:21Z",
+    "at": "2026-10-26T04:54:50Z",
     "mode": "daily",
-    "quotaUnits": 973,
+    "quotaUnits": 4,
     "result": "partial",
     "errors": [
-      "rock-nacional: YouTube agotó la cuota; se conserva el avance.",
+      "cocina: YouTube agotó la cuota; se conserva el avance.",
+      "comida: Sin cuota disponible; canal pendiente.",
+      "automovilismo: Sin cuota disponible; canal pendiente.",
+      "tn: Sin cuota disponible; canal pendiente.",
+      "cronica: Sin cuota disponible; canal pendiente.",
+      "c5n: Sin cuota disponible; canal pendiente.",
+      "a24: Sin cuota disponible; canal pendiente.",
+      "ln-plus: Sin cuota disponible; canal pendiente.",
+      "el-nueve: Sin cuota disponible; canal pendiente.",
+      "america-noticias: Sin cuota disponible; canal pendiente.",
+      "telefe-noticias: Sin cuota disponible; canal pendiente.",
+      "humor: Sin cuota disponible; canal pendiente.",
+      "expedientes: Sin cuota disponible; canal pendiente.",
+      "cine-y-series: Sin cuota disponible; canal pendiente.",
+      "futbol: Sin cuota disponible; canal pendiente.",
+      "musica-en-vivo: Sin cuota disponible; canal pendiente.",
+      "documentales: Sin cuota disponible; canal pendiente.",
+      "ultimos-cartuchos: Sin cuota disponible; canal pendiente.",
+      "infantil: Sin cuota disponible; canal pendiente.",
+      "falopita: Sin cuota disponible; canal pendiente.",
+      "historia: Sin cuota disponible; canal pendiente.",
+      "gaming: Sin cuota disponible; canal pendiente.",
+      "rock-nacional: Sin cuota disponible; canal pendiente.",
       "programacion: Sin cuota disponible; canal pendiente.",
       "entrevistas: Sin cuota disponible; canal pendiente.",
       "deportes: Sin cuota disponible; canal pendiente.",
