@@ -16,6 +16,7 @@
       "name": "Viajes",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "sources": []
     },
     {
@@ -23,6 +24,7 @@
       "name": "Autos",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "sources": []
     },
     {
@@ -30,6 +32,7 @@
       "name": "Cocina",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "sources": [
         "@paulinacocina",
         "@MarcosDiCesare",
@@ -58,6 +61,7 @@
       "name": "Comida",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "sources": [
         "@BajoneandoPorHay",
         "@RodoCamaraTFTS",
@@ -73,6 +77,7 @@
       "name": "Automovilismo",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "sources": []
     },
     {
@@ -80,6 +85,7 @@
       "name": "TN",
       "active": true,
       "playbackMode": "live",
+      "videoOrder": "random",
       "sources": []
     },
     {
@@ -87,6 +93,7 @@
       "name": "Crónica",
       "active": true,
       "playbackMode": "live",
+      "videoOrder": "random",
       "sources": []
     },
     {
@@ -94,6 +101,7 @@
       "name": "C5N",
       "active": true,
       "playbackMode": "live",
+      "videoOrder": "random",
       "sources": []
     },
     {
@@ -101,6 +109,7 @@
       "name": "A24",
       "active": true,
       "playbackMode": "live",
+      "videoOrder": "random",
       "sources": []
     },
     {
@@ -108,6 +117,7 @@
       "name": "LN+",
       "active": true,
       "playbackMode": "live",
+      "videoOrder": "random",
       "sources": []
     },
     {
@@ -115,6 +125,7 @@
       "name": "El Nueve",
       "active": true,
       "playbackMode": "live",
+      "videoOrder": "random",
       "sources": []
     },
     {
@@ -122,6 +133,7 @@
       "name": "América Noticias",
       "active": true,
       "playbackMode": "live",
+      "videoOrder": "random",
       "sources": []
     },
     {
@@ -129,6 +141,7 @@
       "name": "Telefe Noticias",
       "active": true,
       "playbackMode": "live",
+      "videoOrder": "random",
       "sources": []
     },
     {
@@ -136,6 +149,7 @@
       "name": "StandUp",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "sources": []
     },
     {
@@ -143,6 +157,7 @@
       "name": "Documentales",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "sources": []
     },
     {
@@ -150,6 +165,7 @@
       "name": "Ultimos Cartuchos",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "sources": []
     },
     {
@@ -157,6 +173,7 @@
       "name": "Infantil",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "sources": []
     },
     {
@@ -164,6 +181,7 @@
       "name": "Falopita",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "sources": []
     },
     {
@@ -171,6 +189,7 @@
       "name": "Capusotto",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "sources": []
     },
     {
@@ -178,6 +197,7 @@
       "name": "Historia",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "sources": []
     },
     {
@@ -185,6 +205,7 @@
       "name": "Gaming",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "sources": [
         "@newgameplusok",
         "@TiempodeVideojuegos",
@@ -205,6 +226,7 @@
       "name": "Rock Nacional",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "sources": [
         "PLgiRfgm9s8bx9Rf9-yaPkGL1eiGIMkrO8",
         "PLu-6KovYENmuiguSOnW0AxC5fISe5zwJV"
@@ -220,6 +242,7 @@
       "name": "Programación",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "updateMode": "replace",
       "sources": [
         "@midudev",
@@ -239,6 +262,7 @@
       "name": "Entrevistas",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "sources": [
         "PLpc3AmLBvqhSytALloNPzZ5wBWcj4f-ks",
         "PLaw1K4GjZVeOZvCiwxqBvHjUwnKFd8Jw3",
@@ -263,6 +287,7 @@
       "name": "Deportes",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "updateMode": "replace",
       "sources": [
         "@ESPNFans"
@@ -276,6 +301,7 @@
       "name": "Basquet",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "updateMode": "replace",
       "sources": [
         "@somosnbaenespanol",
@@ -292,6 +318,7 @@
       "name": "Musica 90'",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "sources": [
         "PL7DA3D097D6FDBC02",
         "PL6E4N1fC1qsMnjbTQaGzBgI-nWmDWcnOT",
@@ -312,6 +339,7 @@
       "name": "Musica 80'",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "sources": [
         "PLmXxqSJJq-yXrCPGIT2gn8b34JjOrl4Xf",
         "PLd9auH4JIHvupoMgW5YfOjqtj6Lih0MKw",
@@ -328,6 +356,7 @@
       "name": "Musica 2000'",
       "active": true,
       "playbackMode": "cycle",
+      "videoOrder": "random",
       "sources": [
         "PLCh-xN1_B-eJazkwtVvYruDhfZyBCiMRn",
         "PL9tY0BWXOZFu4vlBOzIOmvT6wjYb2jNiV",

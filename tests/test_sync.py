@@ -66,7 +66,7 @@ class Integration(unittest.TestCase):
         self.root = Path(self.temp.name)
         sync.save(self.root / "channels.json", {"channels": []})
         self.config = {"version": 1, "quotaBudget": 100,
-                       "channels": [{"id": "test", "name": "Prueba", "sources": [A]}]}
+                       "channels": [{"id": "test", "name": "Prueba", "videoOrder": "ordered", "sources": [A]}]}
         self.write_config()
 
     def write_config(self):

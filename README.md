@@ -19,6 +19,7 @@ Para cada canal activo en `sources.json`:
 3. Elimina duplicados entre las fuentes. En modo `append` también descarta los IDs ya publicados; en `replace` vuelve a evaluarlos.
 4. Consulta metadatos y aplica las validaciones, incluida la fecha de publicación cuando hay una ventana configurada.
 5. Con `updateMode: "append"` (predeterminado), agrega los nuevos videos válidos al final, conservando los existentes. Con `updateMode: "replace"`, reemplaza la lista completa por los videos válidos de las fuentes actuales, sólo si terminó todo el recorrido sin errores.
+6. Aplica `videoOrder`: `"random"` (predeterminado) mezcla el lote nuevo en `append` o toda la lista reconstruida en `replace`; `"ordered"` conserva el orden de recorrido de las fuentes y sus páginas.
 
 Cada ejecución vuelve a recorrer las fuentes completas. No se detiene al encontrar IDs conocidos ni conserva cursores, listas de descubiertos o catálogos por video. Así también encuentra incorporaciones al medio o al final de una playlist. La paginación de YouTube puede verse afectada por modificaciones concurrentes; el siguiente recorrido vuelve a comprobarla.
 
@@ -34,6 +35,8 @@ Los JSON de reproducción son la referencia para saber qué videos ya fueron inc
 | `sync-state.json` | Resumen de las últimas ejecuciones: fecha, cantidades, cuota y errores |
 | `scripts/sync.py` | Recorrido, comparación, validación y publicación |
 
+El script guarda `channels.json` y `channels/{id}.json` minificados, en una sola línea y sin espacios de formato. Al volver a guardar un archivo existente también lo minifica aunque sus datos no hayan cambiado; una vez minificado, una ejecución sin cambios conserva sus bytes y fecha de modificación. `sources.json` y `sync-state.json` mantienen su formato legible.
+
 No se utiliza `catalog/`. No se guardan registros individuales de aprobados, pendientes o rechazados. Los candidatos que no pasan las validaciones se omiten; si siguen en las fuentes, se volverán a evaluar en una ejecución posterior.
 
 ## Agregar un canal
@@ -46,6 +49,7 @@ Agregar un objeto a la lista `channels` de `sources.json`:
   "name": "Cocina automática",
   "active": true,
   "playbackMode": "cycle",
+  "videoOrder": "random",
   "sources": [
     "@paulinacocina",
     "@MarcosDiCesare"
@@ -77,14 +81,17 @@ No admite URLs completas. `playbackMode: live` requiere una única fuente de vid
 
 `cocina` ya tiene las 20 fuentes confirmadas del archivo de referencia `Script extraer IDs/canales.txt`: 8 handles y 12 playlists. Los demás canales conservan sus listas y el mantenimiento semanal; completar sus fuentes para habilitar descubrimiento.
 
-## Antigüedad y reemplazo
+## Orden, antigüedad y reemplazo
 
-Cada canal de `sources.json` puede configurar estas dos opciones independientes:
+Cada canal de `sources.json` puede configurar estas opciones independientes:
 
 | Campo | Valores y comportamiento |
 | --- | --- |
+| `videoOrder` | `"random"` u omitido: mezcla los videos al generar el listado. `"ordered"`: respeta el orden en que aparecen en `sources` y, dentro de cada playlist o canal, el orden que devuelve YouTube. No ordena por título ni por número de episodio. |
 | `rules.maxAgeDays` | Entero positivo: admite publicaciones desde esa cantidad de días de 24 horas antes del inicio de la ejecución, hasta ese inicio, ambos inclusive. `null` u omitido: sin límite de antigüedad. También puede definirse en `defaults`. |
 | `updateMode` | `"append"` u omitido: suma contenido nuevo y conserva el existente. `"replace"`: reconstruye toda la lista a partir de las fuentes y las reglas actuales; requiere al menos una fuente. |
+
+En un canal nuevo, `random` mezcla toda la primera lista. En `append`, conserva el orden ya publicado y mezcla únicamente las nuevas incorporaciones juntas, después de recorrer todas las fuentes y páginas. En `replace`, mezcla toda la lista en cada reconstrucción diaria completa. Cambiar `videoOrder` en un canal `append` afecta a las próximas incorporaciones; para reconstruir la lista completa desde las fuentes, usar `replace`. El mantenimiento y los modos `names`, `titles` y `presentation` conservan el orden existente. Los directos mantienen un único video.
 
 `programacion` ya está configurado así:
 
@@ -157,7 +164,7 @@ Los commits se generan sólo cuando hay diferencias, incluyendo el resumen de ej
 
 ## Continuidad y operación local
 
-En `append`, los nuevos videos se agregan al final y se conservan las duraciones, los campos manuales y el orden de los existentes. En `replace`, el orden sigue el recorrido de las fuentes y las duraciones se vuelven a obtener. Al cambiar la lista, se ajusta `cycleStartsAt` para conservar el video y segundo actuales si siguen disponibles, o alinear el siguiente sobreviviente al final nominal del video retirado.
+En `append`, los nuevos videos se agregan al final, mezclados con `videoOrder: "random"` o según el recorrido con `"ordered"`, y se conservan las duraciones, los campos manuales y el orden de los existentes. En `replace`, se aplica `videoOrder` a toda la lista reconstruida y las duraciones se vuelven a obtener. Al cambiar la lista, se ajusta `cycleStartsAt` para conservar el video y segundo actuales si siguen disponibles, o alinear el siguiente sobreviviente al final nominal del video retirado.
 
 La aplicación mantiene el reproductor en curso hasta su transición natural. El contrato actual no tiene versiones programadas: los clientes con versiones distintas, o que descargan después de cruzar el final del ciclo anterior, pueden diferir. Garantizar cambios simultáneos en todos los clientes requeriría ampliar el contrato de la app. No se modificó la aplicación.
 

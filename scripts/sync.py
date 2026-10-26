@@ -84,16 +84,19 @@ def load(path: Path, default=None):
         raise SyncError(f"No se pudo leer JSON válido: {path.name}.") from None
 
 
-def save(path: Path, value) -> bool:
-    """No toca bytes ni mtime si los datos son equivalentes."""
-    if path.exists() and load(path) == value:
+def save(path: Path, value, *, compact=False) -> bool:
+    """Guarda atómicamente; compact migra también JSON con datos equivalentes."""
+    serialized = json.dumps(value, ensure_ascii=False, allow_nan=False,
+                            **({"separators": (",", ":")} if compact else {"indent": 2}))
+    if not compact:
+        serialized += "\n"
+    if path.exists() and (path.read_bytes() == serialized.encode("utf-8") if compact else load(path) == value):
         return False
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, temporary = tempfile.mkstemp(prefix=".sync-", suffix=".tmp", dir=path.parent)
     try:
         with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as stream:
-            json.dump(value, stream, ensure_ascii=False, indent=2, allow_nan=False)
-            stream.write("\n")
+            stream.write(serialized)
             stream.flush()
             os.fsync(stream.fileno())
         os.replace(temporary, path)
@@ -204,6 +207,9 @@ def read_config(root: Path):
             raise SyncError("Cada configuración requiere name.")
         if type(channel.get("active", True)) is not bool:
             raise SyncError("active debe ser true o false.")
+        video_order = channel.get("videoOrder", "random")
+        if not isinstance(video_order, str) or video_order not in {"random", "ordered"}:
+            raise SyncError("videoOrder debe ser random u ordered.")
         mode = channel.get("playbackMode", "cycle")
         if channel.get("guideMode", "schedule") not in {"schedule", "continuous"}:
             raise SyncError("guideMode debe ser schedule o continuous.")
@@ -531,7 +537,7 @@ class Sync:
                 # Un reemplazo completo sin resultados retira el canal del índice:
                 # Android no admite listas vacías y no debe mostrar material viejo.
                 self.index["channels"].remove(entry)
-                save(self.root / "channels.json", self.index)
+                save(self.root / "channels.json", self.index, compact=True)
                 path.unlink(missing_ok=True)
                 return "unpublished_empty"
             # Android no admite listas vacías. Mantener la última válida.
@@ -552,7 +558,7 @@ class Sync:
                      "file": f"channels/{channel['id']}.json"}
             self.index["channels"].append(entry)
         self.guide_metadata(channel, entry)
-        save(path, playlist)
+        save(path, playlist, compact=True)
         return "published"
 
     def run(self, mode="daily", selected=None):
@@ -600,6 +606,14 @@ class Sync:
                 stats["publication"] = "held_incomplete" if old else "awaiting_complete_refresh"
                 stats["addedVideos"] = stats["removedVideos"] = 0
             else:
+                # En append se mezcla sólo el lote nuevo; en replace diario,
+                # toda la lista reconstruida. El mantenimiento conserva el orden.
+                if mode == "daily" and channel.get("videoOrder", "random") == "random":
+                    new_start = 0 if replace else len(rows) - stats["addedVideos"]
+                    added = rows[new_start:]
+                    if len(added) > 1:
+                        random.shuffle(added)
+                        rows[new_start:] = added
                 if replace and mode == "daily":
                     old_ids = {row["youtubeVideoId"] for row in old["videos"]} if old else set()
                     new_ids = {row["youtubeVideoId"] for row in rows}
@@ -607,7 +621,7 @@ class Sync:
                     stats["removedVideos"] = sum(row["youtubeVideoId"] not in new_ids for row in old["videos"]) if old else 0
                 stats["publication"] = self.publish(channel, entry, path, old, rows, allow_empty=replace)
             self.state["channels"][channel["id"]] = stats
-        save(self.root / "channels.json", self.index)
+        save(self.root / "channels.json", self.index, compact=True)
         self.state["lastRun"] = {"at": self.when, "mode": mode, "quotaUnits": self.api.used,
                                  "result": "partial" if self.errors else "success", "errors": self.errors}
         save(self.root / "sync-state.json", self.state)
@@ -660,8 +674,8 @@ class Sync:
             playlist = load(path)
             self.clean_titles(playlist["videos"])
             validate_playlist(playlist, entry["playbackMode"])
-            save(path, playlist)
-        save(self.root / "channels.json", self.index)
+            save(path, playlist, compact=True)
+        save(self.root / "channels.json", self.index, compact=True)
         return 0
 
     def refresh_channel_names(self, selected=None):
@@ -689,7 +703,7 @@ class Sync:
                     self.errors.append(f"{entry['id']}: {exc}")
                     exhausted = isinstance(exc, QuotaError)
             validate_playlist(playlist, entry["playbackMode"])
-            save(path, playlist)
+            save(path, playlist, compact=True)
             count = sum(bool(row.get("youtubeChannelName")) for row in rows)
             total += len(rows)
             named += count
@@ -715,8 +729,8 @@ class Sync:
                 # Los títulos ya verificados son seguros incluso si falla otro lote.
             validate_playlist(playlist, entry["playbackMode"])
             self.clean_titles(playlist["videos"])
-            save(path, playlist)
-        save(self.root / "channels.json", self.index)
+            save(path, playlist, compact=True)
+        save(self.root / "channels.json", self.index, compact=True)
         self.state["lastTitleRefresh"] = {"at": self.when, "quotaUnits": self.api.used,
                                            "errors": self.errors}
         save(self.root / "sync-state.json", self.state)
