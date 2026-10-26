@@ -74,7 +74,9 @@ class Integration(unittest.TestCase):
 
     def run_sync(self, api=None, mode="daily", now=NOW):
         engine = sync.Sync(self.root, api or FakeAPI(), now)
-        return engine.run(mode), engine
+        result = engine.run(mode)
+        self.engine = engine
+        return result, engine
 
     def published(self):
         return sync.load(self.root / "channels/test.json")
@@ -93,7 +95,8 @@ class Integration(unittest.TestCase):
         entry = sync.load(self.root / "channels.json")["channels"][0]
         self.assertEqual({"id": "test", "name": "Prueba", "number": 1, "file": "channels/test.json", "playbackMode": "cycle"}, entry)
         self.assertFalse((self.root / "catalog").exists())
-        state = sync.load(self.root / "sync-state.json")
+        self.assertFalse((self.root / "sync-state.json").exists())
+        state = self.engine.report
         self.assertNotIn("knownIds", str(state))
         self.assertNotIn("publishedIds", str(state))
         self.assertNotIn("pageToken", str(state))
@@ -123,7 +126,7 @@ class Integration(unittest.TestCase):
         self.assertEqual("manual", after["custom"])
         self.assertEqual([A, B, C], [row["youtubeVideoId"] for row in after["videos"]])
         entry = sync.load(self.root / "channels.json")["channels"][0]
-        self.assertEqual("Nombre manual", entry["name"])
+        self.assertEqual("Prueba", entry["name"])
         self.assertEqual(7, entry["number"])
         self.assertEqual("manual", entry["logo"])
 
@@ -195,7 +198,7 @@ class Integration(unittest.TestCase):
         before = self.published()
         self.run_sync(FakeAPI(), mode="maintenance")
         self.assertEqual(before, self.published())
-        state = sync.load(self.root / "sync-state.json")
+        state = self.engine.report
         self.assertEqual("held_empty", state["channels"]["test"]["publication"])
 
     def test_existing_duration_and_language_not_rewritten(self):
@@ -277,7 +280,7 @@ class Refresh(unittest.TestCase):
         self.assertEqual([A, C], [row["youtubeVideoId"] for row in self.published()["videos"]])
         self.assertEqual("manual", self.published()["custom"])
         self.assertEqual([[A], [C], [D]], [params["ids"] for resource, params in api.calls if resource == "videos"])
-        stats = sync.load(self.root / "sync-state.json")["channels"]["test"]
+        stats = self.engine.report["channels"]["test"]
         self.assertEqual(1, stats["addedVideos"])
         self.assertEqual(1, stats["removedVideos"])
 
@@ -350,7 +353,7 @@ class Refresh(unittest.TestCase):
         result, _ = self.run_sync(api)
         self.assertEqual(2, result)
         self.assertEqual(before, (self.root / "channels/test.json").read_bytes())
-        self.assertEqual("held_incomplete", sync.load(self.root / "sync-state.json")["channels"]["test"]["publication"])
+        self.assertEqual("held_incomplete", self.engine.report["channels"]["test"]["publication"])
 
     def test_replace_quota_failure_and_failed_first_run_do_not_publish_partial(self):
         for existing in (False, True):

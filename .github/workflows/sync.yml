@@ -2,24 +2,20 @@ name: Sincronizar canales
 
 on:
   schedule:
-    # UTC: diariamente a las 06:17 de Argentina; mantenimiento los domingos.
+    # UTC: daily a las 06:17 de Argentina; weekly y mantenimiento el domingo 07:47.
     - cron: '17 9 * * *'
     - cron: '47 10 * * 0'
   push:
     branches: [main]
     paths:
       - sources.json
-      - channels.json
-      - channels/**
-      - scripts/**
-      - .github/workflows/sync.yml
   workflow_dispatch:
     inputs:
       mode:
         description: Tipo de sincronización
         type: choice
-        options: [daily, maintenance, names, titles]
-        default: daily
+        options: [update, maintenance]
+        default: update
       channel:
         description: ID de canal (vacío procesa todos)
         type: string
@@ -43,6 +39,7 @@ jobs:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           ref: main
+          fetch-depth: 0
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.12'
@@ -57,21 +54,32 @@ jobs:
           REQUESTED_MODE: ${{ inputs.mode }}
           CHANNEL_ID: ${{ inputs.channel }}
           SCHEDULE: ${{ github.event.schedule }}
+          EVENT_NAME: ${{ github.event_name }}
+          BEFORE_SHA: ${{ github.event.before }}
         shell: bash
         run: |
-          mode="${REQUESTED_MODE:-daily}"
-          if [[ "$SCHEDULE" == '47 10 * * 0' ]]; then mode=maintenance; fi
+          mode="${REQUESTED_MODE:-update}"
           args=(--mode "$mode")
-          if [[ -n "$CHANNEL_ID" ]]; then args+=(--channel "$CHANNEL_ID"); fi
+          if [[ "$EVENT_NAME" == push ]]; then
+            args+=(--changed-since "$BEFORE_SHA")
+          elif [[ "$EVENT_NAME" == schedule ]]; then
+            if [[ "$SCHEDULE" == '47 10 * * 0' ]]; then
+              args+=(--frequency weekly --maintenance)
+            else
+              args+=(--frequency daily)
+            fi
+          elif [[ -n "$CHANNEL_ID" ]]; then
+            args+=(--channel "$CHANNEL_ID")
+          fi
           set +e
           python scripts/sync.py "${args[@]}"
           result=$?
           set -e
           echo "result=$result" >> "$GITHUB_OUTPUT"
-      - name: Guardar cambios y avance parcial
+      - name: Publicar solamente cambios del catálogo
         shell: bash
         run: |
-          git add -- channels.json channels/ sync-state.json
+          git add -- channels.json channels/
           if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -83,5 +91,5 @@ jobs:
       - name: Informar sincronización incompleta
         if: steps.sync.outputs.result != '0'
         run: |
-          echo 'Sincronización incompleta; revisar mensajes seguros y sync-state.json.'
+          echo 'Sincronización incompleta; revisar los reportes en los logs. La siguiente ejecución empieza desde cero.'
           exit 1

@@ -1,6 +1,10 @@
 {
   "version": 1,
   "quotaBudget": 2500,
+  "limits": {
+    "videosPerDay": 50,
+    "maxPagesPerSource": 100
+  },
   "defaults": {
     "minDurationSeconds": 420,
     "maxDurationSeconds": null,

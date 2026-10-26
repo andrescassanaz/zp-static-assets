@@ -103,7 +103,7 @@ class ChannelNames(unittest.TestCase):
         result, _ = self.run_sync(FakeAPI(), mode="names")
         self.assertEqual(0, result)
         self.assertEqual(before, self.published())
-        report = sync.load(self.root / "sync-state.json")["lastChannelNameRefresh"]
+        report = self.engine.report["channelNames"]
         self.assertEqual(2, report["missingVideos"])
         self.assertEqual(0, report["namedVideos"])
         result, _ = self.run_sync(FakeAPI(fail=sync.QuotaError("Sin cuota")), mode="names")
