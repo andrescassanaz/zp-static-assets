@@ -1,7 +1,8 @@
 """Pruebas de integración con API simulada. No leen claves ni usan la red."""
 from copy import deepcopy
+from contextlib import redirect_stderr
 from datetime import datetime, timezone, timedelta
-from io import BytesIO
+from io import BytesIO, StringIO
 import json
 from pathlib import Path
 import sys
@@ -552,18 +553,31 @@ class Transport(unittest.TestCase):
         def opener(url, **kwargs):
             raise URLError(url)
         api = sync.YouTube("SENTINEL_SECRET", 2, opener=opener, sleep=lambda _: None)
-        with self.assertRaises(sync.QuotaError) as context:
+        logs = StringIO()
+        with redirect_stderr(logs), self.assertRaises(sync.QuotaError) as context:
             api.get("channels", id="test")
         self.assertEqual(2, api.used)
         self.assertNotIn("SENTINEL_SECRET", str(context.exception))
+        self.assertNotIn("SENTINEL_SECRET", logs.getvalue())
+        self.assertNotIn("https://", logs.getvalue())
+        events = [json.loads(line) for line in logs.getvalue().splitlines()]
+        self.assertEqual(["api_retry", "api_retry", "quota_exhausted"], [e["event"] for e in events])
+        self.assertEqual([1, 2, 2], [e["quotaUnits"] for e in events])
+        self.assertEqual("budget", events[-1]["reason"])
 
     def test_quota_response_is_sanitized(self):
         def opener(url, **kwargs):
             raise HTTPError(url, 403, "SENTINEL_SECRET", {}, BytesIO(b'{"error":{"errors":[{"reason":"quotaExceeded"}]}}'))
         api = sync.YouTube("SENTINEL_SECRET", 100, opener=opener)
-        with self.assertRaises(sync.QuotaError) as context:
+        logs = StringIO()
+        with redirect_stderr(logs), self.assertRaises(sync.QuotaError) as context:
             api.get("channels", id="test")
         self.assertNotIn("SENTINEL_SECRET", str(context.exception))
+        self.assertNotIn("SENTINEL_SECRET", logs.getvalue())
+        self.assertNotIn("https://", logs.getvalue())
+        event = json.loads(logs.getvalue())
+        self.assertEqual(("quota_exhausted", "youtube", 1),
+                         (event["event"], event["reason"], event["quotaUnits"]))
 
     def test_malformed_response_does_not_mean_deleted_video(self):
         api = sync.YouTube("SENTINEL_SECRET", 10, opener=lambda *a, **k: BytesIO(b'{}'))

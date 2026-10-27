@@ -139,6 +139,60 @@ class Stateless(unittest.TestCase):
         self.assertEqual({"sources.json", "channels.json", "channels/test.json"},
                          {p.relative_to(self.root).as_posix() for p in self.root.rglob("*") if p.is_file()})
 
+    def test_progress_is_flushed_before_next_page_and_stdout_remains_final_report(self):
+        self.config["channels"][0]["sources"] = ["@autor"]
+        self.write_config()
+        logs, output = StringIO(), StringIO()
+        test = self
+
+        class ObservedAPI(FakeAPI):
+            def get(self, resource, **params):
+                if params.get("pageToken") == "p2":
+                    events = [json.loads(line) for line in logs.getvalue().splitlines()]
+                    test.assertIn("source_start", [entry["event"] for entry in events])
+                    batch = next(entry for entry in events if entry["event"] == "source_batch")
+                    test.assertEqual(("test", 1, 1, 2),
+                                     (batch["channel"], batch["sourceIndex"], batch["listPages"], batch["quotaUnits"]))
+                return super().get(resource, **params)
+
+        api = ObservedAPI({A: video(A), B: video(B)},
+                          {("UUuploads", None): page([A], "p2"), ("UUuploads", "p2"): page([B])})
+        with redirect_stderr(logs), redirect_stdout(output), \
+                patch.object(sync, "print", wraps=print, create=True) as printer:
+            result, engine = self.run_sync(api)
+            engine.emit_report("update", result)
+        self.assertTrue(all(call.kwargs.get("flush") is True for call in printer.call_args_list))
+        events = [json.loads(line) for line in logs.getvalue().splitlines()]
+        self.assertEqual("run_start", events[0]["event"])
+        self.assertEqual("run_complete", events[-1]["event"])
+        self.assertEqual([1, 2], [entry["sourcePages"] for entry in events if entry["event"] == "source_batch"])
+        self.assertEqual((5, 95, "success"),
+                         (events[-1]["quotaUnits"], events[-1]["quotaRemaining"], events[-1]["result"]))
+        report = json.loads(output.getvalue())
+        self.assertEqual(5, report["quotaUnits"])
+        self.assertEqual(2, report["channels"]["test"]["addedVideos"])
+        self.assertEqual({"sources.json", "channels.json", "channels/test.json"},
+                         {p.relative_to(self.root).as_posix() for p in self.root.rglob("*") if p.is_file()})
+
+    def test_progress_reports_held_replace_and_skipped_channels_after_quota_failure(self):
+        self.create_existing()
+        before = self.published()
+        self.config["channels"][0]["updateMode"] = "replace"
+        self.config["channels"].append({"id": "later", "name": "Otro", "sources": [B]})
+        self.write_config()
+        logs = StringIO()
+        with redirect_stderr(logs):
+            result, engine = self.run_sync(FakeAPI(fail=sync.QuotaError("Presupuesto agotado")))
+        self.assertEqual(2, result)
+        self.assertEqual(before, self.published())
+        events = [json.loads(line) for line in logs.getvalue().splitlines()]
+        self.assertIn("source_error", [entry["event"] for entry in events])
+        self.assertEqual(["partial"], [entry["result"] for entry in events if entry["event"] == "source_complete"])
+        complete = [entry for entry in events if entry["event"] == "channel_complete"]
+        self.assertEqual([("test", "partial", "held_incomplete"), ("later", "skipped", "awaiting_valid_videos")],
+                         [(entry["channel"], entry["result"], entry["publication"]) for entry in complete])
+        self.assertEqual("partial", events[-1]["result"])
+
     def test_daily_weekly_and_manual_selection_do_not_infer_from_names(self):
         self.config["channels"].append({"id": "weekly", "name": "Noticias", "sources": [B], "updateFrequency": "weekly"})
         self.config["channels"].append({"id": "paused", "name": "Pausado", "sources": [C], "active": False})
@@ -255,6 +309,17 @@ class Stateless(unittest.TestCase):
                 patch.object(sync.YouTube, "get", side_effect=AssertionError("No API")), redirect_stdout(StringIO()):
             self.assertEqual(0, sync.main(["--root", str(self.root), "--changed-since", "a" * 40]))
 
+    def test_cli_quota_only_change_needs_no_key_and_makes_no_requests(self):
+        previous = deepcopy(self.config)
+        self.config["quotaBudget"] = 10000
+        self.write_config()
+        with patch.object(sync, "previous_config", return_value=previous), \
+                patch.dict(os.environ, {"YOUTUBE_API_KEY": ""}), \
+                patch.object(sync.YouTube, "get", side_effect=AssertionError("No API")), \
+                redirect_stdout(StringIO()), redirect_stderr(StringIO()):
+            self.assertEqual(0, sync.main(["--root", str(self.root), "--changed-since", "a" * 40]))
+        self.assertFalse((self.root / "channels/test.json").exists())
+
     def test_cli_weekly_update_and_maintenance_share_one_api_budget(self):
         self.config["channels"][0]["updateFrequency"] = "weekly"
         self.write_config()
@@ -286,6 +351,21 @@ class Stateless(unittest.TestCase):
 
 
 class ConfigDiff(unittest.TestCase):
+    def test_budget_changes_do_not_select_unchanged_channels(self):
+        before = {"version": 1, "quotaBudget": 2500,
+                  "channels": [{"id": "a", "sources": [A]}, {"id": "b", "sources": [B]}]}
+        for budget in (10000, 10, None):
+            with self.subTest(budget=budget):
+                after = deepcopy(before)
+                if budget is None:
+                    del after["quotaBudget"]
+                else:
+                    after["quotaBudget"] = budget
+                self.assertEqual(set(), sync.changed_channels(after, before))
+                after["channels"][1]["rules"] = {"maxAgeDays": 3}
+                after["channels"].append({"id": "new", "sources": [C]})
+                self.assertEqual({"b", "new"}, sync.changed_channels(after, before))
+
     def test_diff_selects_changed_and_new_channels_and_global_changes(self):
         before = {"version": 1, "channels": [{"id": "a", "name": "A"}, {"id": "b", "name": "B"}]}
         after = deepcopy(before)
@@ -294,6 +374,9 @@ class ConfigDiff(unittest.TestCase):
         self.assertEqual({"b", "c"}, sync.changed_channels(after, before))
         self.assertEqual(set(), sync.changed_channels(before, before))
         after["defaults"] = {"music": True}
+        self.assertEqual({"a", "b", "c"}, sync.changed_channels(after, before))
+        after.pop("defaults")
+        after["limits"] = {"maxPagesPerSource": 200}
         self.assertEqual({"a", "b", "c"}, sync.changed_channels(after, before))
 
     def test_invalid_or_missing_git_revision_fails_safely(self):

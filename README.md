@@ -94,7 +94,8 @@ Usar IDs o handles, no URLs completas.
 | Disparador | Alcance |
 | --- | --- |
 | Push a main que modifica sources.json | Sólo canales cuya configuración cambió |
-| Cambio de defaults, limits u otra opción global | Todos los canales activos |
+| Cambio de defaults, limits u otra opción global de contenido | Todos los canales activos |
+| Cambio sólo de quotaBudget | Ningún canal requiere consultas por ese push |
 | Todos los días a las 06:17 de Argentina | Canales daily |
 | Domingos a las 07:47 de Argentina | Canales weekly y después mantenimiento de todos los activos |
 | Ejecución manual | Un canal o todos los activos, sin filtrar frecuencia |
@@ -105,6 +106,9 @@ commit anterior de Git; no guarda estado de ejecuciones. Si no puede leer esa
 versión, falla antes de consultar YouTube. Cambiar sólo un nombre también selecciona
 ese canal, por simplicidad. Reordenar canales sin cambiar sus opciones no los selecciona.
 Las bajas se aplican al índice aunque no requieran consultas.
+`quotaBudget` controla el presupuesto de ejecución y no selecciona canales: si cambia
+junto con la configuración de un canal, sólo se consulta ese canal. Las ejecuciones
+manuales y programadas siguen usando el presupuesto actualizado.
 
 Antes de consultar, el mismo script valida JSON, IDs, números, opciones, reglas y
 archivos de reproducción. No confirma por esta vía que una fuente exista en YouTube.
@@ -170,12 +174,24 @@ El índice se publica después de las listas. No hay una transacción conjunta e
 archivos ni versiones coordinadas de descarga. Un commit contiene los cambios para GitHub.
 Los conflictos de publicación fallan sin force-push; repetir con main actualizado.
 
-El reporte sale por stdout en JSON con canales, páginas, candidatos, cuota y errores.
+Durante la ejecución se escriben eventos JSON en stderr, con salida inmediata:
+inicio y fin de ejecución, canal y fuente; cada lote de una fuente informa páginas y
+candidatos acumulados. También se informan lotes de metadatos y mantenimiento,
+reintentos con su espera y agotamiento del presupuesto interno o de la cuota de YouTube.
+Los eventos incluyen hora UTC, cuota consumida y presupuesto; los del sincronizador
+incluyen cuota restante y segundos transcurridos. El fin de cada canal indica el
+resultado y si se publicó, se conservó la lista o quedó pendiente. No se registran
+claves, URLs de solicitudes ni respuestas crudas. El progreso no es un porcentaje:
+la cantidad total de páginas no se conoce antes del recorrido.
+
+El reporte final sigue saliendo por stdout en JSON con canales, páginas, candidatos, cuota y errores.
 Actions conserva sus logs según los permisos y retención del repositorio; no son un
 almacenamiento privado de secretos. No se guarda ni lee `sync-state.json`.
 Una ejecución sin cambios del catálogo no genera un commit de reporte.
 El lock local `.sync.lock` sólo evita procesos simultáneos y se elimina al terminar;
 no guarda avance. Las ejecuciones de Actions también están serializadas.
+Dentro de cada ejecución las consultas son secuenciales; el presupuesto, la caché
+y la publicación del catálogo se administran en un solo hilo.
 
 ## Comandos
 
