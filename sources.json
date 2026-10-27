@@ -62,6 +62,7 @@
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
+      "updateMode": "replace",
       "sources": [
         "@paulinacocina",
         "@MarcosDiCesare",
@@ -84,7 +85,10 @@
         "@cucinare",
         "@lacapitalcocina",
         "@walterluiok"
-      ]
+      ],
+      "rules": {
+        "maxAgeDays": 365
+      }
     },
     {
       "id": "comida",
@@ -493,6 +497,9 @@
       "playbackMode": "cycle",
       "videoOrder": "random",
       "updateMode": "replace",
+      "limits": {
+        "videosPerDay": 100
+      },
       "sources": [
         "@ESPNFans",
         "@BonadeoSePrende",
