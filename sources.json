@@ -21,7 +21,21 @@
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
-      "sources": []
+      "sources": [
+        "@luisitocomunica",
+        "@sirchandler",
+        "@topo",
+        "@PabloImhoff",
+        "@losviajesdenicovilla",
+        "@HakunaMatataxelmundo",
+        "@ViajarValeLaPena",
+        "@barbiebac",
+        "@marianopalleres",
+        "@PlanetaJuan",
+        "@ArayaVlogs",
+        "@AgustinNeglia",
+        "@MisViajesIncreibles"
+      ]
     },
     {
       "id": "autos",
@@ -29,7 +43,14 @@
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
-      "sources": []
+      "sources": [
+        "@vicesat",
+        "@eduardosmok4286",
+        "@dizramiro",
+        "@AutoTestArg",
+        "@MartinGallego",
+        "@ElGarageTV"
+      ]
     },
     {
       "id": "cocina",
@@ -57,7 +78,8 @@
         "@isabelvermal",
         "@cukit",
         "@cucinare",
-        "@lacapitalcocina"
+        "@lacapitalcocina",
+        "@walterluiok"
       ]
     },
     {
@@ -82,7 +104,10 @@
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
-      "sources": []
+      "sources": [
+        "@MotorsportDaily",
+        "@formulazeta"
+      ]
     },
     {
       "id": "tn",
@@ -162,7 +187,11 @@
         "@LuchoMellera",
         "PLnX9Rt7Y_gPLfJpzzUdjPmCmTPT3Lsb4E",
         "KuG-njpJAPk",
-        "@GuilleAquino"
+        "@GuilleAquino",
+        "@DidacRibot",
+        "@rodriguezgalati",
+        "@santikorovsky",
+        "@sesiones3560"
       ]
     },
     {
@@ -182,7 +211,11 @@
         "PLIfJe7tyqvMM",
         "PLj-PilRaROYBtmKTj-mfULeejxEmw8y6i",
         "PLB68CTVWbvPo",
-        "@crimenymisterioC9"
+        "@crimenymisterioC9",
+        "@detrasdelenimga",
+        "@matienlaciudad",
+        "@mauroszetaok",
+        "@relatosforenses"
       ]
     },
     {
@@ -208,7 +241,15 @@
       "sources": [
         "@futbolinsolito",
         "@LeoMdQII",
-        "@memoriasdelfutbol"
+        "@memoriasdelfutbol",
+        "@DavooXeneizeFutbol",
+        "@Giaco",
+        "@SantiagoLeiva",
+        "@StJamesSanN",
+        "@gastonedul",
+        "@somosazz",
+        "@lacobraaa",
+        "@TNTSportsAR"
       ]
     },
     {
@@ -237,7 +278,13 @@
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
-      "sources": []
+      "sources": [
+        "@UnMundoInmenso",
+        "@FelipePignaHistoria",
+        "@DWDocumental",
+        "@FreeDocumentaryEspanol",
+        "@FDNatureEspanol"
+      ]
     },
     {
       "id": "ultimos-cartuchos",
@@ -246,6 +293,36 @@
       "playbackMode": "cycle",
       "videoOrder": "random",
       "sources": []
+    },
+    {
+      "id": "paren-la-mano",
+      "name": "Paren la mano",
+      "active": true,
+      "playbackMode": "cycle",
+      "videoOrder": "random",
+      "sources": [
+        "@Parenlamano"
+      ]
+    },
+    {
+      "id": "sone-que-volaba",
+      "name": "Soñé que volaba",
+      "active": true,
+      "playbackMode": "cycle",
+      "videoOrder": "random",
+      "sources": [
+        "PLXQRjCkgvGB1Ax8fI0C_oibIN9E0EUykq"
+      ]
+    },
+    {
+      "id": "nadie-dice-nada",
+      "name": "Nadie dice nada",
+      "active": true,
+      "playbackMode": "cycle",
+      "videoOrder": "random",
+      "sources": [
+        "PLeJUQNpvU3DQXcF-qdPireAvEuL8LmuID"
+      ]
     },
     {
       "id": "infantil",
@@ -285,7 +362,14 @@
         "@ShuxTeam",
         "@cinematixfilms",
         "@ElBandicoot",
-        "@VIDEOJUEGUISTA"
+        "@VIDEOJUEGUISTA",
+        "@BigDataNews",
+        "@elJimjim",
+        "@smukii",
+        "@MalditosNerds",
+        "@PressOverNews",
+        "@CulturaVJ",
+        "@NachoAoE"
       ],
       "rules": {
         "minDurationSeconds": 180,
@@ -322,7 +406,10 @@
         "@gentlemanprogramming",
         "@CodelyTV",
         "@mouredev",
-        "@MaxiPrograma"
+        "@MaxiPrograma",
+        "@encapsuladosteve",
+        "@TheCoderCave",
+        "@TodoCode"
       ],
       "rules": {
         "maxAgeDays": 60
@@ -346,11 +433,47 @@
         "@LaFabricaDelPodcast",
         "PLyiXsPYtPBcNTw1PL4gmQyd4dspSC3qt9",
         "PLXQRjCkgvGB2_5_xWWnyps0UncY2ZC_SI",
-        "PLl5jUNg2Ta8XGcqXUmi0lm_H-lNTcMw_2"
+        "PLl5jUNg2Ta8XGcqXUmi0lm_H-lNTcMw_2",
+        "PL2yMaRPcodgcjwOooizt1oz-AEC1lr_2z",
+        "@suenosderuta",
+        "@laformulapod",
+        "PLaw1K4GjZVeM6rtK17gj_cD3n-SY3GZY4"
       ],
       "rules": {
         "minDurationSeconds": 600,
         "music": false
+      }
+    },
+    {
+      "id": "finanzas",
+      "name": "Finanzas",
+      "active": true,
+      "updateFrequency": "daily",
+      "playbackMode": "cycle",
+      "videoOrder": "random",
+      "updateMode": "replace",
+      "sources": [
+        "@joveninversor",
+        "@inverarg",
+        "@somosbullmarket",
+        "@Revolucion.Financiera",
+        "@FinanzasConLuisDD",
+        "@rginversionesok",
+        "@marcosemmimfp",
+        "@elhombredelabolsa",
+        "@laralopezcalvo",
+        "@CriptoNorber",
+        "@cocoscap",
+        "@dcandal71",
+        "@liamwickham",
+        "@bdi.consultora",
+        "@FacundoMoroz",
+        "@RavaBursatil",
+        "@MundoDinerovideos",
+        "@agustinhansen"
+      ],
+      "rules": {
+        "maxAgeDays": 7
       }
     },
     {
@@ -361,7 +484,10 @@
       "videoOrder": "random",
       "updateMode": "replace",
       "sources": [
-        "@ESPNFans"
+        "@ESPNFans",
+        "@BonadeoSePrende",
+        "@tycsports",
+        "@dsportsok"
       ],
       "rules": {
         "maxAgeDays": 3
@@ -378,7 +504,11 @@
         "@somosnbaenespanol",
         "@Juanposite",
         "@leocarranza99",
-        "@LNB-Argentina"
+        "@LNB-Argentina",
+        "@basquetplus",
+        "@maxiytbasket",
+        "@DrafteadosNBA",
+        "@demas6basket"
       ],
       "rules": {
         "maxAgeDays": 5
@@ -439,6 +569,100 @@
         "music": true
       },
       "guideMode": "schedule"
+    },
+    {
+      "id": "vlogs-mas-30",
+      "name": "Vlogs para +30",
+      "active": true,
+      "playbackMode": "cycle",
+      "videoOrder": "random",
+      "sources": [
+        "@AgusCreevy",
+        "@Lesa",
+        "@lethalcrysis",
+        "@BoffeGP",
+        "@cecisaia",
+        "@merakio",
+        "@lasrutasdejuan",
+        "@MaccMixMOTOVLOG",
+        "@CRMEspanol",
+        "@Eledeyt",
+        "@elrubiusOMG",
+        "@ian_menendez",
+        "@Japatonic",
+        "@JorgeCremades",
+        "@lasretroaventuras",
+        "@MiamiStorages1891",
+        "@PabloMolinari",
+        "@TheHackLife",
+        "@carotripparvlogs",
+        "@viajamosenpaz"
+      ]
+    },
+    {
+      "id": "vlogs",
+      "name": "Vlogs",
+      "active": true,
+      "playbackMode": "cycle",
+      "videoOrder": "random",
+      "sources": [
+        "@luligonzalez",
+        "@martibenza",
+        "@micasuarezz",
+        "@kevsho",
+        "@alejoigoa",
+        "@IanLucasOficial",
+        "@valesulca",
+        "@bridominguez",
+        "@tinidominguez",
+        "@PedritoVM",
+        "@Spreen",
+        "@lynavallejos2",
+        "@camimayan",
+        "@Kuki01",
+        "@sofiagnone3086",
+        "@manteca_augusto",
+        "@moresavan",
+        "@tomasmazza",
+        "@mernuel"
+      ]
+    },
+    {
+      "id": "tecnologia",
+      "name": "Tecnología",
+      "active": true,
+      "playbackMode": "cycle",
+      "videoOrder": "random",
+      "sources": [
+        "@DotCSV",
+        "@DotCSVLab",
+        "@michaelquesada",
+        "@NateGentile7",
+        "@SarasTech",
+        "@SupraPixel",
+        "@TechnoReviewsPlay",
+        "@YANPOL",
+        "@AlanDaitch",
+        "@tntecno",
+        "@protomdz",
+        "@IsaMarcial",
+        "@TopesdeGama"
+      ]
+    },
+    {
+      "id": "medicina",
+      "name": "Medicina",
+      "active": true,
+      "playbackMode": "cycle",
+      "videoOrder": "random",
+      "sources": [
+        "@SoyMamayPediatra",
+        "@psimammoliti",
+        "@DRLAROSA",
+        "@hospitalitalianodebuenosaires",
+        "@alsanagust",
+        "@BorjaBandera"
+      ]
     }
   ]
 }
