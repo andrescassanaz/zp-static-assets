@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "quotaBudget": 2500,
+  "quotaBudget": 10000,
   "limits": {
     "videosPerDay": 50,
     "maxPagesPerSource": 100
@@ -43,6 +43,7 @@
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
+      "updateMode": "replace",
       "sources": [
         "@vicesat",
         "@eduardosmok4286",
@@ -50,7 +51,10 @@
         "@AutoTestArg",
         "@MartinGallego",
         "@ElGarageTV"
-      ]
+      ],
+      "rules": {
+        "maxAgeDays": 540
+      }
     },
     {
       "id": "cocina",
@@ -238,6 +242,7 @@
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
+      "updateMode": "replace",
       "sources": [
         "@futbolinsolito",
         "@LeoMdQII",
@@ -250,7 +255,10 @@
         "@somosazz",
         "@lacobraaa",
         "@TNTSportsAR"
-      ]
+      ],
+      "rules": {
+        "maxAgeDays": 3
+      }
     },
     {
       "id": "musica-en-vivo",
@@ -354,6 +362,7 @@
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
+      "updateMode": "replace",
       "sources": [
         "@newgameplusok",
         "@TiempodeVideojuegos",
@@ -373,7 +382,8 @@
       ],
       "rules": {
         "minDurationSeconds": 180,
-        "music": false
+        "music": false,
+        "maxAgeDays": 180
       }
     },
     {
@@ -633,6 +643,7 @@
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
+      "updateMode": "replace",
       "sources": [
         "@DotCSV",
         "@DotCSVLab",
@@ -647,7 +658,10 @@
         "@protomdz",
         "@IsaMarcial",
         "@TopesdeGama"
-      ]
+      ],
+      "rules": {
+        "maxAgeDays": 365
+      }
     },
     {
       "id": "medicina",
