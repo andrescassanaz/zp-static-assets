@@ -47,8 +47,10 @@ class IncompleteSource(SyncError):
 def changed_channels(config: dict, previous: dict) -> set[str]:
     """Git provee la configuración anterior; no se guarda estado operativo."""
     old = {channel["id"]: channel for channel in previous.get("channels", [])}
-    global_change = {k: v for k, v in config.items() if k != "channels"} != {
-        k: v for k, v in previous.items() if k != "channels"}
+    # El presupuesto limita la ejecución, pero no cambia el contenido solicitado.
+    ignored = {"channels", "quotaBudget"}
+    global_change = {k: v for k, v in config.items() if k not in ignored} != {
+        k: v for k, v in previous.items() if k not in ignored}
     return {channel["id"] for channel in config["channels"]
             if global_change or channel != old.get(channel["id"])}
 
@@ -75,6 +77,12 @@ def previous_config(root: Path, revision: str) -> dict:
 
 def stamp(value: datetime) -> str:
     return value.astimezone(timezone.utc).isoformat(timespec="auto").replace("+00:00", "Z")
+
+
+def progress(event: str, **details):
+    """Avance inmediato en stderr; stdout conserva el reporte JSON final."""
+    print(json.dumps({"event": event, "at": stamp(datetime.now(timezone.utc)), **details},
+                     ensure_ascii=False, allow_nan=False), file=sys.stderr, flush=True)
 
 
 def date(value: str) -> datetime:
@@ -332,6 +340,8 @@ class YouTube:
         url = "https://www.googleapis.com/youtube/v3/" + resource + "?" + urlencode({**params, "key": self.key})
         for attempt in range(4):
             if self.used >= self.budget:
+                progress("quota_exhausted", reason="budget", resource=resource,
+                         quotaUnits=self.used, quotaBudget=self.budget)
                 raise QuotaError("Se alcanzó el presupuesto de cuota; la próxima ejecución empieza desde cero.")
             self.used += 1
             try:
@@ -360,13 +370,22 @@ class YouTube:
                 finally:
                     exc.close()
                 if reasons & {"quotaExceeded", "dailyLimitExceeded"}:
+                    progress("quota_exhausted", reason="youtube", resource=resource,
+                             quotaUnits=self.used, quotaBudget=self.budget)
                     raise QuotaError("YouTube agotó la cuota; se conservan las listas publicadas válidas.") from None
                 if code not in {408, 429, 500, 502, 503, 504} and not reasons & {"rateLimitExceeded", "userRateLimitExceeded"}:
                     raise SyncError(f"YouTube HTTP {code}; se conserva la programación.") from None
             except (URLError, TimeoutError, OSError, HTTPException, ValueError):
                 pass
             if attempt < 3:
-                self.sleep(2**attempt + random.random())
+                delay = 2**attempt + random.random()
+                # Nunca registrar exc, URL, parámetros, clave ni respuesta cruda.
+                progress("api_retry", resource=resource, attempt=attempt + 1,
+                         maxAttempts=4, waitSeconds=round(delay, 3),
+                         quotaUnits=self.used, quotaBudget=self.budget)
+                self.sleep(delay)
+        progress("api_failed", resource=resource, attempts=4,
+                 quotaUnits=self.used, quotaBudget=self.budget)
         raise SyncError("YouTube no respondió después de cuatro intentos.") from None
 
     def videos(self, ids: list[str]) -> dict:
@@ -480,6 +499,13 @@ class Sync:
         self.report = {"channels": {}}
         self.errors = []
         self.resolved = {}
+        self.started = time.monotonic()
+
+    def progress(self, event, **details):
+        used = self.api.used if self.api else 0
+        budget = self.config.get("quotaBudget", 2500)
+        progress(event, elapsedSeconds=round(time.monotonic() - self.started, 3),
+                 quotaUnits=used, quotaBudget=budget, quotaRemaining=max(0, budget - used), **details)
 
     def rules(self, channel):
         return {**DEFAULT_RULES, **self.config.get("defaults", {}), **channel.get("rules", {})}
@@ -576,10 +602,17 @@ class Sync:
         discovered = set()
         rules = self.rules(channel)
         cutoff = age_cutoff(self.now, rules["maxAgeDays"])
-        for source in channel["sources"]:
+        for source_index, source in enumerate(channel["sources"], 1):
             stats["sourcesScanned"] += 1
+            pages_before = stats["listPages"]
+            self.progress("source_start", channel=channel["id"], sourceIndex=source_index,
+                          sourceCount=len(channel["sources"]), sourceType=source_type(source)[0])
+            source_result = "success"
             try:
                 for ids in self.iter_source(source, cutoff, self.limits(channel), rules["maxAgeDays"], stats):
+                    self.progress("source_batch", channel=channel["id"], sourceIndex=source_index,
+                                  sourcePages=stats["listPages"] - pages_before,
+                                  listPages=stats["listPages"], candidatesScanned=stats["candidatesScanned"])
                     discovered.update(ids)
                     new_ids = [identifier for identifier in ids if identifier not in seen]
                     if not new_ids:
@@ -602,10 +635,17 @@ class Sync:
                             stats["filteredVideos"] += 1
                         seen.add(identifier)
             except SyncError as exc:
+                source_result = "partial"
+                self.progress("source_error", channel=channel["id"], sourceIndex=source_index, error=str(exc))
                 stats["discoveredIds"] = len(discovered)
                 stats["errors"].append(str(exc))
                 if isinstance(exc, QuotaError):
                     raise
+            finally:
+                self.progress("source_complete", channel=channel["id"], sourceIndex=source_index,
+                              result=source_result, sourcePages=stats["listPages"] - pages_before,
+                              listPages=stats["listPages"], candidatesScanned=stats["candidatesScanned"],
+                              addedVideos=stats["addedVideos"])
         stats["discoveredIds"] = len(discovered)
 
     def maintain(self, channel, rows, stats):
@@ -629,6 +669,8 @@ class Sync:
                             publication_date(item.get("snippet", {}).get("publishedAt")), cutoff, self.now):
                         unavailable.add(identifier)
                 stats["checkedVideos"] += len(batch)
+                self.progress("maintenance_batch", channel=channel["id"],
+                              checkedVideos=stats["checkedVideos"], totalVideos=len(ids))
         finally:
             # Un solo filtro O(N), también si un lote posterior falla. En replace,
             # run conserva la lista anterior completa ante cualquier error.
@@ -681,6 +723,7 @@ class Sync:
         self.report = {"channels": {}}
         self.errors = []
         channels = self.selection(selected, frequency)
+        self.progress("run_start", mode=mode, channelCount=len(channels))
         baselines = {channel["id"]: self.baseline(channel) for channel in channels}
         # El índice publicado deriva de la configuración. Borrar una configuración
         # retira el canal; active=false solamente pausa las consultas.
@@ -693,7 +736,9 @@ class Sync:
             entry["number"] = channel.get("number", entry["number"])
             self.guide_metadata(channel, entry)
         exhausted = False
-        for channel in channels:
+        for channel_index, channel in enumerate(channels, 1):
+            self.progress("channel_start", channel=channel["id"], channelIndex=channel_index,
+                          channelCount=len(channels), sourceCount=len(channel["sources"]))
             used_before = self.api.used
             entry, path, old = baselines[channel["id"]]
             excluded = set(channel.get("excludedVideoIds", []))
@@ -715,7 +760,7 @@ class Sync:
                     if mode == "daily":
                         self.discover(channel, rows, stats)
                         if not replace:
-                            self.fill_titles(rows)
+                            self.fill_titles(rows, channel_id=channel["id"])
                     else:
                         self.maintain(channel, rows, stats)
                 except SyncError as exc:
@@ -745,12 +790,18 @@ class Sync:
                 stats["publication"] = self.publish(channel, entry, path, old, rows, allow_empty=replace)
             stats["quotaUnits"] = self.api.used - used_before
             self.report["channels"][channel["id"]] = stats
+            self.progress("channel_complete", channel=channel["id"], result=stats["result"],
+                          publication=stats["publication"], listPages=stats["listPages"],
+                          candidatesScanned=stats["candidatesScanned"], addedVideos=stats["addedVideos"],
+                          removedVideos=stats["removedVideos"], errorCount=len(stats["errors"]))
         save(self.root / "channels.json", self.index, compact=True)
         for entry in removed:
             safe_file(self.root, entry["file"]).unlink(missing_ok=True)
+        self.progress("run_complete", mode=mode, channelCount=len(channels),
+                      result="partial" if self.errors else "success", errorCount=len(self.errors))
         return 2 if self.errors else 0
 
-    def fill_titles(self, rows, refresh=False):
+    def fill_titles(self, rows, refresh=False, channel_id=None):
         """Enriquece sin reordenar, filtrar ni cambiar duraciones/orígenes."""
         ids = list(dict.fromkeys(row["youtubeVideoId"] for row in rows
                                 if refresh or not row.get("title") or not row.get("youtubeChannelName")))
@@ -760,6 +811,8 @@ class Sync:
             for identifier, item in items.items():
                 for row in by_id[identifier]:
                     self.apply_video_metadata(row, item, refresh=refresh)
+            self.progress("metadata_batch", channel=channel_id,
+                          checkedVideos=min(start + 50, len(ids)), totalVideos=len(ids))
 
     @staticmethod
     def rows_by_id(rows):
@@ -854,7 +907,7 @@ class Sync:
             path = safe_file(self.root, entry["file"])
             playlist = load(path)
             try:
-                self.fill_titles(playlist["videos"], refresh=True)
+                self.fill_titles(playlist["videos"], refresh=True, channel_id=entry["id"])
             except SyncError as exc:
                 self.errors.append(f"{entry['id']}: {exc}")
                 # Los títulos ya verificados son seguros incluso si falla otro lote.
