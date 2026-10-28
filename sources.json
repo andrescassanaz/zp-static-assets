@@ -391,6 +391,46 @@
       }
     },
     {
+      "id": "e-sports",
+      "name": "e-sports",
+      "active": true,
+      "playbackMode": "cycle",
+      "videoOrder": "random",
+      "updateMode": "replace",
+      "sources": [
+        "@lolesportsla",
+        "@VALORANTEsportsLA",
+        "@NachoAoE",
+        "@forg1one"
+      ],
+      "rules": {
+        "maxAgeDays": 15
+      }
+    },
+    {
+      "id": "streaming",
+      "name": "Streaming",
+      "active": true,
+      "playbackMode": "cycle",
+      "videoOrder": "random",
+      "updateMode": "replace",
+      "sources": [
+        "@olgaenvivo_",
+        "@luzutv",
+        "@estoesblender",
+        "@Bondi_liveok",
+        "@somoslacasa",
+        "@NeuraMedia",
+        "@VorterixOficial",
+        "@futurock",
+        "@SomosGelatina",
+        "@CarajoStream"
+      ],
+      "rules": {
+        "maxAgeDays": 15
+      }
+    },
+    {
       "id": "rock-nacional",
       "name": "Rock Nacional",
       "active": true,
