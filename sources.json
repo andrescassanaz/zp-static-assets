@@ -711,6 +711,52 @@
       }
     },
     {
+      "id": "kilometro-cero",
+      "name": "Kilómetro Cero",
+      "active": true,
+      "playbackMode": "cycle",
+      "videoOrder": "random",
+      "updateMode": "replace",
+      "sources": [
+        "@mourglia",
+        "@runningva",
+        "@CorreFerCorre",
+        "@rinconrunner",
+        "@RUNNEA",
+        "@roadrunningreview",
+        "@TRAILRUNNINGReview",
+        "@corredor823",
+        "@foroatletismo",
+        "@Pitufollow"
+      ],
+      "rules": {
+        "maxAgeDays": 30
+      }
+    },
+    {
+      "id": "zona-de-fuerza",
+      "name": "Zona de Fuerza",
+      "active": true,
+      "playbackMode": "cycle",
+      "videoOrder": "random",
+      "updateMode": "replace",
+      "sources": [
+        "@CUERPOACTIVOTV",
+        "@caninARG",
+        "@teocravenna",
+        "@MatiasStrengthCoach",
+        "@FitGeneration",
+        "UCmiUKVmlFOK8JIxk_c0tzRQ",
+        "@CoachCocoy",
+        "@axelmguerra",
+        "@Josemabeastifbbpro",
+        "@joanpradellsifbbpro"
+      ],
+      "rules": {
+        "maxAgeDays": 30
+      }
+    },
+    {
       "id": "medicina",
       "name": "Medicina",
       "active": true,
