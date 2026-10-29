@@ -712,7 +712,7 @@
     },
     {
       "id": "kilometro-cero",
-      "name": "Kilómetro Cero",
+      "name": "Zancada",
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
@@ -735,7 +735,7 @@
     },
     {
       "id": "zona-de-fuerza",
-      "name": "Zona de Fuerza",
+      "name": "Potencia",
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
