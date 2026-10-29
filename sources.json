@@ -730,7 +730,7 @@
         "@Pitufollow"
       ],
       "rules": {
-        "maxAgeDays": 30
+        "maxAgeDays": 90
       }
     },
     {
@@ -753,7 +753,7 @@
         "@joanpradellsifbbpro"
       ],
       "rules": {
-        "maxAgeDays": 30
+        "maxAgeDays": 90
       }
     },
     {
