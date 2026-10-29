@@ -247,6 +247,9 @@
       "playbackMode": "cycle",
       "videoOrder": "random",
       "updateMode": "replace",
+      "limits": {
+        "videosPerDay": 100
+      },
       "sources": [
         "@futbolinsolito",
         "@LeoMdQII",
@@ -276,10 +279,30 @@
         "PL4VCKpPvFSURROAcy832Ygc_I0-iZ5eZK",
         "PLy2PCKGkKRVZWMhf38CpGE76mSqZoxwFC",
         "e4TFD2PfVPw",
-        "PLNAYYx8S9-3k"
+        "PLNAYYx8S9-3k",
+        "UEc2os_rj6c",
+        "vnuP1AQz8LY",
+        "Q3CtqcOj2tY",
+        "3qdMSY7q6zA",
+        "0JzKEBD-zZM",
+        "k_-62Xapv28",
+        "zOOiD5dlPZI",
+        "vXsFpdYAV9c",
+        "poiwqYcFqYY",
+        "ai_gI0Jbr_E",
+        "WqPjoh8oLUs",
+        "a_8ciWn4ki0",
+        "cjTZF-T1NFY",
+        "xATJlGTZwMI",
+        "QmS_dY4XDCg",
+        "5axhWX2DdYI",
+        "2RZ7h3Idrt4",
+        "Brv_dh8Qt5U",
+        "IcqMdnBdR4E",
+        "v3dcd_UD560"
       ],
       "rules": {
-        "minDurationSeconds": 50,
+        "minDurationSeconds": 720,
         "music": true
       },
       "guideMode": "schedule"
@@ -466,7 +489,7 @@
         "@TodoCode"
       ],
       "rules": {
-        "maxAgeDays": 60
+        "maxAgeDays": 120
       }
     },
     {
@@ -538,7 +561,7 @@
       "videoOrder": "random",
       "updateMode": "replace",
       "limits": {
-        "videosPerDay": 100
+        "videosPerDay": 200
       },
       "sources": [
         "@ESPNFans",
@@ -568,7 +591,7 @@
         "@demas6basket"
       ],
       "rules": {
-        "maxAgeDays": 5
+        "maxAgeDays": 10
       }
     },
     {
@@ -712,7 +735,7 @@
     },
     {
       "id": "kilometro-cero",
-      "name": "Zancada",
+      "name": "Running",
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
@@ -735,7 +758,7 @@
     },
     {
       "id": "zona-de-fuerza",
-      "name": "Potencia",
+      "name": "Fitness",
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
