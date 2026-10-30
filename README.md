@@ -1,5 +1,7 @@
 # Canales de ZappingTube
 
+La rama `feat/play-compliance-minimal` incorpora `verifiedAt` por lista. Antes de desplegar la nueva app, ejecutar `--mode maintenance` para verificar realmente los videos. Una publicación, descarga o alta parcial no renueva metadatos existentes. Las ejecuciones retiran listas con verificación desconocida o de 28 días; también se aplica a copias pausadas. El historial Git previo y los artefactos publicados requieren revisión al migrar. Ver `../App/docs/PLAY-COMPLIANCE.md`.
+
 El proceso tiene una configuración, un script y un catálogo publicado:
 
 ```text

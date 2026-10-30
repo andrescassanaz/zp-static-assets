@@ -85,14 +85,14 @@ class Integration(unittest.TestCase):
     def create_existing(self, ids=(A, B), durations=(600, 900)):
         sync.save(self.root / "channels.json", {"extra": "manual", "channels": [{"id": "test", "number": 7,
                   "name": "Nombre manual", "playbackMode": "cycle", "file": "channels/test.json", "logo": "manual"}]})
-        sync.save(self.root / "channels/test.json", {"cycleStartsAt": sync.stamp(NOW - timedelta(seconds=3700)), "custom": "manual",
+        sync.save(self.root / "channels/test.json", {"cycleStartsAt": sync.stamp(NOW - timedelta(seconds=3700)), "custom": "manual", "verifiedAt": sync.stamp(NOW),
                   "videos": [{"youtubeVideoId": identifier, "durationSeconds": seconds, "note": "manual"}
                              for identifier, seconds in zip(ids, durations)]})
 
     def test_create_channel_and_compatible_json_without_catalog(self):
         result, _ = self.run_sync(FakeAPI({A: video()}))
         self.assertEqual(0, result)
-        self.assertEqual({"cycleStartsAt": sync.stamp(NOW), "videos": [{"youtubeVideoId": A, "durationSeconds": 600, "title": "Una pieza", "youtubeChannelName": "Ramiro Diz"}]}, self.published())
+        self.assertEqual({"cycleStartsAt": sync.stamp(NOW), "verifiedAt": sync.stamp(NOW), "videos": [{"youtubeVideoId": A, "durationSeconds": 600, "title": "Una pieza", "youtubeChannelName": "Ramiro Diz"}]}, self.published())
         entry = sync.load(self.root / "channels.json")["channels"][0]
         self.assertEqual({"id": "test", "name": "Prueba", "number": 1, "file": "channels/test.json", "playbackMode": "cycle"}, entry)
         self.assertFalse((self.root / "catalog").exists())
@@ -202,10 +202,10 @@ class Integration(unittest.TestCase):
         state = self.engine.report
         self.assertEqual("held_empty", state["channels"]["test"]["publication"])
 
-    def test_existing_duration_and_language_not_rewritten(self):
+    def test_maintenance_refreshes_duration_without_reclassifying_missing_language(self):
         self.create_existing()
         self.run_sync(FakeAPI({A: video(seconds=750), B: video(B, audio=None)}), mode="maintenance")
-        self.assertEqual(600, self.published()["videos"][0]["durationSeconds"])
+        self.assertEqual(750, self.published()["videos"][0]["durationSeconds"])
         self.assertEqual([A, B], [row["youtubeVideoId"] for row in self.published()["videos"]])
 
     def test_pending_metadata_is_retried_from_sources_next_run(self):
@@ -256,7 +256,38 @@ class Integration(unittest.TestCase):
         self.write_config()
         item = video(liveStreamingDetails={"actualStartTime": "2026-10-23T00:00:00Z"})
         self.run_sync(FakeAPI({A: item}))
-        self.assertEqual({"videos": [{"youtubeVideoId": A, "title": "Una pieza", "youtubeChannelName": "Ramiro Diz"}]}, self.published())
+        self.assertEqual({"videos": [{"youtubeVideoId": A, "title": "Una pieza", "youtubeChannelName": "Ramiro Diz"}], "verifiedAt": sync.stamp(NOW)}, self.published())
+
+
+class MetadataExpiry(unittest.TestCase):
+    setUp = Integration.setUp
+    write_config = Integration.write_config
+    run_sync = Integration.run_sync
+    published = Integration.published
+    create_existing = Integration.create_existing
+
+    def test_failed_refresh_deletes_expired_public_copy(self):
+        self.create_existing()
+        doc = self.published()
+        doc["verifiedAt"] = sync.stamp(NOW - timedelta(days=29))
+        sync.save(self.root / "channels/test.json", doc)
+        result, _ = self.run_sync(FakeAPI(fail=sync.QuotaError("Sin cuota")), mode="maintenance")
+        self.assertEqual(2, result)
+        self.assertFalse((self.root / "channels/test.json").exists())
+        self.assertEqual([], sync.load(self.root / "channels.json")["channels"])
+
+    def test_new_video_does_not_renew_unverified_existing_rows(self):
+        self.create_existing()
+        before = self.published()["verifiedAt"]
+        self.config["channels"][0]["sources"] = [C]
+        self.write_config()
+        self.run_sync(FakeAPI({C: video(C)}), now=NOW + timedelta(days=1))
+        self.assertEqual(before, self.published()["verifiedAt"])
+
+    def test_successful_maintenance_renews_actual_verification(self):
+        self.create_existing()
+        self.run_sync(FakeAPI({A: video(A), B: video(B)}), mode="maintenance", now=NOW + timedelta(days=1))
+        self.assertEqual(sync.stamp(NOW + timedelta(days=1)), self.published()["verifiedAt"])
 
 
 class Refresh(unittest.TestCase):
@@ -375,7 +406,11 @@ class Refresh(unittest.TestCase):
         path = self.root / "channels/test.json"
         before = (path.read_bytes(), path.stat().st_mtime_ns)
         self.run_sync(FakeAPI({A: item}), now=NOW + timedelta(days=1))
-        self.assertEqual(before, (path.read_bytes(), path.stat().st_mtime_ns))
+        after = self.published()
+        previous = json.loads(before[0])
+        self.assertEqual(previous["videos"], after["videos"])
+        self.assertEqual(previous["cycleStartsAt"], after["cycleStartsAt"])
+        self.assertEqual(sync.stamp(NOW + timedelta(days=1)), after["verifiedAt"])
 
     def test_replace_maintenance_removes_expired_videos(self):
         self.create_existing()
@@ -476,6 +511,17 @@ class Validation(unittest.TestCase):
                     video(contentDetails={"duration": "PT600S", "contentRating": {"ytRating": "ytAgeRestricted"}})]
         for item in variants:
             self.assertEqual("unavailable", sync.assess(item, sync.DEFAULT_RULES, "cycle")[0])
+
+    def test_uploaded_live_broadcast_is_not_discarded_as_unprocessed(self):
+        item = video(status={"privacyStatus": "public", "uploadStatus": "uploaded", "embeddable": True},
+                     liveStreamingDetails={"actualStartTime": "2026-10-23T00:00:00Z"})
+        self.assertEqual("approved", sync.assess(item, sync.DEFAULT_RULES, "live")[0])
+        self.assertEqual("unavailable", sync.assess(item, sync.DEFAULT_RULES, "cycle")[0])
+        item["liveStreamingDetails"]["actualEndTime"] = "2026-10-23T01:00:00Z"
+        self.assertEqual("unavailable", sync.assess(item, sync.DEFAULT_RULES, "live")[0])
+        del item["liveStreamingDetails"]["actualEndTime"]
+        item["status"]["embeddable"] = False
+        self.assertEqual("unavailable", sync.assess(item, sync.DEFAULT_RULES, "live")[0])
 
     def test_phase_preserved_after_append_for_many_cycles(self):
         old = {"cycleStartsAt": "2026-01-01T00:00:00Z", "videos": [

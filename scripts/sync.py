@@ -30,6 +30,7 @@ DURATION = re.compile(r"P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)
 DEFAULT_RULES = {"minDurationSeconds": 420, "maxDurationSeconds": None,
                  "music": False, "regionCodes": ["AR"], "maxAgeDays": None}
 DEFAULT_LIMITS = {"videosPerDay": 50, "maxPagesPerSource": 100}
+METADATA_MAX_AGE = timedelta(days=28)
 
 
 class SyncError(Exception):
@@ -416,7 +417,11 @@ def assess(item: dict | None, rules: dict, mode: str) -> tuple[str, str, dict]:
     metadata = {"durationSeconds": duration(details.get("duration", ""))}
     if not all(key in status for key in ("privacyStatus", "uploadStatus", "embeddable")):
         return "pending", "availability_unknown", metadata
-    if status.get("privacyStatus") not in {"public", "unlisted"} or status.get("uploadStatus") != "processed":
+    # Active broadcasts can remain "uploaded" until the recording is processed.
+    active_live = mode == "live" and live.get("actualStartTime") and not live.get("actualEndTime")
+    playable_upload = status.get("uploadStatus") == "processed" or (
+        active_live and status.get("uploadStatus") == "uploaded")
+    if status.get("privacyStatus") not in {"public", "unlisted"} or not playable_upload:
         return "unavailable", "not_public_or_processed", metadata
     if status.get("embeddable") is not True:
         return "unavailable", "not_embeddable", metadata
@@ -499,6 +504,7 @@ class Sync:
         self.report = {"channels": {}}
         self.errors = []
         self.resolved = {}
+        self.verified_ids = set()
         self.started = time.monotonic()
 
     def progress(self, event, **details):
@@ -663,6 +669,9 @@ class Sync:
                     item = items[identifier]
                     for row in by_id[identifier]:
                         self.apply_video_metadata(row, item)
+                        current_duration = duration(item.get("contentDetails", {}).get("duration", "")) if item else None
+                        if "durationSeconds" in row and current_duration is not None:
+                            row["durationSeconds"] = current_duration
                     if assess(item, rules, channel.get("playbackMode", "cycle"))[0] == "unavailable":
                         unavailable.add(identifier)
                     elif channel.get("updateMode", "append") == "replace" and item is not None and not within_window(
@@ -693,6 +702,10 @@ class Sync:
             rows = rows[:1]
         playlist = deepcopy(old) if old else {}
         playlist["videos"] = rows
+        # Only API responses can renew this clock. A download, export, failed
+        # maintenance or an append of new videos must never rejuvenate old data.
+        if all(row["youtubeVideoId"] in self.verified_ids for row in rows):
+            playlist["verifiedAt"] = self.when
         playback = lambda videos: [(row["youtubeVideoId"], row.get("durationSeconds")) for row in videos]
         if mode == "cycle" and (not old or playback(old["videos"]) != playback(rows)):
             playlist["cycleStartsAt"] = anchor_update(old, rows, self.now) if old else self.when
@@ -758,6 +771,13 @@ class Sync:
             else:
                 try:
                     if mode == "daily":
+                        try:
+                            last_verified = date(old.get("verifiedAt", "")) if old else self.now
+                            needs_verification = self.now - last_verified >= timedelta(days=7)
+                        except (ValueError, TypeError, SyncError):
+                            needs_verification = True
+                        if old and needs_verification:
+                            self.maintain(channel, rows, stats)
                         self.discover(channel, rows, stats)
                         if not replace:
                             self.fill_titles(rows, channel_id=channel["id"])
@@ -794,6 +814,20 @@ class Sync:
                           publication=stats["publication"], listPages=stats["listPages"],
                           candidatesScanned=stats["candidatesScanned"], addedVideos=stats["addedVideos"],
                           removedVideos=stats["removedVideos"], errorCount=len(stats["errors"]))
+        # Also remove expired/inactive copies when an API request fails. Never
+        # substitute the publication time or filesystem mtime for verification.
+        for current in list(self.index["channels"]):
+            current_path = safe_file(self.root, current["file"])
+            document = load(current_path)
+            try:
+                verified = date(document.get("verifiedAt", ""))
+                fresh = self.now - METADATA_MAX_AGE < verified <= self.now + timedelta(minutes=5)
+            except (ValueError, TypeError, SyncError):
+                fresh = False
+            if not fresh:
+                self.index["channels"].remove(current)
+                current_path.unlink(missing_ok=True)
+                self.progress("metadata_expired", channel=current["id"])
         save(self.root / "channels.json", self.index, compact=True)
         for entry in removed:
             safe_file(self.root, entry["file"]).unlink(missing_ok=True)
@@ -821,8 +855,9 @@ class Sync:
             result.setdefault(row["youtubeVideoId"], []).append(row)
         return result
 
-    @staticmethod
-    def apply_video_metadata(row, item, refresh=True):
+    def apply_video_metadata(self, row, item, refresh=True):
+        if refresh and item is not None and item.get("snippet", {}).get("title") and item.get("snippet", {}).get("channelTitle"):
+            self.verified_ids.add(row["youtubeVideoId"])
         snippet = item.get("snippet", {}) if item else {}
         title = snippet.get("title")
         if (refresh or not row.get("title")) and isinstance(title, str) and title.strip():

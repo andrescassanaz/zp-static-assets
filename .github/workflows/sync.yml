@@ -25,12 +25,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: youtube-assets-main
+  group: youtube-assets-${{ github.ref_name }}
   cancel-in-progress: false
 
 jobs:
   sync:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feat/play-compliance-minimal'
     runs-on: ubuntu-latest
     timeout-minutes: 120
     permissions:
@@ -38,7 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          ref: main
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
@@ -77,6 +77,8 @@ jobs:
           set -e
           echo "result=$result" >> "$GITHUB_OUTPUT"
       - name: Publicar solamente cambios del catálogo
+        env:
+          CATALOG_BRANCH: ${{ github.ref_name }}
         shell: bash
         run: |
           git add -- channels.json channels/
@@ -86,7 +88,7 @@ jobs:
             git commit -m 'chore: actualizar videos de canales'
             # Si alguien publicó mientras se consultaba YouTube, no sobrescribir
             # su curaduría mediante force-push ni un rebase de assets generados.
-            git push origin HEAD:main
+            git push origin "HEAD:$CATALOG_BRANCH"
           fi
       - name: Informar sincronización incompleta
         if: steps.sync.outputs.result != '0'
