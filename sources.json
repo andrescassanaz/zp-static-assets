@@ -96,7 +96,6 @@
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
-      "updateMode": "replace",
       "sources": [
         "@BajoneandoPorHay",
         "@RodoCamaraTFTS",
@@ -105,10 +104,7 @@
         "@aviajarycomer",
         "@comentino",
         "@antigourmeteros"
-      ],
-      "rules": {
-        "maxAgeDays": 730
-      }
+      ]
     },
     {
       "id": "automovilismo",
@@ -224,17 +220,13 @@
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
-      "updateMode": "replace",
       "sources": [
         "@ZEPFILMS",
         "@Teloresumoasinomas",
         "@AxlKss",
         "@MarianoRodriguez",
         "@JordiMaquiavello"
-      ],
-      "rules": {
-        "maxAgeDays": 365
-      }
+      ]
     },
     {
       "id": "futbol",
@@ -487,7 +479,6 @@
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
-      "updateMode": "replace",
       "sources": [
         "PLpc3AmLBvqhSytALloNPzZ5wBWcj4f-ks",
         "PLaw1K4GjZVeOZvCiwxqBvHjUwnKFd8Jw3",
@@ -508,8 +499,7 @@
       ],
       "rules": {
         "minDurationSeconds": 600,
-        "music": false,
-        "maxAgeDays": 1095
+        "music": false
       }
     },
     {
@@ -776,7 +766,6 @@
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
-      "updateMode": "replace",
       "sources": [
         "@SoyMamayPediatra",
         "@psimammoliti",
@@ -784,10 +773,7 @@
         "@hospitalitalianodebuenosaires",
         "@alsanagust",
         "@BorjaBandera"
-      ],
-      "rules": {
-        "maxAgeDays": 1095
-      }
+      ]
     }
   ]
 }
