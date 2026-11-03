@@ -112,10 +112,14 @@
       "active": true,
       "playbackMode": "cycle",
       "videoOrder": "random",
+      "updateMode": "replace",
       "sources": [
         "@MotorsportDaily",
         "@formulazeta"
-      ]
+      ],
+      "rules": {
+        "maxAgeDays": 90
+      }
     },
     {
       "id": "tn",
@@ -160,22 +164,6 @@
     {
       "id": "el-nueve",
       "name": "El Nueve",
-      "active": true,
-      "playbackMode": "live",
-      "videoOrder": "random",
-      "sources": []
-    },
-    {
-      "id": "america-noticias",
-      "name": "América Noticias",
-      "active": true,
-      "playbackMode": "live",
-      "videoOrder": "random",
-      "sources": []
-    },
-    {
-      "id": "telefe-noticias",
-      "name": "Telefe Noticias",
       "active": true,
       "playbackMode": "live",
       "videoOrder": "random",
@@ -253,7 +241,7 @@
       "sources": [
         "@futbolinsolito",
         "@LeoMdQII",
-        "@memoriasdelfutbol",
+        "@MemoriasFutbol",
         "@DavooXeneizeFutbol",
         "@Giaco",
         "@SantiagoLeiva",

@@ -580,14 +580,14 @@ class Transport(unittest.TestCase):
                          (event["event"], event["reason"], event["quotaUnits"]))
 
     def test_malformed_response_does_not_mean_deleted_video(self):
-        api = sync.YouTube("SENTINEL_SECRET", 10, opener=lambda *a, **k: BytesIO(b'{}'))
+        api = sync.YouTube("SENTINEL_SECRET", 10, opener=lambda *a, **k: BytesIO(b'{}'), sleep=lambda _: None)
         with self.assertRaises(sync.SyncError):
             api.videos([A])
         self.assertNotIn(A, api.video_cache)
 
     def test_malformed_items_do_not_remove_existing_videos(self):
         for payload in [{"items": [{}]}, {"items": ["bad"]}, {"items": [{"id": A, "status": []}]}]:
-            api = sync.YouTube("SENTINEL_SECRET", 10, opener=lambda *a, **k: BytesIO(json.dumps(payload).encode()))
+            api = sync.YouTube("SENTINEL_SECRET", 10, opener=lambda *a, **k: BytesIO(json.dumps(payload).encode()), sleep=lambda _: None)
             with self.assertRaises(sync.SyncError):
                 api.videos([A])
             self.assertNotIn(A, api.video_cache)

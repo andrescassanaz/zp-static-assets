@@ -21,6 +21,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import urlopen
 from video_titles import normalize_title
+from sync_reporting import report_outcome, write_actions_summary
 
 ROOT = Path(__file__).resolve().parents[1]
 VIDEO = re.compile(r"[A-Za-z0-9_-]{11}\Z")
@@ -42,6 +43,10 @@ class QuotaError(SyncError):
 
 class IncompleteSource(SyncError):
     """Se alcanzó un límite sin confirmar la cobertura de la fuente."""
+
+
+class InvalidResponse(SyncError):
+    """Respuesta malformada que puede recuperarse con un reintento acotado."""
 
 
 def changed_channels(config: dict, previous: dict) -> set[str]:
@@ -338,6 +343,7 @@ class YouTube:
         if resource not in {"channels", "playlistItems", "videos"}:
             raise SyncError("Endpoint no permitido por el presupuesto de cuota.")
         url = "https://www.googleapis.com/youtube/v3/" + resource + "?" + urlencode({**params, "key": self.key})
+        response_error = None
         for attempt in range(4):
             if self.used >= self.budget:
                 progress("quota_exhausted", reason="budget", resource=resource,
@@ -347,10 +353,17 @@ class YouTube:
             try:
                 with self.opener(url, timeout=30) as response:
                     payload = json.load(response)
+                # Con fields, YouTube puede omitir items si no encontró el canal.
+                # Sólo aceptar ese vacío con evidencia explícita de cero resultados.
+                if (resource == "channels" and isinstance(payload, dict) and "items" not in payload
+                        and isinstance(payload.get("pageInfo"), dict)
+                        and type(payload["pageInfo"].get("totalResults")) is int
+                        and payload["pageInfo"]["totalResults"] == 0):
+                    payload["items"] = []
                 if not isinstance(payload, dict) or not isinstance(payload.get("items"), list):
-                    raise SyncError("Respuesta de YouTube incompleta; no se avanza esta página.")
+                    raise InvalidResponse("Respuesta de YouTube incompleta; no se avanza esta página.")
                 if any(not isinstance(item, dict) for item in payload["items"]):
-                    raise SyncError("YouTube devolvió elementos inválidos; no se avanza esta página.")
+                    raise InvalidResponse("YouTube devolvió elementos inválidos; no se avanza esta página.")
                 if resource == "videos":
                     requested = set(params.get("id", "").split(","))
                     for item in payload["items"]:
@@ -358,8 +371,10 @@ class YouTube:
                             key in item and not isinstance(item[key], dict)
                             for key in ("snippet", "contentDetails", "status", "liveStreamingDetails")
                         ):
-                            raise SyncError("Metadatos de YouTube inválidos; no se modifica disponibilidad.")
+                            raise InvalidResponse("Metadatos de YouTube inválidos; no se modifica disponibilidad.")
                 return payload
+            except InvalidResponse as exc:
+                response_error = str(exc)
             except HTTPError as exc:
                 code = exc.code
                 try:
@@ -386,6 +401,8 @@ class YouTube:
                 self.sleep(delay)
         progress("api_failed", resource=resource, attempts=4,
                  quotaUnits=self.used, quotaBudget=self.budget)
+        if response_error:
+            raise SyncError(f"{response_error} No se recuperó después de cuatro intentos.")
         raise SyncError("YouTube no respondió después de cuatro intentos.") from None
 
     def videos(self, ids: list[str]) -> dict:
@@ -526,6 +543,7 @@ class Sync:
                            result="partial" if result else "success", errors=self.errors)
         # Sólo stdout: Actions conserva los logs, nunca se escribe un reporte al repo.
         print(json.dumps(self.report, ensure_ascii=False, allow_nan=False), flush=True)
+        return deepcopy(self.report)
 
     def baseline(self, channel):
         identifier = channel["id"]
@@ -545,9 +563,9 @@ class Sync:
         if kind in {"channel", "handle"}:
             if source not in self.resolved:
                 result = self.api.get("channels", part="contentDetails", **({"forHandle": value} if kind == "handle" else {"id": value}),
-                                      fields="items/contentDetails/relatedPlaylists/uploads")
+                                      fields="pageInfo(totalResults),items/contentDetails/relatedPlaylists/uploads")
                 if not result["items"]:
-                    raise SyncError("No se encontró el canal de YouTube.")
+                    raise SyncError("No se encontró el canal de YouTube; verificá su ID o @handle en sources.json.")
                 playlist = result["items"][0].get("contentDetails", {}).get("relatedPlaylists", {}).get("uploads")
                 if not isinstance(playlist, str) or not re.fullmatch(r"[A-Za-z0-9_-]+", playlist):
                     raise SyncError("El canal no tiene playlist de subidas verificable.")
@@ -634,11 +652,14 @@ class Sync:
                         else:
                             stats["filteredVideos"] += 1
                         seen.add(identifier)
+                stats["sourcesSucceeded"] += 1
             except SyncError as exc:
                 source_result = "partial"
-                self.progress("source_error", channel=channel["id"], sourceIndex=source_index, error=str(exc))
+                self.progress("source_error", channel=channel["id"], sourceIndex=source_index,
+                              source=source, error=str(exc))
                 stats["discoveredIds"] = len(discovered)
                 stats["errors"].append(str(exc))
+                stats["sourceErrors"].append({"sourceIndex": source_index, "source": source, "error": str(exc)})
                 if isinstance(exc, QuotaError):
                     raise
             finally:
@@ -744,6 +765,7 @@ class Sync:
             excluded = set(channel.get("excludedVideoIds", []))
             rows = [deepcopy(row) for row in old["videos"] if row["youtubeVideoId"] not in excluded] if old else []
             stats = {"at": self.when, "mode": mode, "result": "success", "sourcesScanned": 0,
+                     "sourcesSucceeded": 0, "sourceErrors": [],
                      "listPages": 0, "candidatesScanned": 0,
                      "discoveredIds": 0, "addedVideos": 0, "filteredVideos": 0, "checkedVideos": 0,
                      "removedVideos": len(old["videos"]) - len(rows) if old else 0, "errors": []}
@@ -944,6 +966,7 @@ def main(argv=None):
     parser.add_argument("--maintenance", action="store_true", help="Revisar todos los canales activos después de actualizar, con el mismo presupuesto")
     parser.add_argument("--app-root", type=Path, help="Proyecto Android de destino para --mode backup")
     parser.add_argument("--root", type=Path, default=ROOT)
+    parser.add_argument("--github-actions", action="store_true", help="Escribir resumen y advertencias por canal en Actions")
     args = parser.parse_args(argv)
     try:
         if (args.changed_since or args.frequency or args.maintenance) and args.mode not in {"update", "daily"}:
@@ -972,19 +995,31 @@ def main(argv=None):
                 raise SyncError("Falta YOUTUBE_API_KEY en el entorno de GitHub Actions Secrets.")
             engine.api = YouTube(key, engine.config.get("quotaBudget", 2500))
             result = engine.run(args.mode, selected, args.frequency)
-            engine.emit_report(args.mode, result)
+            reports = [engine.emit_report(args.mode, result)]
             if args.maintenance:
-                maintenance_result = engine.run("maintenance")
-                engine.emit_report("maintenance", maintenance_result)
+                # Un mantenimiento posterior no debe vaciar la lista que acabamos
+                # de conservar porque su actualización falló. Sin estado entre runs.
+                failed_refreshes = {identifier for identifier, stats in reports[0]["channels"].items()
+                                    if stats["result"] != "success"}
+                maintenance_ids = {channel["id"] for channel in maintenance_targets} - failed_refreshes
+                maintenance_result = engine.run("maintenance", selected=maintenance_ids)
+                reports.append(engine.emit_report("maintenance", maintenance_result))
                 result = max(result, maintenance_result)
+            if args.mode in {"update", "daily", "maintenance"}:
+                outcome = report_outcome(reports)
+                if args.github_actions:
+                    write_actions_summary(reports, outcome)
+                result = {"success": 0, "partial": 2, "failure": 1}[outcome]
+                if args.github_actions and outcome == "partial":
+                    result = 0  # Advertencias por canal; permite publicar el trabajo válido.
             return result
     except SyncError as exc:
         print(str(exc), file=sys.stderr)
-        return 2
+        return 1
     except Exception:
         # Los tracebacks de urllib pueden incluir la API key en la URL.
         print("Error interno. Se conservaron los archivos ya guardados; ejecutar las pruebas antes de reintentar.", file=sys.stderr)
-        return 2
+        return 1
 
 
 if __name__ == "__main__":

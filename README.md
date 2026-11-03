@@ -154,6 +154,10 @@ antes de que se procesen otras; no hay reparto persistente de turnos.
 
 ## Publicación y fallos
 
+- Cada fuente y canal se procesa de forma independiente. Un error de YouTube en
+  una fuente no detiene las siguientes ni los otros canales; agotar la cuota sí
+  deja pendientes las consultas restantes. Las respuestas malformadas se reintentan
+  hasta cuatro veces, con espera creciente y dentro del presupuesto de cuota.
 - Append permite publicar altas verificadas aunque otra página falle. Conserva
   los videos existentes y sus datos manuales; completa títulos y creadores faltantes.
 - Replace conserva exactamente la última lista ante errores, cuota agotada o límites
@@ -185,6 +189,20 @@ claves, URLs de solicitudes ni respuestas crudas. El progreso no es un porcentaj
 la cantidad total de páginas no se conoce antes del recorrido.
 
 El reporte final sigue saliendo por stdout en JSON con canales, páginas, candidatos, cuota y errores.
+Cada error de fuente identifica su posición y su ID o handle configurado.
+En Actions, `--github-actions` agrega un resumen con cantidades, resultado, altas,
+bajas y estado del catálogo de cada canal, más advertencias con la fuente y causa.
+Por ejemplo, **43 de 44 canales sin errores; 1 con incidencias** deja la ejecución
+exitosa con advertencias y publica el trabajo válido, sin enviar un correo de
+`Run failed` por ese fallo parcial. La lista de un replace incompleto se conserva.
+Los errores de configuración, fallos internos, errores al publicar o una ejecución
+sin ninguna consulta completada útil siguen fallando. Los canales sin fuentes ni
+consultas no cuentan como avance para ocultar una caída general de la API.
+El resumen mantiene los errores de actualización aunque el mantenimiento posterior
+termine bien. Con `--maintenance`, se excluyen del mantenimiento los canales cuya
+actualización falló en esa misma ejecución, para no vaciar la lista recién conservada.
+No se guarda ese estado entre ejecuciones. No se crean notificaciones por correo
+adicionales para advertencias.
 Actions conserva sus logs según los permisos y retención del repositorio; no son un
 almacenamiento privado de secretos. No se guarda ni lee `sync-state.json`.
 Una ejecución sin cambios del catálogo no genera un commit de reporte.
@@ -211,7 +229,11 @@ Los modos names, titles y presentation siguen disponibles como utilidades puntua
 completan nombres, refrescan metadatos o normalizan presentación; presentation no usa API.
 `--mode daily` sigue siendo un alias de update por compatibilidad con comandos anteriores.
 
-Código 0: ejecución completa. Código 2: error, revisión incompleta o cuota agotada.
+Para update/daily/maintenance: código 0 si se completó; 2 si hubo un resultado parcial
+con avance verificable; 1 ante un fallo general o error fatal. Con `--github-actions`,
+los resultados parciales devuelven 0 y se informan mediante advertencias y resumen.
+Los errores de argumentos de la CLI siguen devolviendo 2; Actions no los silencia.
+Las utilidades names/titles conservan su código 2 cuando quedan metadatos pendientes.
 No se necesitan claves para validar ni ejecutar las pruebas:
 
 ```powershell
