@@ -48,7 +48,6 @@ jobs:
       - name: Validar configuración y listas
         run: python scripts/sync.py --mode validate
       - name: Sincronizar
-        id: sync
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
           REQUESTED_MODE: ${{ inputs.mode }}
@@ -71,11 +70,9 @@ jobs:
           elif [[ -n "$CHANNEL_ID" ]]; then
             args+=(--channel "$CHANNEL_ID")
           fi
-          set +e
-          python scripts/sync.py "${args[@]}"
-          result=$?
-          set -e
-          echo "result=$result" >> "$GITHUB_OUTPUT"
+          # Los fallos parciales generan advertencias y resumen por canal.
+          # Configuración inválida, fallos generales o crashes siguen fallando.
+          python scripts/sync.py "${args[@]}" --github-actions
       - name: Publicar solamente cambios del catálogo
         shell: bash
         run: |
@@ -88,8 +85,3 @@ jobs:
             # su curaduría mediante force-push ni un rebase de assets generados.
             git push origin HEAD:main
           fi
-      - name: Informar sincronización incompleta
-        if: steps.sync.outputs.result != '0'
-        run: |
-          echo 'Sincronización incompleta; revisar los reportes en los logs. La siguiente ejecución empieza desde cero.'
-          exit 1

@@ -251,10 +251,10 @@ class Stateless(unittest.TestCase):
     def test_cli_invalid_configuration_and_git_comparison_do_not_query_youtube(self):
         with patch.object(sync.YouTube, "get", side_effect=AssertionError("No API")), \
                 redirect_stderr(StringIO()), redirect_stdout(StringIO()):
-            self.assertEqual(2, sync.main(["--root", str(self.root), "--changed-since", "HEAD"]))
+            self.assertEqual(1, sync.main(["--root", str(self.root), "--changed-since", "HEAD"]))
             self.config["channels"][0]["rules"] = {"maxAgeDays": 0}
             self.write_config()
-            self.assertEqual(2, sync.main(["--root", str(self.root)]))
+            self.assertEqual(1, sync.main(["--root", str(self.root)]))
 
     def test_real_git_diff_updates_only_changed_channel_and_restarts_without_state(self):
         def git(*args):
